@@ -218,6 +218,7 @@
       },
       //取消删除
       cancelByDelete(){
+        this.clearSingleData();
         this.$Message.warning('取消');
       },
       //清除选中的数据
