@@ -1,10 +1,21 @@
 <template>
   <div id="table_zl">
-    <Table border highlight-row :height="500" ref="currentRowTableByZL" :columns="columnsByZL" :data="dataByZL"></Table>
+    <Table
+      size="small"
+      border
+      highlight-row
+      :height="450"
+      ref="currentRowTableByZL"
+      :columns="columnsByZL"
+      :data="dataByZL">
+    </Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
-        <Page :total="100" :current="1" show-sizer=""></Page>
-        <!--<Page :total="100" :current="1" @on-change="changePage"></Page>-->
+        <Page
+          size="small"
+          :total="100"
+          :current="1"
+          show-sizer></Page>
       </div>
     </div>
   </div>

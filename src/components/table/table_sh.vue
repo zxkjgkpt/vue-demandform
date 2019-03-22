@@ -1,9 +1,22 @@
 <template>
   <div id="table_sh">
-    <Table border  highlight-row :height="500" ref="currentRowTableBySH" :columns="columnsBySH" :data="dataBySH"></Table>
+    <Table
+      size="small"
+      border
+      highlight-row
+      :height="450"
+      ref="currentRowTableBySH"
+      :columns="columnsBySH"
+      :data="dataBySH">
+    </Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
-        <Page :total="100" :current="1" show-sizer=""></Page>
+        <Page
+          size="small"
+          :total="100"
+          :current="1"
+          show-sizer>
+        </Page>
         <!--<Page :total="100" :current="1" @on-change="changePage"></Page>-->
       </div>
     </div>

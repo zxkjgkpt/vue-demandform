@@ -20,12 +20,12 @@
           </div>
         </Menu>
       </Header>
-      <Content :style="{margin: '88px 20px 0', background: '#fff', minHeight: '50%'}">
+      <Content :style="{margin: '70px 20px 0', background: '#fff', minHeight: '50%'}">
         <Table_tb v-if="tableType == 'tb'"></Table_tb>
         <Table_zl v-if="tableType == 'zl'"></Table_zl>
         <table_sh v-if="tableType == 'sh'"> </table_sh>
       </Content>
-      <Footer class="layout-footer-center">
+      <Footer class="layout-footer-center" style="padding: 10px 20px;">
         <zttj v-if="tableType == 'tb'"></zttj>
         <shjd v-if="tableType == 'tb'"></shjd>
       </Footer>

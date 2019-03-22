@@ -1,6 +1,15 @@
 <template>
   <div id="zttj">
-    <Table border :height="200" highlight-row ref="currentRowTableByTB" :columns="columnsByTB" :data="dataByTB" @on-row-dblclick="showData"></Table>
+    <Table
+      size="small"
+      border
+      :height="200"
+      highlight-row
+      ref="currentRowTableByTB"
+      :columns="columnsByTB"
+      :data="dataByTB"
+      @on-row-dblclick="showData">
+    </Table>
   </div>
 </template>
 
@@ -28,7 +37,7 @@
             key: 'address'
           }
         ],
-        dataByTB: this.get100Datas(10),
+        dataByTB: this.get100Datas(4),
       }
     },
     methods:{

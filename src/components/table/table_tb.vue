@@ -1,24 +1,45 @@
 <template>
   <div id="table_tb">
     <div class="search_tb">
-      <Select v-model="selectValue" placeholder="新增条件" style="width:200px">
+      <Select size="small" v-model="selectValue" placeholder="新增条件" style="width:200px">
         <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
-      <Input v-model="searchData.name"  placeholder="Name查询..." style="width: 300px"  suffix="ios-search" />
-      <Input v-model="searchData.age" placeholder="age查询..." style="width: 300px" suffix="ios-search" />
-      <Input v-model="searchData.address" placeholder="address查询..." style="width: 300px" suffix="ios-search" />
-      <Button type="success" @click="handleSearch">查询</Button>
-      <Button type="warning" @click="reset">重置</Button>
+      <Input size="small" v-model="searchData.name"  placeholder="Name查询..." style="width: 200px"  suffix="ios-search" />
+      <Input size="small" v-model="searchData.age" placeholder="age查询..." style="width: 200px" suffix="ios-search" />
+      <Input size="small" v-model="searchData.address" placeholder="address查询..." style="width: 200px" suffix="ios-search" />
+      <Button size="small" type="success" @click="handleSearch">查询</Button>
+      <Button size="small" type="warning" @click="reset">重置</Button>
       <br>
-      <Button type="primary" @click="showNewOrEditOrView('new')">新增</Button>
-      <Button type="primary" @click="showNewOrEditOrView('edit')">编辑</Button>
-      <Button type="primary" @click="showNewOrEditOrView('view')">查看</Button>
-      <Button type="primary" @click="showDeleteModal">删除</Button>
     </div>
-    <Table border  highlight-row :loading="loading"  :height="520" ref="currentRowTableByTB" :columns="columnsByTB" :data="dataByTB" @on-row-dblclick="showDetailed" @on-current-change="handleRowChange" ></Table>
+    <div class="buttonDiv">
+      <Button size="small" type="primary" @click="showNewOrEditOrView('new')">新增</Button>
+      <Button size="small" type="primary" @click="showNewOrEditOrView('edit')">编辑</Button>
+      <Button size="small" type="primary" @click="showNewOrEditOrView('view')">查看</Button>
+      <Button size="small" type="primary" @click="showDeleteModal">删除</Button>
+    </div>
+    <Table
+      size="small"
+      border
+      highlight-row
+      :loading="loading"
+      :height="450"
+      ref="currentRowTableByTB"
+      :columns="columnsByTB"
+      :data="dataByTB"
+      @on-row-dblclick="showDetailed"
+      @on-current-change="handleRowChange" >
+    </Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
-        <Page :total="totalData" show-total  :current="pageNum" :page-size="pageSize" show-sizer @on-change="changePage" @on-page-size-change="changePageSize"></Page>
+        <Page
+          size="small"
+          :total="totalData"
+          show-total
+          :current="pageNum"
+          :page-size="pageSize"
+          show-sizer
+          @on-change="changePage"
+          @on-page-size-change="changePageSize"></Page>
       </div>
     </div>
     <Modal
@@ -230,6 +251,7 @@
       //重置
       reset(){
         this.searchData = {};
+        this.selectValue = '';
       },
       //搜索
       handleSearch(){
@@ -265,6 +287,9 @@
 <style scoped>
 .search_tb{
   width: 100%;
-  height: 66px;
+  margin-bottom: 5px;
+}
+.buttonDiv{
+  margin-bottom: 2px;
 }
 </style>
