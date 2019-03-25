@@ -78,7 +78,7 @@
       title="新增需求单"
       :mask-closable="false"
       @on-ok="okByNew"
-      @on-cancel="cancelByNew">
+      @on-cancel="cancelByNew" width="80%">
       <add_model ref="add_model"></add_model>
     </Modal>
     <Modal
