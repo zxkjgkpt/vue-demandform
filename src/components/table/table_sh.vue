@@ -26,6 +26,11 @@
 <script>
   export default {
     name: 'table_sh',
+    props:{
+      tableType:{
+        type:String,
+      }
+    },
     data(){
       return{
         columnsBySH: [
@@ -64,6 +69,10 @@
         }
         return data;
       }
+    },
+    created() {
+      //请求后台获取需求单审核数据
+      console.log(this.tableType);
     }
   }
 </script>

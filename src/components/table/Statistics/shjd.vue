@@ -16,12 +16,15 @@
 
 <script>
 
-  // 引入基本模板
-  let echarts = require('echarts/lib/echarts')
-  // 引入柱状图组件
-  require('echarts/lib/chart/bar')
-  // 引入title组件
-  require('echarts/lib/component/title')
+  //引入基本模板
+  let echarts = require('echarts/lib/echarts');
+  //引入柱状图组件
+  require('echarts/lib/chart/bar');
+  //引入title组件
+  require('echarts/lib/component/title');
+  //引入图例组件
+  require("echarts/lib/component/legend");
+
 
   export default {
     name: 'shjd',
@@ -77,14 +80,19 @@
         let myChart = echarts.init(document.getElementById('myChartByshjd'))
         // 绘制图表
         myChart.setOption({
+          legend: {
+            data: ['数量\n百分比']
+          },
+          color: ['#3398DB'],
           title: { text: '审核进度统计数量' },
           xAxis: {
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子","总数"]
+            data: ["新建", "正常", "即将到期", "已逾期", "完成","总数"]
           },
           yAxis: {},
           series: [{
+            name:'数量\n百分比',
             type: 'bar',
-            data: [6, 2, 60, 10, 90, 10,178],
+            data: [6, 2, 60, 10, 90,168],
             itemStyle:{
               normal:{
                 label:{
@@ -93,6 +101,9 @@
                   textStyle:{//数值样式
                     color: 'black',
                     fontSize: 16
+                  },
+                  formatter:function (value) {
+                    return value.value + '\n' + (value.value/168*100).toFixed(2) + '%'
                   }
                 }
               }

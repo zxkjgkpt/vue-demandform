@@ -21,13 +21,14 @@
         </Menu>
       </Header>
       <Content :style="{margin: '70px 20px 0', background: '#fff', minHeight: '50%'}">
-        <Table_tb v-if="tableType == 'tb'"></Table_tb>
-        <Table_zl v-if="tableType == 'zl'"></Table_zl>
-        <table_sh v-if="tableType == 'sh'"> </table_sh>
+        <!--把tableType传给table模块，获取相应的需求单填报或总览或审核数据-->
+        <Table_tb v-if="tableType == 'xqtb'" v-bind:tableType="tableType"></Table_tb>
+        <Table_zl v-if="tableType == 'xqzl'" v-bind:tableType="tableType"></Table_zl>
+        <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType"> </table_sh>
       </Content>
       <Footer class="layout-footer-center" style="padding: 10px 20px;">
-        <zttj v-if="tableType == 'tb'"></zttj>
-        <shjd v-if="tableType == 'tb'"></shjd>
+        <zttj v-if="tableType == 'xqtb'"></zttj>
+        <shjd v-if="tableType == 'xqtb'"></shjd>
       </Footer>
     </Layout>
   </div>
@@ -46,7 +47,7 @@
     components: {Shjd, Zttj, Table_sh, Table_zl, Table_tb},
     data(){
       return {
-        tableType:'tb',
+        tableType:'xqtb',
       }
     },
     methods:{
@@ -54,11 +55,11 @@
         // name是 <Menu-item name="timestamp">时间戳</Menu-item> 的name
         // 我的router有 /timestamp 于是使用了vue-router中的编程路由进行动态跳转
         if (name == 'tb'){
-          this.tableType = 'tb';
+          this.tableType = 'xqtb';
         } else if (name == 'zl'){
-          this.tableType = 'zl';
+          this.tableType = 'xqzl';
         }else if (name == 'sh'){
-          this.tableType = 'sh';
+          this.tableType = 'xqsh';
         }
       }
     }

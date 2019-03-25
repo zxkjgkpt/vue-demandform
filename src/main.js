@@ -5,10 +5,13 @@ import App from './App'
 import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css' // 使用 CSS
+import axios from 'axios'//使用axios做请求
 
 Vue.use(iView)
 
 Vue.config.productionTip = false
+
+Vue.prototype.$axios = axios
 
 /* eslint-disable no-new */
 new Vue({

@@ -24,6 +24,11 @@
 <script>
   export default {
     name: 'table_zl',
+    props:{
+      tableType:{
+        type:String,
+      }
+    },
     data(){
       return{
         columnsByZL: [
@@ -62,6 +67,10 @@
         }
         return data;
       }
+    },
+    created() {
+      //请求后台获取需求单总览数据
+      console.log(this.tableType);
     }
   }
 </script>

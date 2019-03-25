@@ -1,12 +1,32 @@
 <template>
   <div id="table_tb">
     <div class="search_tb">
-      <Select size="small" v-model="selectValue" placeholder="新增条件" style="width:200px">
+      <Input clearable size="small" v-model="queryParam.xqdh"  placeholder="需求单号查询..." style="width: 200px"  suffix="ios-search" />
+      <Input clearable size="small" v-model="queryParam.xqmc" placeholder="需求单名称查询..." style="width: 200px" suffix="ios-search" />
+      <Input clearable size="small" v-model="queryParam.sqbmmc" placeholder="申请单位查询..." style="width: 200px" suffix="ios-search" />
+
+      <DatePicker size="small" v-model="searchData.date" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="开始时间——结束时间" style="width: 200px"></DatePicker>
+
+      <Input v-if="showSelectInput.xqzs" clearable size="small" v-model="queryParam.xqzs" placeholder="需求单综述查询..." style="width: 200px" suffix="ios-search" />
+      <Input v-if="showSelectInput.sqrxm" clearable size="small" v-model="queryParam.sqrxm" placeholder="申请人查询..." style="width: 200px" suffix="ios-search" />
+      <Select v-if="showSelectInput.gdzt" clearable size="small" v-model="queryParam.gdzt"  style="width:200px" placeholder="状态选择...">
+        <Option v-for="gdzt in gdztList" :value="gdzt.value" :key="gdzt.value">{{ gdzt.label }}</Option>
+      </Select>
+      <Select v-if="showSelectInput.fjbz" clearable size="small" v-model="queryParam.fjbz"  style="width:200px" placeholder="有无附件选择...">
+        <Option v-for="fjbz in fjbzList" :value="fjbz.value" :key="fjbz.value">{{ fjbz.label }}</Option>
+      </Select>
+      <Select v-if="showSelectInput.shjd" clearable size="small" v-model="queryParam.shjd"  style="width:200px" placeholder="审核进度选择...">
+        <Option v-for="shjd in shjdList" :value="shjd.value" :key="shjd.value">{{ shjd.label }}</Option>
+      </Select>
+      <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..." style="width: 200px" suffix="ios-search" />
+
+      <Cascader v-if="showSelectInput.zylb" trigger="hover" size="small" :data="zylbData" v-model="queryParam.zylb" style="width: 200px; display: inline-block" placeholder="专业类别查询..." ></Cascader>
+
+
+      <Select clearable size="small" v-model="selectValue" placeholder="新增条件" style="width:200px" @on-change="getItemValue">
         <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
-      <Input size="small" v-model="searchData.name"  placeholder="Name查询..." style="width: 200px"  suffix="ios-search" />
-      <Input size="small" v-model="searchData.age" placeholder="age查询..." style="width: 200px" suffix="ios-search" />
-      <Input size="small" v-model="searchData.address" placeholder="address查询..." style="width: 200px" suffix="ios-search" />
+
       <Button size="small" type="success" @click="handleSearch">查询</Button>
       <Button size="small" type="warning" @click="reset">重置</Button>
       <br>
@@ -15,14 +35,25 @@
       <Button size="small" type="primary" @click="showNewOrEditOrView('new')">新增</Button>
       <Button size="small" type="primary" @click="showNewOrEditOrView('edit')">编辑</Button>
       <Button size="small" type="primary" @click="showNewOrEditOrView('view')">查看</Button>
-      <Button size="small" type="primary" @click="showDeleteModal">删除</Button>
+
+      <!--两个删除不能少-->
+      <Poptip v-if="confirm"
+        :confirm="confirm"
+        :title="deleteTitle"
+              @on-ok="okByDelete"
+              @on-cancel="cancelByDelete">
+        <Button size="small" type="primary" @click="showDeleteModal">删除</Button>
+      </Poptip>
+      <Button v-if="!confirm" size="small" type="primary" @click="showDeleteModal">删除</Button>
+
+      <Button size="small" type="primary" @click="exportData">导出</Button>
     </div>
     <Table
       size="small"
       border
       highlight-row
       :loading="loading"
-      :height="450"
+      :height="435"
       ref="currentRowTableByTB"
       :columns="columnsByTB"
       :data="dataByTB"
@@ -68,14 +99,6 @@
       >
       <edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
     </Modal>
-    <Modal
-      v-model="modalDelete"
-      title="删除操作"
-      :mask-closable="false"
-      @on-ok="okByDelete"
-      @on-cancel="cancelByDelete">
-      <h2 style=" text-align: center">您确认删除这条内容吗？</h2>
-    </Modal>
   </div>
 </template>
 
@@ -85,6 +108,11 @@
   export default {
     name: 'table_tb',
     components: {Add_model, Edit_model},
+    props:{
+      tableType:{
+        type:String,
+      }
+    },
     data(){
       return{
         loading: false,
@@ -95,17 +123,56 @@
             align: 'center'
           },
           {
-            title: 'Name',
-            key: 'name'
+            title: '审核进度',
+            key: 'name',
+            tooltip:true//开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
           },
           {
-            title: 'Age',
-            key: 'age'
+            title: '需求单状态',
+            key: 'age',
+            tooltip:true
           },
           {
-            title: 'Address',
-            key: 'address'
+            title: '需求单号',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '申请单位/业务部门',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '申请人',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '申请人联系方式',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '创建时间',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '需求单名称',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '需求单综述',
+            key: 'address',
+            tooltip:true
+          },
+          {
+            title: '期望完成时间',
+            key: 'address',
+            tooltip:true
           }
+
         ],
         dataByTB: [],
         totalData:100,
@@ -113,42 +180,187 @@
         pageSize:10,
         cityList: [
           {
-            value: 'New York',
-            label: 'New York'
+            value: '0',
+            label: '需求单综述'
           },
           {
-            value: 'London',
-            label: 'London'
+            value: '1',
+            label: '申请人'
           },
           {
-            value: 'Sydney',
-            label: 'Sydney'
+            value: '2',
+            label: '状态'
           },
           {
-            value: 'Ottawa',
-            label: 'Ottawa'
+            value: '3',
+            label: '有无附件'
           },
           {
-            value: 'Paris',
-            label: 'Paris'
+            value: '4',
+            label: '审核进度'
           },
           {
-            value: 'Canberra',
-            label: 'Canberra'
+            value: '5',
+            label: '审核人'
+          },
+          {
+            value: '6',
+            label: '专业类别'
+          }
+        ],
+        gdztList:[
+          {
+            value: '',
+            label: '全部'
+          },
+          {
+            value: 'New',
+            label: '新建'
+          },
+          {
+            value: 'Audit',
+            label: '地市级审核中'
+          },
+          {
+            value: 'ProAudit',
+            label: '省级审核中'
+          },
+          {
+            value: 'PowerAudit',
+            label: '网级审核中'
+          },
+          {
+            value: 'Pass',
+            label: '审核通过'
+          },
+          {
+            value: 'Modif',
+            label: '地市级审核未通过'
+          },
+          {
+            value: 'ProModif',
+            label: '省级审核未通过'
+          },
+          {
+            value: 'PowerModif',
+            label: '网级审核未通过'
+          },
+        ],
+        fjbzList:[
+          {
+            value: '',
+            label: '全部'
+          },
+          {
+            value: 'YES',
+            label: '有'
+          },
+          {
+            value: 'NO',
+            label: '无'
+          },
+        ],
+        shjdList:[
+          {
+            value: '',
+            label: '全部'
+          },
+          {
+            value: '0',
+            label: '新建'
+          },
+          {
+            value: '1',
+            label: '正常'
+          },
+          {
+            value: '2',
+            label: '即将到期'
+          },
+          {
+            value: '3',
+            label: '已逾期'
+          },
+          {
+            value: '4',
+            label: '完成'
+          },
+        ],
+        zylbData:[
+          {
+            value: '0',
+            label: '市场营销',
+            children:[
+              {
+                value: '计量资产',
+                label: '计量资产'
+              },
+              {
+                value: '计量自动化',
+                label: '计量自动化'
+              },
+              {
+                value: '抄核收',
+                label: '抄核收'
+              },
+              {
+                value: '综合',
+                label: '综合'
+              },
+              {
+                value: '客服',
+                label: '客服'
+              }
+              ,{
+                value: '市场交易',
+                label: '市场交易'
+              }
+              ,{
+                value: '业扩',
+                label: '业扩'
+              }
+            ]
           }
         ],
         modalNew: false,
         modalEdit: false,
         modalView: false,
-        modalDelete:false,
         singleData:{},
         selectValue:'',
         searchData:{
           name: '',
           age:'',
-          address:''
+          address:'',
+          date:null
         },
-        isShowView:false
+        isShowView:false,
+        confirm:false,
+        deleteTitle:'',
+        queryParam:{
+          xqdh:null,
+          xqmc:null,
+          xqzs:null,
+          sqbmmc:null,
+          sqrxm:null,
+          gdzt:null,
+          shjd:null,
+          wshr:null,
+          //目前还拿不到创建人ID
+          //cjrid:UserInfoS.getUserInfo().id,
+          zylb:null,
+          cjrid:null,
+          fjbz:"",
+          cxbz:this.tableType
+        },
+        showSelectInput:{
+          xqzs:false,
+          sqrxm:false,
+          gdzt:false,
+          fjbz:false,
+          shjd:false,
+          wshr:false,
+          zylb:false
+        }
       }
     },
     methods:{
@@ -202,6 +414,7 @@
       //表格中选中当前某一行数据
       handleRowChange(currentRow){
         this.singleData = currentRow;
+        this.confirm = true;
       },
       //新增或者编辑或者查看
       showNewOrEditOrView(type){
@@ -227,7 +440,8 @@
         if (JSON.stringify(this.singleData)=='{}'){
           this.$Message.warning('请先选中表格中的一行数据！')
         }else {
-          this.modalDelete = true;
+          this.confirm = true;
+          this.deleteTitle = '您确认删除这条内容吗？'
         }
       },
       //执行删除
@@ -247,11 +461,25 @@
         //清除选中的行
         this.$refs.currentRowTableByTB.clearCurrentRow();
         this.singleData = {};
+        this.confirm = false;
       },
       //重置
       reset(){
         this.searchData = {};
         this.selectValue = '';
+        for (let showSelectInputKey in this.showSelectInput) {
+          this.showSelectInput[showSelectInputKey] = false;
+        }
+        this.queryParam.xqdh = null;
+        this.queryParam.xqmc = null;
+        this.queryParam.sqbmmc = null;
+        this.queryParam.xqzs = null;
+        this.queryParam.sqrxm = null;
+        this.queryParam.gdzt = null;
+        this.queryParam.fjbz = null;
+        this.queryParam.shjd = null;
+        this.queryParam.wshr = null;
+        this.queryParam.zylb = null;
       },
       //搜索
       handleSearch(){
@@ -267,8 +495,44 @@
         //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
         //this.dataByTB = searchedData;
       },
+      //导出
+      exportData(){
+        console.log('导出功能');
+      },
+      //获取下拉框选中的值
+      getItemValue(val){
+        if (val == 0){
+          this.showSelectInput.xqzs = true;
+        }
+        if (val == 1){
+          this.showSelectInput.sqrxm = true;
+        }
+        if (val == 2){
+          this.showSelectInput.gdzt = true;
+        }
+        if (val == 3){
+          this.showSelectInput.fjbz = true;
+        }
+        if (val == 4){
+          this.showSelectInput.shjd = true;
+        }
+        if (val == 5){
+          this.showSelectInput.wshr = true;
+        }
+        if (val == 6){
+          this.showSelectInput.zylb = true;
+        }
+      },
+      //请求后台数据
+      queryData(number){
+
+      }
     },
     created() {
+      //请求后台获取需求单填报数据
+      console.log(this.pageNum);
+      console.log(this.pageSize);
+      console.log(this.queryParam);
       //手动获取数据
       let data = [];
       for (let i = 1; i <= 10 ; i++) {
@@ -280,6 +544,15 @@
         data.push(a);
       }
       this.dataByTB = data;
+      /*this.$axios({
+        url: '',//请求的地址
+        method: 'post',//请求的方式
+        data: this.tableType//根据表格类型请求数据
+      }).then(res => {
+        console.info('后台返回的数据', res.data);
+      }).catch(err => {
+        console.info('报错的信息', err.response.message);
+      });*/
     }
   }
 </script>
