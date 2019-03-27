@@ -5,7 +5,7 @@
       <Input clearable size="small" v-model="queryParam.xqmc" placeholder="需求单名称查询..." style="width: 200px" suffix="ios-search" />
       <Input clearable size="small" v-model="queryParam.sqbmmc" placeholder="申请单位查询..." style="width: 200px" suffix="ios-search" />
 
-      <DatePicker size="small" v-model="searchData.date" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="开始时间——结束时间" style="width: 200px"></DatePicker>
+      <DatePicker size="small" v-model="queryParam.date" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="开始时间——结束时间" style="width: 200px"></DatePicker>
 
       <Input v-if="showSelectInput.xqzs" clearable size="small" v-model="queryParam.xqzs" placeholder="需求单综述查询..." style="width: 200px" suffix="ios-search" />
       <Input v-if="showSelectInput.sqrxm" clearable size="small" v-model="queryParam.sqrxm" placeholder="申请人查询..." style="width: 200px" suffix="ios-search" />
@@ -20,33 +20,33 @@
       </Select>
       <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..." style="width: 200px" suffix="ios-search" />
 
-      <Cascader v-if="showSelectInput.zylb" trigger="hover" size="small" :data="zylbData" v-model="queryParam.zylb" style="width: 200px; display: inline-block" placeholder="专业类别查询..." ></Cascader>
+      <Cascader v-if="showSelectInput.zylbArray" trigger="hover" size="small" :data="zylbData" v-model="queryParam.zylbArray" style="width: 200px; display: inline-block" placeholder="专业类别查询..." ></Cascader>
 
 
       <Select clearable size="small" v-model="selectValue" placeholder="新增条件" style="width:200px" @on-change="getItemValue">
         <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
 
-      <Button size="small" type="success" @click="handleSearch">查询</Button>
-      <Button size="small" type="warning" @click="reset">重置</Button>
+      <Button size="small" type="success" @click="handleSearch"><Icon type="ios-search" />查询</Button>
+      <Button size="small" type="warning" @click="reset"><Icon type="md-refresh" style="padding-bottom: 2px" />重置</Button>
       <br>
     </div>
     <div class="buttonDiv">
-      <Button size="small" type="primary" @click="showNewOrEditOrView('new')">新增</Button>
-      <Button size="small" type="primary" @click="showNewOrEditOrView('edit')">编辑</Button>
-      <Button size="small" type="primary" @click="showNewOrEditOrView('view')">查看</Button>
+      <Button size="small" type="primary" @click="showNewOrEditOrView('new')"><Icon type="md-add"  style="padding-bottom: 2px"/>新增</Button>
+      <Button size="small" type="primary" @click="showNewOrEditOrView('edit')"><Icon type="md-create" style="padding-bottom: 2px" />编辑</Button>
+      <Button size="small" type="primary" @click="showNewOrEditOrView('view')"><Icon type="ios-chatboxes-outline" />查看</Button>
 
       <!--两个删除不能少-->
       <Poptip v-if="confirm"
-        :confirm="confirm"
-        :title="deleteTitle"
+              :confirm="confirm"
+              :title="deleteTitle"
               @on-ok="okByDelete"
               @on-cancel="cancelByDelete">
-        <Button size="small" type="primary" @click="showDeleteModal">删除</Button>
+        <Button size="small" type="primary" @click="showDeleteModal"><Icon type="md-remove" style="padding-bottom: 2px" />删除</Button>
       </Poptip>
-      <Button v-if="!confirm" size="small" type="primary" @click="showDeleteModal">删除</Button>
+      <Button v-if="!confirm" size="small" type="primary" @click="showDeleteModal"><Icon type="md-remove" style="padding-bottom: 2px" />删除</Button>
 
-      <Button size="small" type="primary" @click="exportData">导出</Button>
+      <Button size="small" type="primary" @click="exportData"><Icon type="ios-share" style="padding-bottom: 2px" />导出</Button>
     </div>
     <Table
       size="small"
@@ -60,7 +60,7 @@
       @on-row-dblclick="showDetailed"
       @on-current-change="handleRowChange" >
     </Table>
-    <div style="margin: 10px;overflow: hidden">
+    <div style="margin: 10px;">
       <div style="float: right;">
         <Page
           size="small"
@@ -72,6 +72,8 @@
           @on-change="changePage"
           @on-page-size-change="changePageSize"></Page>
       </div>
+      <!--刷新-->
+      <div class="refreshIcon" @click="refreshData"><Icon size="17" type="md-refresh" /></div>
     </div>
     <Modal
       v-model="modalNew"
@@ -96,7 +98,7 @@
       cancel-text=""
       ok-text="关闭"
       @on-ok="exitModal"
-      >
+    >
       <edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
     </Modal>
   </div>
@@ -105,6 +107,10 @@
 <script>
   import Edit_model from "./edit/edit_model";
   import Add_model from "./edit/add_model";
+
+  // 引入公共的bus，来做为中间传达的工具
+  import Bus from './bus/bus'
+
   export default {
     name: 'table_tb',
     components: {Add_model, Edit_model},
@@ -327,12 +333,6 @@
         modalView: false,
         singleData:{},
         selectValue:'',
-        searchData:{
-          name: '',
-          age:'',
-          address:'',
-          date:null
-        },
         isShowView:false,
         confirm:false,
         deleteTitle:'',
@@ -347,10 +347,15 @@
           wshr:null,
           //目前还拿不到创建人ID
           //cjrid:UserInfoS.getUserInfo().id,
+          cjrid:null,
+          zylbArray:[],
           zylb:null,
           cjrid:null,
-          fjbz:"",
-          cxbz:this.tableType
+          fjbz:null,
+          cxbz:this.tableType,
+          date:null,
+          startTime:null,
+          endTime:null
         },
         showSelectInput:{
           xqzs:false,
@@ -359,7 +364,7 @@
           fjbz:false,
           shjd:false,
           wshr:false,
-          zylb:false
+          zylbArray:false
         }
       }
     },
@@ -465,31 +470,36 @@
       },
       //重置
       reset(){
-        this.searchData = {};
         this.selectValue = '';
         for (let showSelectInputKey in this.showSelectInput) {
           this.showSelectInput[showSelectInputKey] = false;
         }
-        this.queryParam.xqdh = null;
-        this.queryParam.xqmc = null;
-        this.queryParam.sqbmmc = null;
-        this.queryParam.xqzs = null;
-        this.queryParam.sqrxm = null;
-        this.queryParam.gdzt = null;
-        this.queryParam.fjbz = null;
-        this.queryParam.shjd = null;
-        this.queryParam.wshr = null;
-        this.queryParam.zylb = null;
+
+        for (let queryParamKey in this.queryParam) {
+          if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz'){
+            continue;
+          }else {
+            this.queryParam[queryParamKey] = null;
+          }
+        }
       },
       //搜索
       handleSearch(){
-        console.log(this.searchData);
         this.loading = true;
+
+        //开始时间
+        this.queryParam.startTime = this.queryParam.date[0];
+        //结束时间
+        this.queryParam.endTime = this.queryParam.date[1];
+        //专业类别
+        this.queryParam.zylb = this.queryParam.zylbArray[1];
+
+        console.log(this.queryParam);
 
         let thisTable = this;   // 当前this指向的是一个组件
         setTimeout(function(){
           thisTable.loading = false;
-          },2000) //   function 里面的this指向的是windows
+        },2000) //   function 里面的this指向的是windows
 
 
         //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
@@ -520,8 +530,22 @@
           this.showSelectInput.wshr = true;
         }
         if (val == 6){
-          this.showSelectInput.zylb = true;
+          this.showSelectInput.zylbArray = true;
         }
+      },
+      //刷新
+      refreshData(){
+        this.loading = true;
+
+        let thisTable = this;   // 当前this指向的是一个组件
+        setTimeout(function(){
+          thisTable.loading = false;
+        },2000) //   function 里面的this指向的是windows
+
+
+        //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
+        //this.dataByTB = searchedData;
+
       },
       //请求后台数据
       queryData(number){
@@ -553,16 +577,48 @@
       }).catch(err => {
         console.info('报错的信息', err.response.message);
       });*/
+    },
+    //用于双击柱状图，根据参数查询需求填报数据
+    mounted: function () {
+      let vm = this;
+      // 用$on事件来接收参数
+      Bus.$on('zttjValue', (data) => {
+        console.log(data);
+        vm.loading = true;
+
+        setTimeout(function(){
+          vm.loading = false;
+        },2000) //   function 里面的this指向的是windows
+      });
+
+      Bus.$on('shjdValue', (data) => {
+        console.log(data);
+        vm.loading = true;
+
+        setTimeout(function(){
+          vm.loading = false;
+        },2000) //   function 里面的this指向的是windows
+      })
+
+
     }
   }
 </script>
 
 <style scoped>
-.search_tb{
-  width: 100%;
-  margin-bottom: 5px;
-}
-.buttonDiv{
-  margin-bottom: 2px;
-}
+  .search_tb{
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .buttonDiv{
+    margin-bottom: 2px;
+  }
+  .refreshIcon{
+    float: right;
+    margin-top: 2px;
+    margin-right: 6px;
+    padding-right: 5px;
+    border-right: solid 1px rgba(0,0,0,.2);
+    cursor:pointer;
+  }
 </style>

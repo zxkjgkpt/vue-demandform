@@ -1,15 +1,5 @@
 <template>
   <div id="zttj">
-    <!--<Table-->
-    <!--size="small"-->
-    <!--border-->
-    <!--:height="200"-->
-    <!--highlight-row-->
-    <!--ref="currentRowTableByTB"-->
-    <!--:columns="columnsByTB"-->
-    <!--:data="dataByTB"-->
-    <!--@on-row-dblclick="showData">-->
-    <!--</Table>-->
     <div id="myChartByzttj" :style="{width: '100%', height: '300px',float: 'left'}"></div>
   </div>
 </template>
@@ -24,52 +14,20 @@
   //引入图例组件
   require("echarts/lib/component/legend");
 
+  // 引入公共的bus，来做为中间传达的工具
+  import Bus from '../bus/bus'
+
 
   export default {
     name: 'zttj',
-    // data(){
-    //   return{
-    //     columnsByTB: [
-    //       {
-    //         type: 'index',
-    //         width: 60,
-    //         align: 'center'
-    //       },
-    //       {
-    //         title: 'Name',
-    //         key: 'name'
-    //       },
-    //       {
-    //         title: 'Age',
-    //         key: 'age'
-    //       },
-    //       {
-    //         title: 'Address',
-    //         key: 'address'
-    //       }
-    //     ],
-    //     dataByTB: this.get100Datas(4),
-    //   }
-    // },
-    // methods:{
-    //   get100Datas(pageSize){
-    //     let data = [];
-    //     for (let i = 1; i <= pageSize ; i++) {
-    //       let a = {
-    //         name: 'John Brown 填报' + Math.floor(Math.random () * 100 + 1),
-    //         age: 18,
-    //         address: 'New York No. 1 Lake Park',
-    //         date: '2016-10-03'
-    //       };
-    //       data.push(a);
-    //     }
-    //     return data;
-    //   },
-    //   showData(data,index){
-    //     console.log(data);
-    //     console.log(index);
-    //   }
-    // }
+    data(){
+      return{
+
+      }
+    },
+    methods:{
+
+    },
     mounted() {
       this.drawLine();
     },
@@ -89,16 +47,16 @@
             axisLabel: {
               interval: 0,
               formatter: function (value) {
-                var ret = "";//拼接加\n返回的类目项
-                var maxLength = 4;//每项显示文字个数
-                var valLength = value.length;//X轴类目项的文字个数
-                var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+                let ret = "";//拼接加\n返回的类目项
+                let maxLength = 4;//每项显示文字个数
+                let valLength = value.length;//X轴类目项的文字个数
+                let rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
                 if (rowN > 1)//如果类目项的文字大于3,
                 {
-                  for (var i = 0; i < rowN; i++) {
-                    var temp = "";//每次截取的字符串
-                    var start = i * maxLength;//开始截取的位置
-                    var end = start + maxLength;//结束截取的位置
+                  for (let i = 0; i < rowN; i++) {
+                    let temp = "";//每次截取的字符串
+                    let start = i * maxLength;//开始截取的位置
+                    let end = start + maxLength;//结束截取的位置
                     //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
                     temp = value.substring(start, end) + "\n";
                     ret += temp; //凭借最终的字符串
@@ -132,8 +90,31 @@
             }
           }]
         });
+        //双击柱状图事件
         myChart.on('dblclick', function (params) {
-          console.log(params);
+          if (params.name != '总数'){
+            if (params.name == '省级审核中'){
+              params.name = 'ProAudit';
+            }else if (params.name == '省级审核未通过'){
+              params.name = 'ProModif';
+            }else if (params.name == '网级审核中'){
+              params.name = 'PowerAudit';
+            }else if (params.name == '网级审核未通过'){
+              params.name = 'PowerModif';
+            }else if (params.name == '审核通过'){
+              params.name = 'Pass';
+            }else if (params.name == '作废申请-省级审核中'){
+              params.name = 'ProCancel';
+            }else if (params.name == '作废申请-网级审核中'){
+              params.name = 'PowerCancel';
+            }else if (params.name == '已作废'){
+              params.name = 'Cancel';
+            }else if (params.name == '新建'){
+              params.name = 'New';
+            }
+            //公共bus.js，用于非父子组件进行传值
+            Bus.$emit('zttjValue', params.name)
+          }
         })
       }
     }

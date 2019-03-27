@@ -1,15 +1,5 @@
 <template>
   <div id="shjd">
-    <!--<Table-->
-      <!--size="small"-->
-      <!--border-->
-      <!--:height="200"-->
-      <!--highlight-row-->
-      <!--ref="currentRowTableByTB"-->
-      <!--:columns="columnsByTB"-->
-      <!--:data="dataByTB"-->
-      <!--@on-row-dblclick="showData" >-->
-    <!--</Table>-->
     <div id="myChartByshjd" :style="{width: '100%', height: '300px' ,float: 'right'}"></div>
   </div>
 </template>
@@ -25,52 +15,18 @@
   //引入图例组件
   require("echarts/lib/component/legend");
 
+  // 引入公共的bus，来做为中间传达的工具
+  import Bus from '../bus/bus'
 
   export default {
     name: 'shjd',
-    // data(){
-    //   return{
-    //     columnsByTB: [
-    //       {
-    //         type: 'index',
-    //         width: 60,
-    //         align: 'center'
-    //       },
-    //       {
-    //         title: 'Name',
-    //         key: 'name'
-    //       },
-    //       {
-    //         title: 'Age',
-    //         key: 'age'
-    //       },
-    //       {
-    //         title: 'Address',
-    //         key: 'address'
-    //       }
-    //     ],
-    //     dataByTB: this.get100Datas(4),
-    //   }
-    // },
-    // methods:{
-    //   get100Datas(pageSize){
-    //     let data = [];
-    //     for (let i = 1; i <= pageSize ; i++) {
-    //       let a = {
-    //         name: 'John Brown 填报' + Math.floor(Math.random () * 100 + 1),
-    //         age: 18,
-    //         address: 'New York No. 1 Lake Park',
-    //         date: '2016-10-03'
-    //       };
-    //       data.push(a);
-    //     }
-    //     return data;
-    //   },
-    //   showData(data,index){
-    //     console.log(data);
-    //     console.log(index);
-    //   }
-    // }
+    data(){
+      return{
+
+      }
+    },
+    methods:{
+    },
     mounted() {
       this.drawLine();
     },
@@ -111,7 +67,23 @@
           }]
         });
         myChart.on('dblclick',function (params) {
-          console.log(params);
+
+          if (params.name != '总数'){
+            if (params.name == '正常'){
+              params.name = '1';
+            }else if (params.name == '即将到期'){
+              params.name = '2';
+            }else if (params.name == '已逾期'){
+              params.name = '3';
+            }else if (params.name == '新建'){
+              params.name = '0';
+            }else if (params.name == '完成'){
+              params.name = '4';
+            }
+
+            //公共bus.js，用于非父子组件进行传值
+            Bus.$emit('shjdValue', params.name)
+          }
         })
       }
     }
