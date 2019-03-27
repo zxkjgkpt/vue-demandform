@@ -24,11 +24,18 @@
         <!--把tableType传给table模块，获取相应的需求单填报或总览或审核数据-->
         <Table_tb v-if="tableType == 'xqtb'" v-bind:tableType="tableType"></Table_tb>
         <Table_zl v-if="tableType == 'xqzl'" v-bind:tableType="tableType"></Table_zl>
-        <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType"> </table_sh>
+        <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType"></table_sh>
       </Content>
       <Footer class="layout-footer-center" style="padding: 10px 20px;">
-        <zttj v-if="tableType == 'xqtb'"></zttj>
-        <shjd v-if="tableType == 'xqtb'"></shjd>
+        <zttj-bytb v-if="tableType == 'xqtb'"></zttj-bytb>
+        <shjd-bytb v-if="tableType == 'xqtb'"></shjd-bytb>
+
+        <zttj-byzl v-if="tableType == 'xqzl'"></zttj-byzl>
+        <shjd-byzl v-if="tableType == 'xqzl'"></shjd-byzl>
+
+        <zttj-bysh v-if="tableType == 'xqsh'"></zttj-bysh>
+        <shjd-bysh v-if="tableType == 'xqsh'"></shjd-bysh>
+
       </Footer>
     </Layout>
   </div>
@@ -38,13 +45,21 @@
   import Table_tb from "./table/table_tb";
   import Table_zl from "./table/table_zl";
   import Table_sh from "./table/table_sh";
-  import Zttj from "./table/Statistics/zttj";
-  import Shjd from "./table/Statistics/shjd";
+  import ZttjBytb from "./table/StatisticsByzttj/zttjBytb";
+  import ShjdBytb from "./table/StatisticsByshjd/shjdBytb";
+  import ZttjByzl from "./table/StatisticsByzttj/zttjByzl";
+  import ShjdByzl from "./table/StatisticsByshjd/shjdByzl";
+  import ZttjBysh from "./table/StatisticsByzttj/zttjBysh";
+  import ShjdBysh from "./table/StatisticsByshjd/shjdBysh";
+
+
+
+
 
 
   export default {
     name: 'xqd_index',
-    components: {Shjd, Zttj, Table_sh, Table_zl, Table_tb},
+    components: {ShjdBysh, ZttjBysh, ShjdByzl, ZttjByzl, ShjdBytb, ZttjBytb, Table_sh, Table_zl, Table_tb},
     data(){
       return {
         tableType:'xqtb',

@@ -77,7 +77,7 @@
     </div>
     <Modal
       v-model="modalNew"
-      title="新增需求单"
+      title="新增信息化需求单"
       :mask-closable="false"
       @on-ok="okByNew"
       @on-cancel="cancelByNew" width="80%">
@@ -85,7 +85,7 @@
     </Modal>
     <Modal
       v-model="modalEdit"
-      title="编辑需求单"
+      title="编辑信息化需求单"
       :mask-closable="false"
       @on-ok="okByEdit"
       @on-cancel="cancelByEdit">
@@ -93,7 +93,7 @@
     </Modal>
     <Modal
       v-model="modalView"
-      title="查看需求单"
+      title="查看信息化需求单"
       :mask-closable="false"
       cancel-text=""
       ok-text="关闭"
@@ -470,18 +470,8 @@
       },
       //重置
       reset(){
-        this.selectValue = '';
-        for (let showSelectInputKey in this.showSelectInput) {
-          this.showSelectInput[showSelectInputKey] = false;
-        }
-
-        for (let queryParamKey in this.queryParam) {
-          if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz'){
-            continue;
-          }else {
-            this.queryParam[queryParamKey] = null;
-          }
-        }
+        let thisVue = this;
+        thisVue = Bus.reset(thisVue);
       },
       //搜索
       handleSearch(){
@@ -511,27 +501,7 @@
       },
       //获取下拉框选中的值
       getItemValue(val){
-        if (val == 0){
-          this.showSelectInput.xqzs = true;
-        }
-        if (val == 1){
-          this.showSelectInput.sqrxm = true;
-        }
-        if (val == 2){
-          this.showSelectInput.gdzt = true;
-        }
-        if (val == 3){
-          this.showSelectInput.fjbz = true;
-        }
-        if (val == 4){
-          this.showSelectInput.shjd = true;
-        }
-        if (val == 5){
-          this.showSelectInput.wshr = true;
-        }
-        if (val == 6){
-          this.showSelectInput.zylbArray = true;
-        }
+        this.showSelectInput = Bus.getItemValue(val,this.showSelectInput);
       },
       //刷新
       refreshData(){
@@ -554,6 +524,7 @@
     },
     created() {
       //请求后台获取需求单填报数据
+      console.log(this.tableType);
       console.log(this.pageNum);
       console.log(this.pageSize);
       console.log(this.queryParam);
@@ -568,6 +539,9 @@
         data.push(a);
       }
       this.dataByTB = data;
+
+
+      //注意，这里代码可以写在bus.js上，作为公共类
       /*this.$axios({
         url: '',//请求的地址
         method: 'post',//请求的方式
@@ -582,7 +556,7 @@
     mounted: function () {
       let vm = this;
       // 用$on事件来接收参数
-      Bus.$on('zttjValue', (data) => {
+      Bus.$on('zttjValueByTB', (data) => {
         console.log(data);
         vm.loading = true;
 
@@ -591,7 +565,7 @@
         },2000) //   function 里面的this指向的是windows
       });
 
-      Bus.$on('shjdValue', (data) => {
+      Bus.$on('shjdValueByTB', (data) => {
         console.log(data);
         vm.loading = true;
 
