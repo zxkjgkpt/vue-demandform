@@ -276,10 +276,69 @@
     </div>
     </div>
 
+    <!--------------------------应用域------------------------------->
+    <div v-for="(yyyList, index) in yyyList">
+      <div  class="accHead" >
+        <div style="float:right;" @click="deleteYyy(index)"><img   src="../../../assets/remove.png"  /></div>
+        <div @click="changeYyyImg(index)">
+          <img v-bind:id=" 'openYyy'+ index "   style="display: block"   src="../../../assets/openYyy.png" width="161px" height="30px"/>
+          <img v-bind:id=" 'closeYyy'+ index " style="display: none"  src="../../../assets/closeYyy.png" width="161px" height="30px"/>
+        </div>
+      </div>
+      <div v-bind:id=" 'yyyMessage'+ index "  style="display: none">
+    <table border="1" style="width:100%;background:#F3F3F3" cellspacing="0px" >
+      <tr>
+        <td width="80px">应用域</td>
+        <td><Input v-model="yyyList.yyy"  placeholder="Enter something..." clearable  style="width: 100%" /></td>
+      </tr>
+      <tr>
+        <td>应用</td>
+        <td><Input v-model="yyyList.yy"  placeholder="Enter something..." clearable  style="width: 100%" /></td>
+      </tr>
+      <tr>
+        <td>应用模块</td>
+        <td>
+          <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
+            <tr>
+              <td width="80px">名称</td>
+              <td><Input v-model="yyyList.yymkmc"  placeholder="Enter something..." clearable  style="width: 100%" /></td>
+            </tr>
+            <tr>
+              <td>描述</td>
+              <td><i-input v-model="yyyList.yymkms" type="textarea" :rows="3" placeholder="请输入..."></i-input></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>应用功能</td>
+        <td>
+          <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
+            <tr>
+              <td width="80px">名称</td>
+              <td><Input v-model="yyyList.yygnmc"  placeholder="Enter something..." clearable  style="width: 100%" /></td>
+            </tr>
+            <tr>
+              <td>描述</td>
+              <td><i-input v-model="yyyList.yygdms" type="textarea" :rows="3" placeholder="请输入..."></i-input></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>非功能需求</td>
+        <td>
+          <i-input v-model="yyyList.fgnxq" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+        </td>
+      </tr>
+    </table>
+      </div>
+    </div>
 
-    <!--<Upload  action="//jsonplaceholder.typicode.com/posts/">-->
-      <!--<Button  icon="ios-cloud-upload-outline">添加附件</Button>-->
-    <!--</Upload>-->
+
+    <Upload  action="//jsonplaceholder.typicode.com/posts/">
+      <Button  icon="ios-cloud-upload-outline">添加附件</Button>
+    </Upload>
   </div>
 </template>
 
@@ -343,10 +402,13 @@
         ywyList:[
 
         ],
+        yyyList:[
+
+        ],
       }
     },
     methods:{
-
+      //添加业务域
       AddYwyList(){
         this.ywyList.push({
           ssywy:'',ssywfl:'',ssywmc:'',ssywms:'',
@@ -361,6 +423,23 @@
           lcjdqwsc:false,lcjdsnsc:false,lcjddssc:false,lcjddsfsc:false,
           lcjdqwlz:false,lcjdsnlz:false,lcjddslz:false,lcjddsflz:false,
           lcjdqwzx:false,lcjdsnzx:false,lcjddszx:false,lcjddsfzx:false});
+      },
+      //删除业务域
+      deleteYwy(value){
+//        console.log(value);
+        this.ywyList.splice(value,1);
+      },
+      //添加应用域
+      AddYyyList(){
+        this.yyyList.push({
+          yyy:'',yy:'',yymkmc:'',yymkms:'',
+          yygnmc:'',yygdms:'',fgnxq:''
+        });
+      },
+      //删除应用域
+      deleteYyy(value){
+//        console.log(value);
+        this.yyyList.splice(value,1);
       },
       //验证联系方式是否为数字
       checkNumber(number) {
@@ -382,7 +461,7 @@
           this.newEmail=false;
         }
         },
-      //改变图片(显示和隐藏业务域)
+      //改变业务域图片(显示和隐藏业务域)
       changeImg(value){
         var o =document.getElementById('open'+value);
         var c =document.getElementById('close'+value);
@@ -397,10 +476,20 @@
           ywy.style.display="block";
         }
       },
-      //删除业务域
-      deleteYwy(value){
-//        console.log(value);
-        this.ywyList.splice(value,1);
+      //改变业务域图片(显示和隐藏业务域)
+      changeYyyImg(value){
+        var o =document.getElementById('openYyy'+value);
+        var c =document.getElementById('closeYyy'+value);
+        var ywy =document.getElementById('yyyMessage'+value);
+        if(c.style.display=='block'){
+          o.style.display="block";
+          c.style.display="none";
+          ywy.style.display="none";
+        }else{
+          o.style.display="none";
+          c.style.display="block";
+          ywy.style.display="block";
+        }
       },
       checkFrom(){
         var s=this.singleData;
