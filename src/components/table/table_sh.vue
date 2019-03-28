@@ -20,11 +20,11 @@
       </Select>
       <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..." style="width: 200px" suffix="ios-search" />
 
-      <Cascader v-if="showSelectInput.zylbArray" trigger="hover" size="small" :data="zylbData" v-model="queryParam.zylbArray" style="width: 200px; display: inline-block" placeholder="专业类别查询..." ></Cascader>
+      <Cascader v-if="showSelectInput.zylbArray" trigger="hover" size="small" :data="zylbList" v-model="queryParam.zylbArray" style="width: 200px; display: inline-block" placeholder="专业类别查询..." ></Cascader>
 
 
       <Select clearable size="small" v-model="selectValue" placeholder="新增条件" style="width:200px" @on-change="getItemValue">
-        <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Option v-for="item in selectList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
 
       <Button size="small" type="success" @click="handleSearch"><Icon type="ios-search" />查询</Button>
@@ -60,7 +60,7 @@
     </div>
     <Modal
       v-model="modalView"
-      title="查看信息化需求单"
+      title="审核信息化需求单"
       :mask-closable="false"
       cancel-text=""
       ok-text="关闭"
@@ -87,212 +87,16 @@
     data(){
       return{
         loading: false,
-        columnsBySH: [
-          {
-            type: 'index',
-            width: 60,
-            align: 'center'
-          },
-          {
-            title: '审核进度',
-            key: 'name',
-            tooltip:true//开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
-          },
-          {
-            title: '需求单状态',
-            key: 'age',
-            tooltip:true
-          },
-          {
-            title: '需求单号',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '申请单位/业务部门',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '申请人',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '申请人联系方式',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '创建时间',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '需求单名称',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '需求单综述',
-            key: 'address',
-            tooltip:true
-          },
-          {
-            title: '期望完成时间',
-            key: 'address',
-            tooltip:true
-          }
-
-        ],
+        columnsBySH: Bus.getTableColumnsByType(this.tableType),
         dataBySH: [],
         totalData:100,
         pageNum:1,
         pageSize:10,
-        cityList: [
-          {
-            value: '0',
-            label: '需求单综述'
-          },
-          {
-            value: '1',
-            label: '申请人'
-          },
-          {
-            value: '2',
-            label: '状态'
-          },
-          {
-            value: '3',
-            label: '有无附件'
-          },
-          {
-            value: '4',
-            label: '审核进度'
-          },
-          {
-            value: '5',
-            label: '审核人'
-          },
-          {
-            value: '6',
-            label: '专业类别'
-          }
-        ],
-        gdztList:[
-          {
-            value: '',
-            label: '全部'
-          },
-          {
-            value: 'New',
-            label: '新建'
-          },
-          {
-            value: 'Audit',
-            label: '地市级审核中'
-          },
-          {
-            value: 'ProAudit',
-            label: '省级审核中'
-          },
-          {
-            value: 'PowerAudit',
-            label: '网级审核中'
-          },
-          {
-            value: 'Pass',
-            label: '审核通过'
-          },
-          {
-            value: 'Modif',
-            label: '地市级审核未通过'
-          },
-          {
-            value: 'ProModif',
-            label: '省级审核未通过'
-          },
-          {
-            value: 'PowerModif',
-            label: '网级审核未通过'
-          },
-        ],
-        fjbzList:[
-          {
-            value: '',
-            label: '全部'
-          },
-          {
-            value: 'YES',
-            label: '有'
-          },
-          {
-            value: 'NO',
-            label: '无'
-          },
-        ],
-        shjdList:[
-          {
-            value: '',
-            label: '全部'
-          },
-          {
-            value: '0',
-            label: '新建'
-          },
-          {
-            value: '1',
-            label: '正常'
-          },
-          {
-            value: '2',
-            label: '即将到期'
-          },
-          {
-            value: '3',
-            label: '已逾期'
-          },
-          {
-            value: '4',
-            label: '完成'
-          },
-        ],
-        zylbData:[
-          {
-            value: '0',
-            label: '市场营销',
-            children:[
-              {
-                value: '计量资产',
-                label: '计量资产'
-              },
-              {
-                value: '计量自动化',
-                label: '计量自动化'
-              },
-              {
-                value: '抄核收',
-                label: '抄核收'
-              },
-              {
-                value: '综合',
-                label: '综合'
-              },
-              {
-                value: '客服',
-                label: '客服'
-              }
-              ,{
-                value: '市场交易',
-                label: '市场交易'
-              }
-              ,{
-                value: '业扩',
-                label: '业扩'
-              }
-            ]
-          }
-        ],
+        selectList: Bus.getSelectList(),
+        gdztList: Bus.getgdztList(),
+        fjbzList: Bus.getfjbzList(),
+        shjdList: Bus.getshjdList(),
+        zylbList: Bus.getzylbList(),
         modalView: false,
         singleData:{},
         selectValue:'',
@@ -308,10 +112,8 @@
           wshr:null,
           //目前还拿不到创建人ID
           //cjrid:UserInfoS.getUserInfo().id,
-          cjrid:null,
           zylbArray:[],
           zylb:null,
-          cjrid:null,
           fjbz:null,
           cxbz:this.tableType,
           date:null,
@@ -361,7 +163,8 @@
       clearSingleData(){
         //清除选中的行
         this.$refs.currentRowTableBySH.clearCurrentRow();
-        this.singleData = {};
+        let thisVue = this;
+        Bus.clearSingleData(thisVue);
       },
       //重置
       reset(){
@@ -370,14 +173,10 @@
       },
       //搜索
       handleSearch(){
+        //显示加载动画
         this.loading = true;
 
-        //开始时间
-        this.queryParam.startTime = this.queryParam.date[0];
-        //结束时间
-        this.queryParam.endTime = this.queryParam.date[1];
-        //专业类别
-        this.queryParam.zylb = this.queryParam.zylbArray[1];
+        this.queryParam = Bus.handleSearch(this.queryParam);
 
         console.log(this.queryParam);
 

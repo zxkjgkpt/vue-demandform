@@ -3,6 +3,261 @@ import Vue from 'vue'
 export default new Vue()
 
 
+
+
+//获取专业类别的List
+Vue.prototype.getzylbList = function(){
+  let zylbList = [
+    {
+      value: '0',
+      label: '市场营销',
+      children: [
+        {
+          value: '计量资产',
+          label: '计量资产'
+        },
+        {
+          value: '计量自动化',
+          label: '计量自动化'
+        },
+        {
+          value: '抄核收',
+          label: '抄核收'
+        },
+        {
+          value: '综合',
+          label: '综合'
+        },
+        {
+          value: '客服',
+          label: '客服'
+        }
+        , {
+          value: '市场交易',
+          label: '市场交易'
+        }
+        , {
+          value: '业扩',
+          label: '业扩'
+        }
+      ]
+    }
+  ];
+  return zylbList;
+};
+//获取审核进度的List
+Vue.prototype.getshjdList = function(){
+  let shjdList = [
+    {
+      value: '',
+      label: '全部'
+    },
+    {
+      value: '0',
+      label: '新建'
+    },
+    {
+      value: '1',
+      label: '正常'
+    },
+    {
+      value: '2',
+      label: '即将到期'
+    },
+    {
+      value: '3',
+      label: '已逾期'
+    },
+    {
+      value: '4',
+      label: '完成'
+    }
+  ];
+  return shjdList;
+};
+//获取有无附件的List
+Vue.prototype.getfjbzList = function(){
+  let fjbzList = [
+    {
+      value: '',
+      label: '全部'
+    },
+    {
+      value: 'YES',
+      label: '有'
+    },
+    {
+      value: 'NO',
+      label: '无'
+    }
+  ];
+  return fjbzList;
+};
+//获取状态的List
+Vue.prototype.getgdztList = function(){
+  let gdztList = [
+    {
+      value: '',
+      label: '全部'
+    },
+    {
+      value: 'New',
+      label: '新建'
+    },
+    {
+      value: 'Audit',
+      label: '地市级审核中'
+    },
+    {
+      value: 'ProAudit',
+      label: '省级审核中'
+    },
+    {
+      value: 'PowerAudit',
+      label: '网级审核中'
+    },
+    {
+      value: 'Pass',
+      label: '审核通过'
+    },
+    {
+      value: 'Modif',
+      label: '地市级审核未通过'
+    },
+    {
+      value: 'ProModif',
+      label: '省级审核未通过'
+    },
+    {
+      value: 'PowerModif',
+      label: '网级审核未通过'
+    }
+  ];
+  return gdztList;
+};
+//新增条件的list
+Vue.prototype.getSelectList = function(){
+  let selectList = [
+    {
+      value: '0',
+      label: '需求单综述'
+    },
+    {
+      value: '1',
+      label: '申请人'
+    },
+    {
+      value: '2',
+      label: '状态'
+    },
+    {
+      value: '3',
+      label: '有无附件'
+    },
+    {
+      value: '4',
+      label: '审核进度'
+    },
+    {
+      value: '5',
+      label: '审核人'
+    },
+    {
+      value: '6',
+      label: '专业类别'
+    }
+  ];
+  return selectList;
+};
+//表格的columns
+Vue.prototype.getTableColumnsByType = function(type){
+  let columns = [
+    {
+      type: 'index',
+      width: 60,
+      align: 'center'
+    },
+    {
+      title: '审核进度',
+      key: 'name',
+      tooltip: true//开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+    },
+    {
+      title: '需求单状态',
+      key: 'age',
+      tooltip: true
+    },
+    {
+      title: '需求单号',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '申请单位/业务部门',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '申请人',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '申请人联系方式',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '创建时间',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '需求单名称',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '需求单综述',
+      key: 'address',
+      tooltip: true
+    },
+    {
+      title: '期望完成时间',
+      key: 'address',
+      tooltip: true
+    }
+  ]
+  if (type == 'xqtb' || type == 'xqzl') {
+    columns.push(
+      {
+        title: '审核人',
+        key: 'address',
+        tooltip: true
+      }
+    )
+  }
+  return columns;
+};
+//清除选中的数据
+Vue.prototype.clearSingleData = function(thisVue){
+  thisVue.singleData = {};
+  if (thisVue.confirm) {
+    thisVue.confirm = false;
+  }
+  return thisVue;
+};
+//搜索
+Vue.prototype.handleSearch = function(queryParam){
+  //开始时间
+  queryParam.startTime = queryParam.date[0];
+  //结束时间
+  queryParam.endTime = queryParam.date[1];
+  //专业类别
+  queryParam.zylb = queryParam.zylbArray[1];
+
+  return queryParam;
+};
 //重置
 Vue.prototype.reset = function(thisVue){
   thisVue.selectValue = '';
