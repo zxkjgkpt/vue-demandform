@@ -77,11 +77,20 @@
     </div>
     <Modal
       v-model="modalNew"
-      title="新增信息化需求单"
-      :mask-closable="false"
-      @on-ok="okByNew"
-      @on-cancel="cancelByNew" width="80%">
+      width="80%">
+      <!--页头-->
+      <p slot="header" style="color:#f60;text-align:center">
+        <span>新增需求单</span>
+      </p>
       <add_model ref="add_model"></add_model>
+      <!--页脚-->
+      <div slot="footer">
+        <i-button type="primary" shape="circle"   @click="">添加业务域</i-button>
+        <i-button type="primary" shape="circle"   @click="">添加应用域</i-button>
+        <i-button type="success"   @click="">保存</i-button>
+        <i-button type="warning"   @click="okByNew">提交</i-button>
+        <i-button @click="cancelByNew">关闭</i-button>
+      </div>
     </Modal>
     <Modal
       v-model="modalEdit"
@@ -389,9 +398,14 @@
       },
       //新增模态框确定
       okByNew () {
-        this.$refs.add_model.showSingleData();
-        this.$Message.success('新建成功');
-        this.clearSingleData();
+
+        var check=this.$refs.add_model.checkFrom();
+        if(check){
+          this.$refs.add_model.showSingleData();
+          this.$Message.success('新建成功');
+          this.clearSingleData();
+          this.modalNew=false;
+        }
         //this.$Message.error('新建失败');
       },
       //新增模态框取消
@@ -399,6 +413,7 @@
         this.$Message.warning('取消');
         this.$refs.add_model.deleteSingleData();
         this.clearSingleData();
+        this.modalNew=false;
       },
       //编辑模态框确定
       okByEdit () {
