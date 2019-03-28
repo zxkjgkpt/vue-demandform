@@ -198,7 +198,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
             break;
           case 0:
             temp = '新建';
-            color = 'gray';
+            color = '#3a677a';
             break;
           case 4:
             temp = '完成';
@@ -214,7 +214,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
                 backgroundColor:color,
                 borderRadius:'100%',
                 width: '15px',
-                height:'15px',
+                height:'15px'
               }
             },''
           ),
@@ -239,7 +239,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
         switch (temp) {
           case 'New':
             temp = '新建';
-            color = 'gray';
+            color = '#3a677a';
             break;
           case 'ProAudit':
             temp = '省级审核中';
