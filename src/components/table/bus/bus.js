@@ -1,12 +1,11 @@
 //公共bus.js，用于非父子组件进行传值
 import Vue from 'vue'
+
 export default new Vue()
 
 
-
-
 //获取专业类别的List
-Vue.prototype.getzylbList = function(){
+Vue.prototype.getzylbList = function () {
   let zylbList = [
     {
       value: '0',
@@ -46,7 +45,7 @@ Vue.prototype.getzylbList = function(){
   return zylbList;
 };
 //获取审核进度的List
-Vue.prototype.getshjdList = function(){
+Vue.prototype.getshjdList = function () {
   let shjdList = [
     {
       value: '',
@@ -76,7 +75,7 @@ Vue.prototype.getshjdList = function(){
   return shjdList;
 };
 //获取有无附件的List
-Vue.prototype.getfjbzList = function(){
+Vue.prototype.getfjbzList = function () {
   let fjbzList = [
     {
       value: '',
@@ -94,7 +93,7 @@ Vue.prototype.getfjbzList = function(){
   return fjbzList;
 };
 //获取状态的List
-Vue.prototype.getgdztList = function(){
+Vue.prototype.getgdztList = function () {
   let gdztList = [
     {
       value: '',
@@ -136,7 +135,7 @@ Vue.prototype.getgdztList = function(){
   return gdztList;
 };
 //新增条件的list
-Vue.prototype.getSelectList = function(){
+Vue.prototype.getSelectList = function () {
   let selectList = [
     {
       value: '0',
@@ -170,7 +169,7 @@ Vue.prototype.getSelectList = function(){
   return selectList;
 };
 //表格的columns
-Vue.prototype.getTableColumnsByType = function(type){
+Vue.prototype.getTableColumnsByType = function (type) {
   let columns = [
     {
       type: 'index',
@@ -180,12 +179,124 @@ Vue.prototype.getTableColumnsByType = function(type){
     {
       title: '审核进度',
       key: 'name',
-      tooltip: true//开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+      tooltip: true,   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+      render: (h, params) => {
+        let temp = params.row.name;
+        let color = '';
+        switch (temp) {
+          case 1:
+            temp = '正常';
+            color = '#01a8ec';
+            break;
+          case 2:
+            temp = '即将到期';
+            color = '#eea236';
+            break;
+          case 3:
+            temp = '已逾期';
+            color = 'red';
+            break;
+          case 0:
+            temp = '新建';
+            color = 'gray';
+            break;
+          case 4:
+            temp = '完成';
+            color = '#28ff23';
+            break;
+        }
+
+        return h("div",[
+          h(
+            "div",{
+              style:{
+                float:'left',
+                backgroundColor:color,
+                borderRadius:'100%',
+                width: '15px',
+                height:'15px',
+              }
+            },''
+          ),
+          h(
+            "span",{
+              style: {
+                marginLeft:'3px'
+              }
+            }
+          ),temp
+        ])
+      }
     },
     {
       title: '需求单状态',
       key: 'age',
-      tooltip: true
+      tooltip: true,
+      width:168,
+      render: (h, params) => {
+        let temp = params.row.age;
+        let color = '';
+        switch (temp) {
+          case 'New':
+            temp = '新建';
+            color = 'gray';
+            break;
+          case 'ProAudit':
+            temp = '省级审核中';
+            color = '#01a8ec';
+            break;
+          case 'ProModif':
+            temp = '省级审核未通过';
+            color = 'red';
+            break;
+          case 'PowerAudit':
+            temp = '网级审核中';
+            color = '#01a8ec';
+            break;
+          case 'PowerModif':
+            temp = '网级审核未通过';
+            color = 'red';
+            break;
+          case 'Pass':
+            temp = '审核通过';
+            color = '#28ff23';
+            break;
+          case 'ProCancel':
+            temp = '作废申请-省级审核中';
+            color = '#01a8ec';
+            break;
+          case 'PowerCancel':
+            temp = '作废申请-网级审核中';
+            color = '#01a8ec';
+            break;
+          case 'Cancel':
+            temp = '已作废';
+            color = 'red';
+            break;
+
+        }
+
+        return h("div",[
+          h(
+            "div",{
+              style:{
+                float:'left',
+                backgroundColor:color,
+                borderRadius:'100%',
+                width: '15px',
+                height:'15px'
+              }
+            },''
+          ),
+          h(
+            "span",{
+              style: {
+                marginLeft:'3px'
+              }
+            }
+          ),temp
+        ])
+      }
     },
     {
       title: '需求单号',
@@ -240,7 +351,7 @@ Vue.prototype.getTableColumnsByType = function(type){
   return columns;
 };
 //清除选中的数据
-Vue.prototype.clearSingleData = function(thisVue){
+Vue.prototype.clearSingleData = function (thisVue) {
   thisVue.singleData = {};
   if (thisVue.confirm) {
     thisVue.confirm = false;
@@ -248,7 +359,7 @@ Vue.prototype.clearSingleData = function(thisVue){
   return thisVue;
 };
 //搜索
-Vue.prototype.handleSearch = function(queryParam){
+Vue.prototype.handleSearch = function (queryParam) {
   //开始时间
   queryParam.startTime = queryParam.date[0];
   //结束时间
@@ -259,16 +370,16 @@ Vue.prototype.handleSearch = function(queryParam){
   return queryParam;
 };
 //重置
-Vue.prototype.reset = function(thisVue){
+Vue.prototype.reset = function (thisVue) {
   thisVue.selectValue = '';
   for (let showSelectInputKey in thisVue.showSelectInput) {
     thisVue.showSelectInput[showSelectInputKey] = false;
   }
 
   for (let queryParamKey in thisVue.queryParam) {
-    if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz'){
+    if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz') {
       continue;
-    }else if (queryParamKey == 'zylbArray') {
+    } else if (queryParamKey == 'zylbArray') {
       thisVue.queryParam[queryParamKey] = [];
     } else {
       thisVue.queryParam[queryParamKey] = null;
@@ -278,38 +389,38 @@ Vue.prototype.reset = function(thisVue){
   return thisVue;
 };
 //获取下拉框选中的值
-Vue.prototype.getItemValue = function(val,showSelectInput){
-  if (val == 0){
+Vue.prototype.getItemValue = function (val, showSelectInput) {
+  if (val == 0) {
     showSelectInput.xqzs = true;
   }
-  if (val == 1){
+  if (val == 1) {
     showSelectInput.sqrxm = true;
   }
-  if (val == 2){
+  if (val == 2) {
     showSelectInput.gdzt = true;
   }
-  if (val == 3){
+  if (val == 3) {
     showSelectInput.fjbz = true;
   }
-  if (val == 4){
+  if (val == 4) {
     showSelectInput.shjd = true;
   }
-  if (val == 5){
+  if (val == 5) {
     showSelectInput.wshr = true;
   }
-  if (val == 6){
+  if (val == 6) {
     showSelectInput.zylbArray = true;
   }
 
   return showSelectInput;
 };
 //创建柱状图
-Vue.prototype.createEcharts = function(type,myChart,title,data){
+Vue.prototype.createEcharts = function (type, myChart, title, data) {
   let xAxisData = [];
-  if (type == 'zttj'){
+  if (type == 'zttj') {
     xAxisData = ["新建", "省级审核中", "省级审核未通过", "网级审核中", "网级审核未通过", "审核通过", "作废申请-省级审核中", "作废申请-网级审核中", "已作废", "总数"];
-  } else if (type == 'shjd'){
-    xAxisData = ["新建", "正常", "即将到期", "已逾期", "完成","总数"];
+  } else if (type == 'shjd') {
+    xAxisData = ["新建", "正常", "即将到期", "已逾期", "完成", "总数"];
   }
   myChart.setOption({
     legend: {
@@ -345,9 +456,9 @@ Vue.prototype.createEcharts = function(type,myChart,title,data){
     },
     yAxis: {},
     series: [{
-      name:'数量\n百分比',
+      name: '数量\n百分比',
       type: 'bar',
-      data:data,
+      data: data,
       itemStyle: {
         normal: {
           label: {
@@ -358,7 +469,7 @@ Vue.prototype.createEcharts = function(type,myChart,title,data){
               fontSize: 16
             },
             formatter: function (value) {
-              return value.value + '\n' + (value.value / data[data.length-1] * 100).toFixed(2) + '%'
+              return value.value + '\n' + (value.value / data[data.length - 1] * 100).toFixed(2) + '%'
             }
           }
         }
@@ -370,23 +481,23 @@ Vue.prototype.createEcharts = function(type,myChart,title,data){
 };
 //获取状态统计柱状图的转换值
 Vue.prototype.transformByzttj = function (params) {
-  if (params == '省级审核中'){
+  if (params == '省级审核中') {
     params = 'ProAudit';
-  }else if (params == '省级审核未通过'){
+  } else if (params == '省级审核未通过') {
     params = 'ProModif';
-  }else if (params == '网级审核中'){
+  } else if (params == '网级审核中') {
     params = 'PowerAudit';
-  }else if (params == '网级审核未通过'){
+  } else if (params == '网级审核未通过') {
     params = 'PowerModif';
-  }else if (params == '审核通过'){
+  } else if (params == '审核通过') {
     params = 'Pass';
-  }else if (params == '作废申请-省级审核中'){
+  } else if (params == '作废申请-省级审核中') {
     params = 'ProCancel';
-  }else if (params == '作废申请-网级审核中'){
+  } else if (params == '作废申请-网级审核中') {
     params = 'PowerCancel';
-  }else if (params == '已作废'){
+  } else if (params == '已作废') {
     params = 'Cancel';
-  }else if (params == '新建'){
+  } else if (params == '新建') {
     params = 'New';
   }
   return params;

@@ -39,7 +39,7 @@
       border
       highlight-row
       :loading="loading"
-      :height="435"
+      :height="440"
       ref="currentRowTableByZL"
       :columns="columnsByZL"
       :data="dataByZL"
@@ -227,14 +227,25 @@
       console.log(this.queryParam);
       //手动获取数据
       let data = [];
-      for (let i = 1; i <= 10; i++) {
+      for (let i = 0; i <= 9; i++) {
         let a = {
-          name: 'John Brown 总览' + Math.floor(Math.random() * 100 + 1),
-          age: Math.floor(Math.random() * 100 + 1),
-          address: 'New York No. 1 Lake Park' + Math.floor(Math.random() * 100 + 1),
+          //name: 'John Brown 填报' + Math.floor(Math.random() * 100 + 1),
+          name: i,
+          age: '',
+          address: '总览，New York No. 1 Lake Park' + Math.floor(Math.random() * 100 + 1),
         };
         data.push(a);
       }
+      data[0].age = 'New';
+      data[1].age = 'ProAudit';
+      data[2].age = 'ProModif';
+      data[3].age = 'PowerAudit';
+      data[4].age = 'PowerModif';
+      data[5].age = 'Pass';
+      data[6].age = 'ProCancel';
+      data[7].age = 'PowerCancel';
+      data[8].age = 'Cancel';
+      data[9].age = 'Cancel';
       this.dataByZL = data;
       /*this.$axios({
         url: '',//请求的地址
