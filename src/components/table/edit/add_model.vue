@@ -87,13 +87,16 @@
 
 
    <!--------------------------业务域------------------------------->
-    <div  class="accHead" @click="changeImg()">
-      <div style="float:right;"><img   src="../../../assets/remove.png"  /></div>
-    <img id="open" style="display: block"   src="../../../assets/ywyOpen.png" width="161px" height="30px"/>
-    <img id="close" style="display: none"  src="../../../assets/ywyClose.png" width="161px" height="30px"/>
-    </div>
+    <div v-for="(ywyList, index) in ywyList">
+    <div  class="accHead" >
+      <div style="float:right;" @click="deleteYwy(index)"><img   src="../../../assets/remove.png"  /></div>
+      <div @click="changeImg(index)">
+    <img v-bind:id=" 'open'+ index "   style="display: block"   src="../../../assets/ywyOpen.png" width="161px" height="30px"/>
+    <img v-bind:id=" 'close'+ index " style="display: none"  src="../../../assets/ywyClose.png" width="161px" height="30px"/>
+      </div>
+      </div>
 
-    <div id="ywyMessage" style="display: none">
+    <div v-bind:id=" 'ywyMessage'+ index "  style="display: none">
     <table border="1" style="width:100%;background:#F3F3F3" cellspacing="0px">
       <tr>
         <td width="80px">所属业务域</td>
@@ -271,14 +274,8 @@
       </tr>
     </table>
     </div>
-
-    <div v-for="(test, index) in testList">
-      <input type="text" v-model="test.name">
-      <input type="text" v-model="test.age">
-      <button @click="deleteTest(index)">删除</button>
-      <input type="text" v-model="index">
     </div>
-    <button @click="AddTest">添加</button>
+
 
     <!--<Upload  action="//jsonplaceholder.typicode.com/posts/">-->
       <!--<Button  icon="ios-cloud-upload-outline">添加附件</Button>-->
@@ -342,34 +339,28 @@
           qwwcsj:''
 
         },
-        testList:[
-          {name:'',age:''}
-        ],
+
         ywyList:[
-          {
-            ssywy:'',ssywfl:'',ssywmc:'',ssywms:'',
-            ssywqwsc:false,ssywsnsc:false,ssywdssc:false,
-            ssywdsfsc:false,ssywqwlz:false,ssywsnlz:false,
-            ssywdslz:false,ssywdsflz:false,ssywqwzx:false,
-            ssywsnzx:false,ssywdszx:false,ssywdsfzx:false,
-            ywlcmc:'',ywlcms:'',ywlcqwsc:false,ywlcsnsc:false,
-            ywlcdssc:false,ywlcdsfsc:false,ywlcqwlz:false,ywlcsnlz:false,
-            ywlcdslz:false,ywlcdsflz:false,ywlcqwzx:false,ywlcsnzx:false,
-            ywlcdszx:false,ywlcdsfzx:false,lcjdmc:'',lcjdms:'',
-            lcjdqwsc:false,lcjdsnsc:false,lcjddssc:false,lcjddsfsc:false,
-            lcjdqwlz:false,lcjdsnlz:false,lcjddslz:false,lcjddsflz:false,
-            lcjdqwzx:false,lcjdsnzx:false,lcjddszx:false,lcjddsfzx:false,
-          }
+
         ],
       }
     },
     methods:{
-      AddTest(){
-        this.testList.push({name:'',age:''});
-      },
-      deleteTest(value){
-        console.log(value);
-        this.testList.splice(value,1);
+
+      AddYwyList(){
+        this.ywyList.push({
+          ssywy:'',ssywfl:'',ssywmc:'',ssywms:'',
+          ssywqwsc:false,ssywsnsc:false,ssywdssc:false,
+          ssywdsfsc:false,ssywqwlz:false,ssywsnlz:false,
+          ssywdslz:false,ssywdsflz:false,ssywqwzx:false,
+          ssywsnzx:false,ssywdszx:false,ssywdsfzx:false,
+          ywlcmc:'',ywlcms:'',ywlcqwsc:false,ywlcsnsc:false,
+          ywlcdssc:false,ywlcdsfsc:false,ywlcqwlz:false,ywlcsnlz:false,
+          ywlcdslz:false,ywlcdsflz:false,ywlcqwzx:false,ywlcsnzx:false,
+          ywlcdszx:false,ywlcdsfzx:false,lcjdmc:'',lcjdms:'',
+          lcjdqwsc:false,lcjdsnsc:false,lcjddssc:false,lcjddsfsc:false,
+          lcjdqwlz:false,lcjdsnlz:false,lcjddslz:false,lcjddsflz:false,
+          lcjdqwzx:false,lcjdsnzx:false,lcjddszx:false,lcjddsfzx:false});
       },
       //验证联系方式是否为数字
       checkNumber(number) {
@@ -391,11 +382,11 @@
           this.newEmail=false;
         }
         },
-      //改变图片
-      changeImg(){
-        var o =document.getElementById('open')
-        var c =document.getElementById('close')
-        var ywy =document.getElementById('ywyMessage')
+      //改变图片(显示和隐藏业务域)
+      changeImg(value){
+        var o =document.getElementById('open'+value);
+        var c =document.getElementById('close'+value);
+        var ywy =document.getElementById('ywyMessage'+value);
         if(c.style.display=='block'){
           o.style.display="block";
           c.style.display="none";
@@ -405,6 +396,11 @@
           c.style.display="block";
           ywy.style.display="block";
         }
+      },
+      //删除业务域
+      deleteYwy(value){
+//        console.log(value);
+        this.ywyList.splice(value,1);
       },
       checkFrom(){
         var s=this.singleData;

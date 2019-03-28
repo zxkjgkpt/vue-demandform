@@ -124,7 +124,7 @@
       <add_model ref="add_model"></add_model>
       <!--页脚-->
       <div slot="footer">
-        <i-button type="primary" shape="circle" @click="">添加业务域</i-button>
+        <i-button type="primary" shape="circle" @click="addYwy">添加业务域</i-button>
         <i-button type="primary" shape="circle" @click="">添加应用域</i-button>
         <i-button type="success" @click="">保存</i-button>
         <i-button type="warning" @click="okByNew">提交</i-button>
@@ -255,6 +255,9 @@
         this.$refs.add_model.deleteSingleData();
         this.clearSingleData();
         this.modalNew = false;
+      },
+      addYwy(){
+        this.$refs.add_model.AddYwyList();
       },
       //编辑模态框确定
       okByEdit() {
