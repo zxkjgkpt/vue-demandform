@@ -178,7 +178,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
     },
     {
       title: '审核进度',
-      key: 'name',
+      key: 'shjd',
       tooltip: true,   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
       render: (h, params) => {
         let temp = params.row.name;
@@ -230,7 +230,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
     },
     {
       title: '需求单状态',
-      key: 'age',
+      key: 'gdzt',
       tooltip: true,
       width:168,
       render: (h, params) => {
@@ -300,42 +300,42 @@ Vue.prototype.getTableColumnsByType = function (type) {
     },
     {
       title: '需求单号',
-      key: 'address',
+      key: 'xqdh',
       tooltip: true
     },
     {
       title: '申请单位/业务部门',
-      key: 'address',
+      key: 'sqbmmc',
       tooltip: true
     },
     {
       title: '申请人',
-      key: 'address',
+      key: 'sqrxm',
       tooltip: true
     },
     {
       title: '申请人联系方式',
-      key: 'address',
+      key: 'sqrlxfs',
       tooltip: true
     },
     {
       title: '创建时间',
-      key: 'address',
+      key: 'cjsj',
       tooltip: true
     },
     {
       title: '需求单名称',
-      key: 'address',
+      key: 'xqmc',
       tooltip: true
     },
     {
       title: '需求单综述',
-      key: 'address',
+      key: 'xqzs',
       tooltip: true
     },
     {
       title: '期望完成时间',
-      key: 'address',
+      key: 'qwwcsj',
       tooltip: true
     }
   ]
@@ -343,7 +343,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
     columns.push(
       {
         title: '审核人',
-        key: 'address',
+        key: 'shr',
         tooltip: true
       }
     )
@@ -360,10 +360,14 @@ Vue.prototype.clearSingleData = function (thisVue) {
 };
 //搜索
 Vue.prototype.handleSearch = function (queryParam) {
-  //开始时间
-  queryParam.startTime = queryParam.date[0];
-  //结束时间
-  queryParam.endTime = queryParam.date[1];
+
+  if (queryParam.date){
+    //开始时间
+    queryParam.startTime = queryParam.date[0];
+    //结束时间
+    queryParam.endTime = queryParam.date[1];
+  }
+
   //专业类别
   queryParam.zylb = queryParam.zylbArray[1];
 

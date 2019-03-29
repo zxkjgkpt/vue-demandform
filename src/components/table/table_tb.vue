@@ -227,15 +227,14 @@
       changePage(value) {
         this.pageNum = value;
         //获取数据
-        //...
-        //参考地址：https://blog.csdn.net/u013144287/article/details/78879044
+        this.queryData();
       },
       //改变每页显示的条数
       changePageSize(value) {
+        this.pageNum = 1;
         this.pageSize = value;
-        //...
-        //参考地址：https://blog.csdn.net/u013144287/article/details/78879044
-
+        //获取数据
+        this.queryData();
       },
       //新增模态框确定
       okByNew() {
@@ -256,10 +255,12 @@
         this.clearSingleData();
         this.modalNew = false;
       },
-      addYwy(){
+      //添加业务域
+      addYwy() {
         this.$refs.add_model.AddYwyList();
       },
-      addYyy(){
+      //添加应用域
+      addYyy() {
         this.$refs.add_model.AddYyyList();
       },
       //编辑模态框确定
@@ -339,15 +340,15 @@
       //搜索
       handleSearch() {
         //显示加载动画
-        this.loading = true;
+        this.showLoading();
 
         this.queryParam = Bus.handleSearch(this.queryParam);
 
         console.log(this.queryParam);
 
-        let thisTable = this;   // 当前this指向的是一个组件
+        let thisVue = this;   // 当前this指向的是一个组件
         setTimeout(function () {
-          thisTable.loading = false;
+          thisVue.closeLoading(thisVue);
         }, 2000) //   function 里面的this指向的是windows
 
 
@@ -364,83 +365,74 @@
       },
       //刷新
       refreshData() {
-        this.loading = true;
-
-        let thisTable = this;   // 当前this指向的是一个组件
-        setTimeout(function () {
-          thisTable.loading = false;
-        }, 2000) //   function 里面的this指向的是windows
-
-
-        //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
-        //this.dataByTB = searchedData;
-
+        this.queryData();
+      },
+      //显示加载动画
+      showLoading(thisVue){
+        if (thisVue){
+          thisVue.loading = true;
+        } else {
+          this.loading = true;
+        }
+      },
+      //关闭加载动画
+      closeLoading(thisVue){
+        if (thisVue){
+          thisVue.loading = false;
+        } else {
+          this.loading = false;
+        }
       },
       //请求后台数据
-      queryData(number) {
+      queryData() {
+        //显示加载动画
+        this.showLoading();
 
+        this.$axios({
+          url: 'xqd/xqdxx/findList/' + this.pageNum + '/' + this.pageSize,//请求的地址
+          method: 'post',//请求的方式
+          data: this.queryParam //请求参数
+        }).then(res => {
+          if (res.data.code == '10001'){
+            this.dataByTB = res.data.data;
+            console.log(this.dataByTB);
+
+          }
+        }).catch(err => {
+          console.info('报错的信息', err);
+        });
+
+        //关闭加载动画
+        this.closeLoading();
       }
     },
     created() {
       //请求后台获取需求单填报数据
-      console.log(this.tableType);
       console.log(this.pageNum);
       console.log(this.pageSize);
       console.log(this.queryParam);
-      //手动获取数据
-      let data = [];
-      for (let i = 0; i <= 9; i++) {
-        let a = {
-          //name: 'John Brown 填报' + Math.floor(Math.random() * 100 + 1),
-          name: i,
-          age: '',
-          address: '填报，New York No. 1 Lake Park' + Math.floor(Math.random() * 100 + 1),
-        };
-        data.push(a);
-      }
-      data[0].age = 'New';
-      data[1].age = 'ProAudit';
-      data[2].age = 'ProModif';
-      data[3].age = 'PowerAudit';
-      data[4].age = 'PowerModif';
-      data[5].age = 'Pass';
-      data[6].age = 'ProCancel';
-      data[7].age = 'PowerCancel';
-      data[8].age = 'Cancel';
-      data[9].age = 'Cancel';
-      this.dataByTB = data;
 
-
-      //注意，这里代码可以写在bus.js上，作为公共类
-      /*this.$axios({
-        url: '',//请求的地址
-        method: 'post',//请求的方式
-        data: this.tableType//根据表格类型请求数据
-      }).then(res => {
-        console.info('后台返回的数据', res.data);
-      }).catch(err => {
-        console.info('报错的信息', err.response.message);
-      });*/
+      this.queryData();
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
-      let vm = this;
+      let thisVue = this;
       // 用$on事件来接收参数
       Bus.$on('zttjValueByTB', (data) => {
         console.log(data);
-        vm.loading = true;
+        thisVue.showLoading(thisVue);
 
         setTimeout(function () {
-          vm.loading = false;
+          thisVue.closeLoading(thisVue)
         }, 2000) //   function 里面的this指向的是windows
       });
 
       Bus.$on('shjdValueByTB', (data) => {
         console.log(data);
-        vm.loading = true;
+        thisVue.showLoading(thisVue);
 
         setTimeout(function () {
-          vm.loading = false;
+          thisVue.closeLoading(thisVue)
         }, 2000) //   function 里面的this指向的是windows
       })
 
