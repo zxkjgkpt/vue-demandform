@@ -259,24 +259,15 @@
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
-      let vm = this;
       // 用$on事件来接收参数
       Bus.$on('zttjValueByZL', (data) => {
         console.log(data);
-        vm.loading = true;
 
-        setTimeout(function () {
-          vm.loading = false;
-        }, 2000) //   function 里面的this指向的是windows
       });
 
       Bus.$on('shjdValueByZL', (data) => {
         console.log(data);
-        vm.loading = true;
 
-        setTimeout(function () {
-          vm.loading = false;
-        }, 2000) //   function 里面的this指向的是windows
       })
     }
   }

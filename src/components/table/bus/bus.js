@@ -181,7 +181,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
       key: 'shjd',
       tooltip: true,   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
       render: (h, params) => {
-        let temp = params.row.name;
+        let temp = params.row.shjd;
         let color = '';
         switch (temp) {
           case 1:
@@ -214,7 +214,8 @@ Vue.prototype.getTableColumnsByType = function (type) {
                 backgroundColor:color,
                 borderRadius:'100%',
                 width: '15px',
-                height:'15px'
+                height:'15px',
+                marginTop: '1px'
               }
             },''
           ),
@@ -234,7 +235,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
       tooltip: true,
       width:168,
       render: (h, params) => {
-        let temp = params.row.age;
+        let temp = params.row.gdzt;
         let color = '';
         switch (temp) {
           case 'New':
@@ -284,7 +285,8 @@ Vue.prototype.getTableColumnsByType = function (type) {
                 backgroundColor:color,
                 borderRadius:'100%',
                 width: '15px',
-                height:'15px'
+                height:'15px',
+                marginTop: '1px'
               }
             },''
           ),

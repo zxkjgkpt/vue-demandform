@@ -395,6 +395,13 @@
         }).then(res => {
           if (res.data.code == '10001'){
             this.dataByTB = res.data.data;
+
+            //手动增加审核进度数据
+            this.dataByTB[0].shjd = 0;
+            this.dataByTB[1].shjd = 1;
+            this.dataByTB[2].shjd = 2;
+            this.dataByTB[3].shjd = 3;
+            this.dataByTB[4].shjd = 4;
             console.log(this.dataByTB);
 
           }
@@ -416,26 +423,15 @@
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
-      let thisVue = this;
       // 用$on事件来接收参数
       Bus.$on('zttjValueByTB', (data) => {
         console.log(data);
-        thisVue.showLoading(thisVue);
 
-        setTimeout(function () {
-          thisVue.closeLoading(thisVue)
-        }, 2000) //   function 里面的this指向的是windows
       });
 
       Bus.$on('shjdValueByTB', (data) => {
         console.log(data);
-        thisVue.showLoading(thisVue);
-
-        setTimeout(function () {
-          thisVue.closeLoading(thisVue)
-        }, 2000) //   function 里面的this指向的是windows
       })
-
 
     }
   }
