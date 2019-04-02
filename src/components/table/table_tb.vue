@@ -460,6 +460,12 @@
               v.zylbArray[1] = '业扩';
               v.zylb = '业扩';
             });
+            //到时候在后台拼接
+            this.dataByTB.forEach(function (v) {
+              v.xqdfl = [];
+              v.xqdfl[0] = '新业务需求';
+            });
+
 
 
             console.log(this.dataByTB);
