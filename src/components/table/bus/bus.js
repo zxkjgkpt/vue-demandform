@@ -206,26 +206,26 @@ Vue.prototype.getTableColumnsByType = function (type) {
             break;
         }
 
-        return h("div",[
+        return h("div", [
           h(
-            "div",{
-              style:{
-                float:'left',
-                backgroundColor:color,
-                borderRadius:'100%',
+            "div", {
+              style: {
+                float: 'left',
+                backgroundColor: color,
+                borderRadius: '100%',
                 width: '15px',
-                height:'15px',
+                height: '15px',
                 marginTop: '1px'
               }
-            },''
+            }, ''
           ),
           h(
-            "span",{
+            "span", {
               style: {
-                marginLeft:'3px'
+                marginLeft: '3px'
               }
             }
-          ),temp
+          ), temp
         ])
       }
     },
@@ -233,7 +233,7 @@ Vue.prototype.getTableColumnsByType = function (type) {
       title: '需求单状态',
       key: 'gdzt',
       tooltip: true,
-      width:168,
+      width: 168,
       render: (h, params) => {
         let temp = params.row.gdzt;
         let color = '';
@@ -277,26 +277,26 @@ Vue.prototype.getTableColumnsByType = function (type) {
 
         }
 
-        return h("div",[
+        return h("div", [
           h(
-            "div",{
-              style:{
-                float:'left',
-                backgroundColor:color,
-                borderRadius:'100%',
+            "div", {
+              style: {
+                float: 'left',
+                backgroundColor: color,
+                borderRadius: '100%',
                 width: '15px',
-                height:'15px',
+                height: '15px',
                 marginTop: '1px'
               }
-            },''
+            }, ''
           ),
           h(
-            "span",{
+            "span", {
               style: {
-                marginLeft:'3px'
+                marginLeft: '3px'
               }
             }
-          ),temp
+          ), temp
         ])
       }
     },
@@ -354,16 +354,20 @@ Vue.prototype.getTableColumnsByType = function (type) {
 };
 //清除选中的数据
 Vue.prototype.clearSingleData = function (thisVue) {
+
+
   thisVue.singleData = {};
+
   if (thisVue.confirm) {
     thisVue.confirm = false;
   }
+
   return thisVue;
 };
 //搜索
 Vue.prototype.handleSearch = function (queryParam) {
 
-  if (queryParam.date){
+  if (queryParam.date) {
     //开始时间
     queryParam.startTime = queryParam.date[0];
     //结束时间
@@ -522,4 +526,16 @@ Vue.prototype.transformByshjd = function (params) {
     params = '4';
   }
   return params;
+};
+Vue.prototype.checkNumber = function (number, thisVue) {
+  var numReg = /^[0-9]+$/
+  var numRe = new RegExp(numReg)
+  if (!numRe.test(number)) {
+    //thisVue.newPhone=true;
+    return true;
+  } else {
+    //thisVue.newPhone=false;
+    return false;
+  }
+  return thisVue;
 };

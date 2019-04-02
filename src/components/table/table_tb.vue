@@ -116,7 +116,9 @@
     </div>
     <Modal
       v-model="modalNew"
-      width="80%">
+      width="80%"
+      :mask-closable="false"
+      @on-cancel="cancelByNew">
       <!--页头-->
       <p slot="header" style="color:#f60;text-align:center">
         <span>新增信息化需求单</span>
@@ -132,12 +134,23 @@
       </div>
     </Modal>
     <Modal
-      v-model="modalEdit"
-      title="编辑信息化需求单"
+      v-model="modalEdit" width="80%"
       :mask-closable="false"
-      @on-ok="okByEdit"
-      @on-cancel="cancelByEdit">
+      @on-cancel="cancelByEdit"
+      >
+      <!--页头-->
+      <p slot="header" style="color:#f60;text-align:center">
+        <span>编辑信息化需求单</span>
+      </p>
       <edit_model ref="edit_model" v-bind:singleData="singleData"></edit_model>
+      <!--页脚-->
+      <div slot="footer">
+        <i-button type="primary" shape="circle" @click="addYwy">添加业务域</i-button>
+        <i-button type="primary" shape="circle" @click="addYyy">添加应用域</i-button>
+        <i-button type="success" @click="">保存</i-button>
+        <i-button type="warning" @click="okByEdit">提交</i-button>
+        <i-button @click="cancelByEdit">关闭</i-button>
+      </div>
     </Modal>
     <Modal
       v-model="modalView"
@@ -146,8 +159,9 @@
       cancel-text=""
       ok-text="关闭"
       @on-ok="exitModal"
+      @on-cancel="exitModal"
     >
-      <edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
+      <!--<edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>-->
     </Modal>
   </div>
 </template>
@@ -268,10 +282,14 @@
         this.$Message.success('编辑成功');
         //this.$Message.error('编辑失败');
         this.$refs.edit_model.showSingleData();
+        this.clearSingleData();
+        this.modalEdit = false;
       },
       //编辑模态框取消
       cancelByEdit() {
         this.$Message.warning('取消');
+        this.modalEdit = false;
+
         this.clearSingleData();
       },
       //查看模态框退出
@@ -282,6 +300,7 @@
       //表格中选中当前某一行数据
       handleRowChange(currentRow) {
         this.singleData = currentRow;
+
         this.confirm = true;
       },
       //新增或者编辑或者查看
@@ -326,11 +345,15 @@
       },
       //清除选中的数据
       clearSingleData() {
+
         //清除选中的行
         this.$refs.currentRowTableByTB.clearCurrentRow();
 
         let thisVue = this;
-        Bus.clearSingleData(thisVue);
+        thisVue = Bus.clearSingleData(thisVue);
+
+        console.log(thisVue);
+
       },
       //重置
       reset() {
@@ -368,16 +391,16 @@
         this.queryData();
       },
       //显示加载动画
-      showLoading(thisVue){
-        if (thisVue){
+      showLoading(thisVue) {
+        if (thisVue) {
           thisVue.loading = true;
         } else {
           this.loading = true;
         }
       },
       //关闭加载动画
-      closeLoading(thisVue){
-        if (thisVue){
+      closeLoading(thisVue) {
+        if (thisVue) {
           thisVue.loading = false;
         } else {
           this.loading = false;
@@ -393,7 +416,7 @@
           method: 'post',//请求的方式
           data: this.queryParam //请求参数
         }).then(res => {
-          if (res.data.code == '10001'){
+          if (res.data.code == '10001') {
             this.dataByTB = res.data.data;
 
             //手动增加审核进度数据
@@ -402,6 +425,17 @@
             this.dataByTB[2].shjd = 2;
             this.dataByTB[3].shjd = 3;
             this.dataByTB[4].shjd = 4;
+
+
+            //到时候在后台拼接
+            this.dataByTB.forEach(function (v) {
+              v.zylbArray = [];
+              v.zylbArray[0] = '市场营销';
+              v.zylbArray[1] = '业扩';
+              v.zylb = '业扩';
+            });
+
+
             console.log(this.dataByTB);
 
           }
