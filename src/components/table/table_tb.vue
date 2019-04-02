@@ -1,20 +1,30 @@
 <template>
   <div id="table_tb">
     <div class="search_tb">
-      <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询..." style="width: 200px"
-             suffix="ios-search"/>
-      <Input clearable size="small" v-model="queryParam.xqmc" placeholder="需求单名称查询..." style="width: 200px"
-             suffix="ios-search"/>
-      <Input clearable size="small" v-model="queryParam.sqbmmc" placeholder="申请单位查询..." style="width: 200px"
-             suffix="ios-search"/>
+      <Poptip trigger="focus"  content="需求单号查询...">
+        <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询..." style="width: 200px"
+               suffix="ios-search"/>
+      </Poptip>
+      <Poptip trigger="focus"  content="需求单名称查询...">
+        <Input clearable size="small" v-model="queryParam.xqmc" placeholder="需求单名称查询..." style="width: 200px"
+               suffix="ios-search"/>
+      </Poptip>
+      <Poptip trigger="focus"  content="申请单位查询...">
+        <Input clearable size="small" v-model="queryParam.sqbmmc" placeholder="申请单位查询..." style="width: 200px"
+               suffix="ios-search"/>
+      </Poptip>
 
       <DatePicker size="small" v-model="queryParam.date" format="yyyy/MM/dd" type="daterange" placement="bottom-end"
                   placeholder="开始时间——结束时间" style="width: 200px"></DatePicker>
 
-      <Input v-if="showSelectInput.xqzs" clearable size="small" v-model="queryParam.xqzs" placeholder="需求单综述查询..."
-             style="width: 200px" suffix="ios-search"/>
-      <Input v-if="showSelectInput.sqrxm" clearable size="small" v-model="queryParam.sqrxm" placeholder="申请人查询..."
-             style="width: 200px" suffix="ios-search"/>
+      <Poptip trigger="click"  content="需求单综述查询...">
+        <Input v-if="showSelectInput.xqzs" clearable size="small" v-model="queryParam.xqzs" placeholder="需求单综述查询..."
+               style="width: 200px" suffix="ios-search"/>
+      </Poptip>
+      <Poptip trigger="click"  content="申请人查询...">
+        <Input v-if="showSelectInput.sqrxm" clearable size="small" v-model="queryParam.sqrxm" placeholder="申请人查询..."
+               style="width: 200px" suffix="ios-search"/>
+      </Poptip>
       <Select v-if="showSelectInput.gdzt" clearable size="small" v-model="queryParam.gdzt" style="width:200px"
               placeholder="状态选择...">
         <Option v-for="gdzt in gdztList" :value="gdzt.value" :key="gdzt.value">{{ gdzt.label }}</Option>
@@ -27,8 +37,11 @@
               placeholder="审核进度选择...">
         <Option v-for="shjd in shjdList" :value="shjd.value" :key="shjd.value">{{ shjd.label }}</Option>
       </Select>
-      <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..."
-             style="width: 200px" suffix="ios-search"/>
+      <Poptip trigger="click"  content="申请人查询...">
+        <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..."
+               style="width: 200px" suffix="ios-search"/>
+      </Poptip>
+
 
       <Cascader v-if="showSelectInput.zylbArray" trigger="hover" size="small" :data="zylbList"
                 v-model="queryParam.zylbArray" style="width: 200px; display: inline-block"
