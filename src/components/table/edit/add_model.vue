@@ -227,6 +227,7 @@
       closeModal() {
         this.newPhone = false;
         this.newEmail = false;
+        this.$refs.ywy_yyy.clearYwyAndYyy();
         for (let singleDataKey in this.singleData) {
           if (singleDataKey == 'zylb' || singleDataKey == 'xqdfl') {
             this.singleData[singleDataKey] = [];

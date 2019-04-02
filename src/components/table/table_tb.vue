@@ -304,6 +304,7 @@
         if(check){
           this.$refs.edit_model.showSingleData()
           this.$Message.success('编辑成功');
+          this.$refs.edit_model.deleteSingleData();
           //this.$Message.error('编辑失败');;
           this.clearSingleData();
           this.modalEdit = false;
@@ -313,6 +314,7 @@
       //编辑模态框取消
       cancelByEdit() {
         this.$Message.warning('取消');
+        this.$refs.edit_model.deleteSingleData();
         this.modalEdit = false;
 
         this.clearSingleData();

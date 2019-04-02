@@ -204,6 +204,14 @@
         console.log(this.singleData);
         //执行后台更新逻辑
       },
+      deleteSingleData() {
+        //父组件点击cancel调用方法
+        this.closeModal();
+      },
+      //关闭模态框，把数据清空
+      closeModal() {
+        this.$refs.ywy_yyy.clearYwyAndYyy();
+      }
 
     }
   }

@@ -365,6 +365,11 @@
 //        console.log(value);
         this.ywyList.splice(value, 1);
       },
+      //清空数据
+      clearYwyAndYyy(){
+        this.ywyList=[];
+        this.yyyList=[];
+      },
       //添加应用域
       AddYyyList() {
         this.yyyList.push({
