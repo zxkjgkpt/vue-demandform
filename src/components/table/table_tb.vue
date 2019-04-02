@@ -279,11 +279,15 @@
       },
       //编辑模态框确定
       okByEdit() {
-        this.$Message.success('编辑成功');
-        //this.$Message.error('编辑失败');
-        this.$refs.edit_model.showSingleData();
-        this.clearSingleData();
-        this.modalEdit = false;
+        var check = this.$refs.edit_model.checkFrom();
+        if(check){
+          this.$refs.edit_model.showSingleData()
+          this.$Message.success('编辑成功');
+          //this.$Message.error('编辑失败');;
+          this.clearSingleData();
+          this.modalEdit = false;
+        }
+
       },
       //编辑模态框取消
       cancelByEdit() {
@@ -308,7 +312,7 @@
         if (type == 'new') {
           this.modalNew = true;
         } else {
-          if (JSON.stringify(this.singleData) == '{}') {
+          if (Bus.isEmptyObject(this.singleData)) {
             this.$Message.warning('请先选中表格中的一行数据！')
           } else {
             if (type == 'view') {
@@ -324,7 +328,7 @@
       },
       //弹出删除操作模态框
       showDeleteModal() {
-        if (JSON.stringify(this.singleData) == '{}') {
+        if (Bus.isEmptyObject(this.singleData)) {
           this.$Message.warning('请先选中表格中的一行数据！')
         } else {
           this.confirm = true;
@@ -352,7 +356,6 @@
         let thisVue = this;
         thisVue = Bus.clearSingleData(thisVue);
 
-        console.log(thisVue);
 
       },
       //重置

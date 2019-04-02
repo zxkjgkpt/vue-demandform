@@ -546,13 +546,7 @@
       },
       //验证邮箱是否为正确格式
       checkEmail(number) {
-        var numReg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-        var numRe = new RegExp(numReg)
-        if (!numRe.test(number)) {
-          this.newEmail = true;
-        } else {
-          this.newEmail = false;
-        }
+        this.newEmail=Bus.checkEmail(number);
       },
       //改变业务域图片(显示和隐藏业务域)
       changeImg(value) {
@@ -586,7 +580,9 @@
       },
       checkFrom() {
         var s = this.singleData;
-        if (s.sqbmmc != '' && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0 && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
+        if (s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm<25 &&s.sqrlxfs<11 &&s.sqryx<100 &&s.xqzs.length<2000
+          && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0
+          && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
           return true;
         } else {
           alert('请输入有效数据');

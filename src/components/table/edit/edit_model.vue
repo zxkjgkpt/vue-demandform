@@ -3,7 +3,7 @@
     *申请单位或业务部门名称：
     <Input v-model="singleData.sqbmmc" placeholder="Enter something..." clearable style="width: 300px"/>
     <span style="color: red" v-if="singleData.sqbmmc==''">申请单位或业务部门名称必填</span>
-    <span style="color: red" v-if="singleData.sqbmmc != undefined  && singleData.sqbmmc.length>=100">最多100字</span>
+    <span style="color: red" v-if="singleData.sqbmmc != undefined  && singleData.sqbmmc.length>100">最多100字</span>
     *提出时间：
     <Date-picker v-model="singleData.tcsj" type="date" placeholder="选择日期" style="width: 200px"></Date-picker>
     <span style="color: red" v-if="singleData.tcsj==''">提出时间必填</span>
@@ -12,7 +12,7 @@
         <td width="100 px">*需求单名称</td>
         <td><Input v-model="singleData.xqmc" placeholder="Enter something..." clearable style="width: 100%"/>
           <span style="color: red" v-if="singleData.xqmc==''">需求单名称必填</span>
-          <span style="color: red" v-if="singleData.xqmc != undefined  && singleData.xqmc.length>=100">最多100字</span>
+          <span style="color: red" v-if="singleData.xqmc != undefined  && singleData.xqmc.length>100">最多100字</span>
         </td>
       </tr>
       <tr>
@@ -25,7 +25,7 @@
               <td colspan="3">
                 <Input v-model="singleData.sqrxm" placeholder="Enter something..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrxm==''">姓名必填</span>
-                <span style="color: red" v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>=25">最多25字</span>
+                <span style="color: red" v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>25">最多25字</span>
               </td>
             </tr>
             <tr>
@@ -35,13 +35,13 @@
                        placeholder="Enter something..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrlxfs==''">联系方式必填</span>
                 <span style="color: red" v-if="this.newPhone">请输入数字</span>
-                <span style="color: red" v-if="singleData.sqrlxfs != undefined  && singleData.sqrlxfs.length>=11">最多11位数字</span>
+                <span style="color: red" v-if="singleData.sqrlxfs != undefined  && singleData.sqrlxfs.length>11">最多11位数字</span>
               </td>
               <td width="80px">邮箱</td>
               <td style="vertical-align: top;">
                 <Input v-model="singleData.sqryx" @on-change="checkEmail(singleData.sqryx)"
                        placeholder="Enter something..." clearable style="width: 100%"/>
-                <!--<span style="color: red" v-if="this.newEmail">请输入正确的邮箱格式</span>-->
+                <span style="color: red" v-if="this.newEmail">请输入正确的邮箱格式</span>
                 <span style="color: red" v-if="singleData.sqryx != undefined  && singleData.sqryx.length>=100">最多100字</span>
               </td>
             </tr>
@@ -80,7 +80,7 @@
         <td>
           <i-input v-model="singleData.xqzs" type="textarea" :rows="8" placeholder="请输入..."></i-input>
           <span style="color: red" v-if="singleData.xqzs==''">需求单综述必填</span>
-          <span style="color: red" v-if="singleData.xqzs != undefined  && singleData.xqzs.length>=2000">最多2000字</span>
+          <span style="color: red" v-if="singleData.xqzs != undefined  && singleData.xqzs.length>2000">最多2000字</span>
         </td>
       </tr>
       <tr>
@@ -126,6 +126,7 @@
     data() {
       return {
         newPhone: false,
+        newEmail: false,
         ywy: [{
           value: '市场营销',
           label: '市场营销',
@@ -169,23 +170,19 @@
       },
       //验证邮箱是否为正确格式
       checkEmail(number) {
-        var numReg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-        var numRe = new RegExp(numReg)
-        if (!numRe.test(number)) {
-          this.newEmail = true;
-        } else {
-          this.newEmail = false;
-        }
+        this.newEmail=Bus.checkEmail(number);
       },
       checkFrom() {
         var s = this.singleData;
-//        console.log(this.singleData);
-//        if (s.sqbmmc != '' && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0 && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
-//          return true;
-//        } else {
-//          alert('请输入有效数据');
-//          return false;
-//        }
+        console.log(this.singleData);
+        if (s.zylb != '' && s.xqdfl != ''  && s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm<25 &&s.sqrlxfs<11
+          &&s.sqryx<100 &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
+          && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
+          return true;
+        } else {
+          alert('请输入有效数据');
+          return false;
+        }
       },
       showSingleData() {
         //父组件点击ok调用方法

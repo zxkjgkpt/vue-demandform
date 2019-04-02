@@ -527,7 +527,26 @@ Vue.prototype.transformByshjd = function (params) {
   }
   return params;
 };
-Vue.prototype.checkNumber = function (number, thisVue) {
+//判断对象是否空，包括值也为空
+Vue.prototype.isEmptyObject = function (object){
+
+  if (JSON.stringify(object) == '{}'){
+    return true;
+  } else {
+    for (let queryParamKey in object) {
+      if (object[queryParamKey] instanceof Array && object[queryParamKey].length != 0){
+        return false;
+      } else if (object[queryParamKey] != ''){
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+};
+//验证电话号码
+Vue.prototype.checkNumber = function (number) {
   var numReg = /^[0-9]+$/
   var numRe = new RegExp(numReg)
   if (!numRe.test(number)) {
@@ -537,5 +556,13 @@ Vue.prototype.checkNumber = function (number, thisVue) {
     //thisVue.newPhone=false;
     return false;
   }
-  return thisVue;
+};
+Vue.prototype.checkEmail = function (number) {
+  var numReg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+  var numRe = new RegExp(numReg)
+  if (!numRe.test(number)) {
+    return true;
+  } else {
+    return false;
+  }
 };
