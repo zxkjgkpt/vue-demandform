@@ -199,7 +199,8 @@
       },
       checkFrom() {
         var s = this.singleData;
-        if (s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm<25 &&s.sqrlxfs<11 &&s.sqryx<100 &&s.xqzs.length<2000
+//        console.log(s);
+        if (s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm.length<25 &&s.sqrlxfs.length<11 &&s.sqryx.length<100 &&s.xqzs.length<2000
           && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0
           && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
           return true;
@@ -212,7 +213,7 @@
       showSingleData() {
         //父组件点击ok调用新增方法
         console.log("aaa");
-//        console.log(this.singleData);
+        console.log(this.singleData);
         //执行后台数据新建
 
 

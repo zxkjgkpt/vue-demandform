@@ -102,6 +102,9 @@
       </tr>
     </table>
 
+    <!--------------------------业务域------------------------------->
+    <!--------------------------应用域------------------------------->
+    <ywy_yyy ref="ywy_yyy"></ywy_yyy>
 
     <Upload action="//jsonplaceholder.typicode.com/posts/">
       <Button :disabled="isShowView" icon="ios-cloud-upload-outline">Upload files</Button>
@@ -112,9 +115,10 @@
 <script>
   // 引入公共的bus，来做为中间传达的工具
   import Bus from '../bus/bus'
-
+  import Ywy_yyy from "./ywy_yyy";
   export default {
     name: 'edit_model',
+    components: {Ywy_yyy},
     props: {
       singleData: {
         type: Object
@@ -125,6 +129,7 @@
     },
     data() {
       return {
+        disabledGroup: '网',
         newPhone: false,
         newEmail: false,
         ywy: [{
@@ -164,6 +169,14 @@
       };
     },
     methods: {
+      //添加业务域
+      AddYwyList() {
+        this.$refs.ywy_yyy.AddYwyList();
+      },
+      //添加应用域
+      AddYyyList() {
+        this.$refs.ywy_yyy.AddYyyList();
+      },
       //验证联系方式是否为数字
       checkNumber(number) {
         this.newPhone = Bus.checkNumber(number);
@@ -174,10 +187,12 @@
       },
       checkFrom() {
         var s = this.singleData;
-        console.log(this.singleData);
-        if (s.zylb != '' && s.xqdfl != ''  && s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm<25 &&s.sqrlxfs<11
-          &&s.sqryx<100 &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
-          && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
+//        console.log(s);
+//        console.log(this.singleData);
+        if (s.zylb != '' && s.xqdfl != ''  && s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm.length<25
+          &&s.sqryx.length<100 &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
+          && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false
+        ) {
           return true;
         } else {
           alert('请输入有效数据');
@@ -188,7 +203,8 @@
         //父组件点击ok调用方法
         console.log(this.singleData);
         //执行后台更新逻辑
-      }
+      },
+
     }
   }
 </script>

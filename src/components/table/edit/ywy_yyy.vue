@@ -336,14 +336,8 @@
 <script>
   export default {
     name: 'ywy_yyy',
-//    props: {
-//      ywyList: {
-//        type: Array
-//      }
-//    },
     data() {
       return {
-        disabledGroup: '网',
         yyyList: [],
         ywyList:[]
       }

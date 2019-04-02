@@ -158,8 +158,8 @@
       <edit_model ref="edit_model" v-bind:singleData="singleData"></edit_model>
       <!--页脚-->
       <div slot="footer">
-        <i-button type="primary" shape="circle" @click="addYwy">添加业务域</i-button>
-        <i-button type="primary" shape="circle" @click="addYyy">添加应用域</i-button>
+        <i-button type="primary" shape="circle" @click="addYwy2">添加业务域</i-button>
+        <i-button type="primary" shape="circle" @click="addYyy2">添加应用域</i-button>
         <i-button type="success" @click="">保存</i-button>
         <i-button type="warning" @click="okByEdit">提交</i-button>
         <i-button @click="cancelByEdit">关闭</i-button>
@@ -282,13 +282,21 @@
         this.clearSingleData();
         this.modalNew = false;
       },
-      //添加业务域
+      //新增页面添加业务域
       addYwy() {
         this.$refs.add_model.AddYwyList();
       },
-      //添加应用域
+      //编辑页面添加业务域
+      addYwy2() {
+        this.$refs.edit_model.AddYwyList();
+      },
+      //新增页面添加应用域
       addYyy() {
         this.$refs.add_model.AddYyyList();
+      },
+      //编辑页面添加应用域
+      addYyy2() {
+        this.$refs.edit_model.AddYyyList();
       },
       //编辑模态框确定
       okByEdit() {
