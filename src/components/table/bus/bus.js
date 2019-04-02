@@ -400,26 +400,30 @@ Vue.prototype.reset = function (thisVue) {
 };
 //获取下拉框选中的值
 Vue.prototype.getItemValue = function (val, showSelectInput) {
-  if (val == 0) {
-    showSelectInput.xqzs = true;
-  }
-  if (val == 1) {
-    showSelectInput.sqrxm = true;
-  }
-  if (val == 2) {
-    showSelectInput.gdzt = true;
-  }
-  if (val == 3) {
-    showSelectInput.fjbz = true;
-  }
-  if (val == 4) {
-    showSelectInput.shjd = true;
-  }
-  if (val == 5) {
-    showSelectInput.wshr = true;
-  }
-  if (val == 6) {
-    showSelectInput.zylbArray = true;
+
+  switch (val) {
+    case '0':
+      showSelectInput.xqzs = true;
+      break;
+    case '1':
+      showSelectInput.sqrxm = true;
+      break;
+    case '2':
+      showSelectInput.gdzt = true;
+      break;
+    case '3':
+      showSelectInput.fjbz = true;
+      break;
+    case '4':
+      showSelectInput.shjd = true;
+      break;
+    case '5':
+      showSelectInput.wshr = true;
+      break;
+    case '6':
+      showSelectInput.zylbArray = true;
+      break;
+
   }
 
   return showSelectInput;
