@@ -564,12 +564,28 @@ Vue.prototype.checkNumber = function (number) {
     return false;
   }
 };
+//验证邮箱
 Vue.prototype.checkEmail = function (number) {
   var numReg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
   var numRe = new RegExp(numReg)
   if (!numRe.test(number)) {
     return true;
   } else {
+    return false;
+  }
+};
+//判断回应参数和数据是否不为空
+Vue.prototype.checkRespondAndDataNotNull = function (res) {
+  if (res.data.code == '10001'){
+    if (res.data.data != null && res.data.data.length > 0){
+      return true;
+    }else {
+      return false;
+    }
+  } else if (res.data.code == '10003'){
+    alert(res.data.message + '，请重试！');
+    return false;
+  }else {
     return false;
   }
 };

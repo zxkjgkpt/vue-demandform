@@ -43,60 +43,56 @@
           },
           data: JSON.stringify(this.queryParamByZTTJ), //请求参数
         }).then(res => {
-
-          if (res.data.code == '10001') {
-            //判断数据不为空
-            if (res.data.data != null && res.data.data.length > 0) {
-              //console.log(res.data.data);
-              let totalData = res.data.data;
-              //状态数量
-              let gdztNubmer = new Array(10);
-              for (let i = 0, len = gdztNubmer.length; i < len; i++) {
-                gdztNubmer[i] = 0;
-              }
-              totalData.forEach(function (v) {
-                let gdzt = v.gdzt;
-                switch (gdzt) {
-                  case "New":
-                    gdztNubmer[0]++;
-                    break;
-                  case "ProAudit":
-                    gdztNubmer[1]++;
-                    break;
-                  case "ProModif":
-                    gdztNubmer[2]++;
-                    break;
-                  case "PowerAudit":
-                    gdztNubmer[3]++;
-                    break;
-                  case "PowerModif":
-                    gdztNubmer[4]++;
-                    break;
-                  case "Pass":
-                    gdztNubmer[5]++;
-                    break;
-                  case "ProCancel":
-                    gdztNubmer[6]++;
-                    break;
-                  case "PowerCancel":
-                    gdztNubmer[7]++;
-                    break;
-                  case "CancelReject":
-                    gdztNubmer[5]++;
-                    break;
-                  case "Cancel":
-                    gdztNubmer[8]++;
-                    break;
-                }
-              });
-              gdztNubmer[gdztNubmer.length-1] = totalData.length;
-
-              this.drawLine(gdztNubmer);
+          if (Bus.checkRespondAndDataNotNull(res)){
+            let totalData = res.data.data;
+            //状态数量
+            let gdztNubmer = new Array(10);
+            for (let i = 0, len = gdztNubmer.length; i < len; i++) {
+              gdztNubmer[i] = 0;
             }
+            totalData.forEach(function (v) {
+              let gdzt = v.gdzt;
+              switch (gdzt) {
+                case "New":
+                  gdztNubmer[0]++;
+                  break;
+                case "ProAudit":
+                  gdztNubmer[1]++;
+                  break;
+                case "ProModif":
+                  gdztNubmer[2]++;
+                  break;
+                case "PowerAudit":
+                  gdztNubmer[3]++;
+                  break;
+                case "PowerModif":
+                  gdztNubmer[4]++;
+                  break;
+                case "Pass":
+                  gdztNubmer[5]++;
+                  break;
+                case "ProCancel":
+                  gdztNubmer[6]++;
+                  break;
+                case "PowerCancel":
+                  gdztNubmer[7]++;
+                  break;
+                case "CancelReject":
+                  gdztNubmer[5]++;
+                  break;
+                case "Cancel":
+                  gdztNubmer[8]++;
+                  break;
+              }
+            });
+            gdztNubmer[gdztNubmer.length-1] = totalData.length;
 
+            this.drawLine(gdztNubmer);
+          }else {
+            this.drawLine([]);
           }
         }).catch(err => {
-          console.info('报错的信息', err);
+          //console.info('报错的信息', err);
         }).then(function () {
           //最后总是执行的
         });

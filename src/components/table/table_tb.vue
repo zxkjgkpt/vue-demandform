@@ -443,17 +443,12 @@
           },
           data: JSON.stringify(this.queryParam), //请求参数
         }).then(res => {
-          if (res.data.code == '10001') {
-            //判断数据不为空
-            if (res.data.data != null && res.data.data.length > 0) {
-              this.dataByTB = res.data.data;
-              this.totalData = this.dataByTB[0].total;
-              this.pageNum = this.dataByTB[0].pageNum;
-              this.pageSize = this.dataByTB[0].pageSize;
-              console.log(this.dataByTB);
-            }else {
-              this.dataByTB = [];
-            }
+          if (Bus.checkRespondAndDataNotNull(res)){
+            this.dataByTB = res.data.data;
+            this.totalData = this.dataByTB[0].total;
+            this.pageNum = this.dataByTB[0].pageNum;
+            this.pageSize = this.dataByTB[0].pageSize;
+            console.log(this.dataByTB);
 
             //手动增加审核进度数据
             // this.dataByTB[0].shjd = 0;
@@ -471,10 +466,12 @@
             //   v.zylb = '业扩';
             // });
 
-
+          }else {
+            this.dataByTB = [];
           }
+
         }).catch(err => {
-          console.info('报错的信息', err);
+          //console.info('报错的信息', err);
         }).then(function () {
           //关闭加载动画
           thisVue.closeLoading();
