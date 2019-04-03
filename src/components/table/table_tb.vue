@@ -37,7 +37,7 @@
               placeholder="审核进度选择...">
         <Option v-for="shjd in shjdList" :value="shjd.value" :key="shjd.value">{{ shjd.label }}</Option>
       </Select>
-      <Poptip trigger="click"  content="申请人查询...">
+      <Poptip trigger="click"  content="审核人查询...">
         <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..."
                style="width: 200px" suffix="ios-search"/>
       </Poptip>
@@ -192,6 +192,9 @@
     props: {
       tableType: {
         type: String,
+      },
+      cjrid:{
+        type: String
       }
     },
     data() {
@@ -224,15 +227,15 @@
           gdzt: null,
           shjd: null,
           wshr: null,
-          //目前还拿不到创建人ID
-          //cjrid:UserInfoS.getUserInfo().id,
+          cjrid: this.cjrid,
           zylbArray: [],
           zylb: null,
           fjbz: null,
           cxbz: this.tableType,
           date: null,
           startTime: null,
-          endTime: null
+          endTime: null,
+          orders:['CJSJ']
         },
         showSelectInput: {
           xqzs: false,
@@ -388,21 +391,12 @@
       },
       //搜索
       handleSearch() {
-        //显示加载动画
-        this.showLoading();
+        let thisVue = this;
+        thisVue = Bus.handleSearch(thisVue);
 
-        this.queryParam = Bus.handleSearch(this.queryParam);
+        console.log(thisVue.queryParam);
 
-        console.log(this.queryParam);
-
-        let thisVue = this;   // 当前this指向的是一个组件
-        setTimeout(function () {
-          thisVue.closeLoading(thisVue);
-        }, 2000) //   function 里面的this指向的是windows
-
-
-        //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
-        //this.dataByTB = searchedData;
+        this.queryData();
       },
       //导出
       exportData() {
@@ -437,46 +431,52 @@
         //显示加载动画
         this.showLoading();
 
+        let thisVue = this;
+
         this.$axios({
-          url: 'xqd/xqdxx/findList/' + this.pageNum + '/' + this.pageSize,//请求的地址
+          url: 'xqd/xqdxx/findXqdxxByCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
           method: 'post',//请求的方式
-          data: this.queryParam //请求参数
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          data: JSON.stringify(this.queryParam), //请求参数
         }).then(res => {
           if (res.data.code == '10001') {
-            this.dataByTB = res.data.data;
+            //判断数据不为空
+            if (res.data.data != null && res.data.data.length > 0) {
+              this.dataByTB = res.data.data;
+              this.totalData = this.dataByTB[0].total;
+              this.pageNum = this.dataByTB[0].pageNum;
+              this.pageSize = this.dataByTB[0].pageSize;
+              console.log(this.dataByTB);
+            }else {
+              this.dataByTB = [];
+            }
 
             //手动增加审核进度数据
-            this.dataByTB[0].shjd = 0;
-            this.dataByTB[1].shjd = 1;
-            this.dataByTB[2].shjd = 2;
-            this.dataByTB[3].shjd = 3;
-            this.dataByTB[4].shjd = 4;
+            // this.dataByTB[0].shjd = 0;
+            // this.dataByTB[1].shjd = 1;
+            // this.dataByTB[2].shjd = 2;
+            // this.dataByTB[3].shjd = 3;
+            // this.dataByTB[4].shjd = 4;
 
 
             //到时候在后台拼接
-            this.dataByTB.forEach(function (v) {
-              v.zylbArray = [];
-              v.zylbArray[0] = '市场营销';
-              v.zylbArray[1] = '业扩';
-              v.zylb = '业扩';
-            });
-            //到时候在后台拼接
-            this.dataByTB.forEach(function (v) {
-              v.xqdfl = [];
-              v.xqdfl[0] = '新业务需求';
-            });
+            // this.dataByTB.forEach(function (v) {
+            //   v.zylbArray = [];
+            //   v.zylbArray[0] = '市场营销';
+            //   v.zylbArray[1] = '业扩';
+            //   v.zylb = '业扩';
+            // });
 
-
-
-            console.log(this.dataByTB);
 
           }
         }).catch(err => {
           console.info('报错的信息', err);
+        }).then(function () {
+          //关闭加载动画
+          thisVue.closeLoading();
         });
-
-        //关闭加载动画
-        this.closeLoading();
       }
     },
     created() {
@@ -489,10 +489,14 @@
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
+      let thisVue = this;
       // 用$on事件来接收参数
       Bus.$on('zttjValueByTB', (data) => {
         console.log(data);
-
+        thisVue.queryParam.gdzt = data;
+        thisVue = Bus.handleSearch(thisVue);
+        console.log(thisVue.queryParam);
+        thisVue.queryData();
       });
 
       Bus.$on('shjdValueByTB', (data) => {

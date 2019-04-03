@@ -22,13 +22,13 @@
       </Header>
       <Content :style="{margin: '70px 20px 0', background: '#fff', minHeight: '50%'}">
         <!--把tableType传给table模块，获取相应的需求单填报或总览或审核数据-->
-        <Table_tb v-if="tableType == 'xqtb'" v-bind:tableType="tableType"></Table_tb>
+        <Table_tb v-if="tableType == 'xqtb'" v-bind:tableType="tableType" v-bind:cjrid="cjrid"></Table_tb>
         <Table_zl v-if="tableType == 'xqzl'" v-bind:tableType="tableType"></Table_zl>
         <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType"></table_sh>
       </Content>
       <Footer class="layout-footer-center" style="padding: 10px 20px;">
-        <zttj-bytb v-if="tableType == 'xqtb'"></zttj-bytb>
-        <shjd-bytb v-if="tableType == 'xqtb'"></shjd-bytb>
+        <zttj-bytb v-if="tableType == 'xqtb'" v-bind:cjrid="cjrid"></zttj-bytb>
+        <shjd-bytb v-if="tableType == 'xqtb'" v-bind:cjrid="cjrid"></shjd-bytb>
 
         <zttj-byzl v-if="tableType == 'xqzl'"></zttj-byzl>
         <shjd-byzl v-if="tableType == 'xqzl'"></shjd-byzl>
@@ -53,16 +53,15 @@
   import ShjdBysh from "./table/StatisticsByshjd/shjdBysh";
 
 
-
-
-
-
   export default {
     name: 'xqd_index',
     components: {ShjdBysh, ZttjBysh, ShjdByzl, ZttjByzl, ShjdBytb, ZttjBytb, Table_sh, Table_zl, Table_tb},
     data(){
       return {
         tableType:'xqtb',
+        //目前还拿不到创建人ID
+        //cjrid:UserInfoS.getUserInfo().id,
+        cjrid:'efa04337d0f548f1b7a264b521ff9a0d'
       }
     },
     methods:{

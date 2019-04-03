@@ -365,19 +365,22 @@ Vue.prototype.clearSingleData = function (thisVue) {
   return thisVue;
 };
 //搜索
-Vue.prototype.handleSearch = function (queryParam) {
+Vue.prototype.handleSearch = function (thisVue) {
 
-  if (queryParam.date) {
+  if (thisVue.queryParam.date) {
     //开始时间
-    queryParam.startTime = queryParam.date[0];
+    thisVue.queryParam.startTime = thisVue.queryParam.date[0];
     //结束时间
-    queryParam.endTime = queryParam.date[1];
+    thisVue.queryParam.endTime = thisVue.queryParam.date[1];
   }
 
   //专业类别
-  queryParam.zylb = queryParam.zylbArray[1];
+  thisVue.queryParam.zylb = thisVue.queryParam.zylbArray[1];
 
-  return queryParam;
+  thisVue.pageNum = 1;
+  thisVue.pageSize = 10;
+
+  return thisVue;
 };
 //重置
 Vue.prototype.reset = function (thisVue) {
@@ -387,7 +390,7 @@ Vue.prototype.reset = function (thisVue) {
   }
 
   for (let queryParamKey in thisVue.queryParam) {
-    if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz') {
+    if (queryParamKey == 'cjrid' || queryParamKey == 'cxbz' || queryParamKey == 'orders') {
       continue;
     } else if (queryParamKey == 'zylbArray') {
       thisVue.queryParam[queryParamKey] = [];

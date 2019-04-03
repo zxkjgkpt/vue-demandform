@@ -189,21 +189,10 @@
       },
       //搜索
       handleSearch(){
-        //显示加载动画
-        this.loading = true;
+        let thisVue = this;
+        thisVue = Bus.handleSearch(thisVue);
 
-        this.queryParam = Bus.handleSearch(this.queryParam);
-
-        console.log(this.queryParam);
-
-        let thisTable = this;   // 当前this指向的是一个组件
-        setTimeout(function(){
-          thisTable.loading = false;
-        },2000) //   function 里面的this指向的是windows
-
-
-        //通过传值到后台，请求数据返回结果为searchedData赋值给this.dataByTB，就能实现搜索
-        //this.dataByTB = searchedData;
+        console.log(thisVue.queryParam);
       },
       //获取下拉框选中的值
       getItemValue(val){

@@ -108,12 +108,28 @@
     <ywy_yyy ref="ywy_yyy"></ywy_yyy>
 
 
-
-
-
-    <Upload action="//jsonplaceholder.typicode.com/posts/">
+    <Upload
+      class="xqd_UploadFile"
+      action="//jsonplaceholder.typicode.com/posts/"
+      :max-size="61440"
+      :on-exceeded-size="onExceededSize"
+      :on-success="onSuccessFile"
+      :on-error="onErrorFile"
+    >
       <Button icon="ios-cloud-upload-outline">添加附件</Button>
     </Upload>
+    <div class="detailedDiv">
+      <div class="xqd_UploadFile_div">
+        <img src="../../../assets/word.png" style="margin-right: 10px; float: left">
+        <span>科技研发过程指导细则V0.7.doc</span>
+        <br>
+        <span style="margin-right: 20px">402k</span>
+        <span style="color: green">上传成功</span>
+      </div>
+      <Button style="margin-top: 10px" size="small" type="primary" @click="loadFile">下载</Button>
+      <Button style="margin-top: 10px" size="small" type="primary" @click="checkFile">查看</Button>
+      <Button style="margin-top: 10px" size="small" type="primary" @click="deleteFile">删除</Button>
+    </div>
   </div>
 </template>
 
@@ -195,12 +211,12 @@
       },
       //验证邮箱是否为正确格式
       checkEmail(number) {
-        this.newEmail=Bus.checkEmail(number);
+        this.newEmail = Bus.checkEmail(number);
       },
       checkFrom() {
         var s = this.singleData;
 //        console.log(s);
-        if (s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm.length<25 &&s.sqrlxfs.length<11 &&s.sqryx.length<100 &&s.xqzs.length<2000
+        if (s.sqbmmc != '' && s.sqbmmc.length < 100 && s.xqmc.length < 100 && s.sqrxm.length < 25 && s.sqrlxfs.length < 11 && s.sqryx.length < 100 && s.xqzs.length < 2000
           && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0
           && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
           return true;
@@ -236,11 +252,54 @@
           }
         }
 
+      },
+      //下载文件
+      loadFile() {
+        console.log('下载文件');
+      },
+      //查看文件
+      checkFile() {
+        console.log('查看文件');
+      },
+      //删除文件
+      deleteFile() {
+        console.log('删除文件');
+      },
+      //上传文件成功后返回函数
+      onSuccessFile(response, file){
+        console.log(response);
+        console.log(file);
+      },
+      //上传文件失败后返回函数
+      onErrorFile(error, file){
+        console.log(error);
+        console.log(file);
+        alert('上传失败');
+      },
+      //文件超过指定大小返回函数
+      onExceededSize(file){
+        alert('《'+file.name + '》，文件太大，请选择小于60M的文件上传！');
       }
     },
   }
 </script>
 
 <style scoped>
+  .xqd_UploadFile {
+    margin-top: 10px;
+  }
 
+  .detailedDiv {
+    margin-left: 20px;
+  }
+
+  .detailedDiv Button {
+    margin-right: 20px;
+  }
+
+  .xqd_UploadFile_div {
+    float: left;
+    margin-right: 100px;
+    margin-top: 5px;
+  }
 </style>
