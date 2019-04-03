@@ -36,7 +36,7 @@
     methods: {
       queryData() {
         this.$axios({
-          url: 'xqd/xqdxx/findXqdxxByCondition/',//请求的地址
+          url: 'xqd/xqdxx/findXqdxxByAndCondition/',//请求的地址
           method: 'post',//请求的方式
           headers: {
             'Content-Type': 'application/json; charset=UTF-8'

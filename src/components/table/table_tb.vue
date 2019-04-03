@@ -235,7 +235,9 @@
           date: null,
           startTime: null,
           endTime: null,
-          orders:['CJSJ']
+          orders:{
+            "CJSJ":"DESC"
+          }
         },
         showSelectInput: {
           xqzs: false,
@@ -434,7 +436,7 @@
         let thisVue = this;
 
         this.$axios({
-          url: 'xqd/xqdxx/findXqdxxByCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
+          url: 'xqd/xqdxx/findXqdxxByAndCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
           method: 'post',//请求的方式
           headers: {
             'Content-Type': 'application/json; charset=UTF-8'
