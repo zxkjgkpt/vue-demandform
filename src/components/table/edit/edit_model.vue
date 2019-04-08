@@ -1,16 +1,16 @@
 <template>
   <div id="edit_model">
     *申请单位或业务部门名称：
-    <Input v-model="singleData.sqbmmc" placeholder="Enter something..." clearable style="width: 300px"/>
-    <span style="color: red" v-if="singleData.sqbmmc==''">申请单位或业务部门名称必填</span>
+    <Input v-model="singleData.sqbmmc"  :disabled="isShowView" placeholder="Enter something..." clearable style="width: 300px"/>
+    <span style="color: red" v-if="singleData.sqbmmc=='' ">申请单位或业务部门名称必填</span>
     <span style="color: red" v-if="singleData.sqbmmc != undefined  && singleData.sqbmmc.length>100">最多100字</span>
     *提出时间：
-    <Date-picker v-model="singleData.tcsj" type="date" placeholder="选择日期" style="width: 200px"></Date-picker>
+    <Date-picker v-model="singleData.tcsj" :disabled="isShowView" type="date" placeholder="选择日期" style="width: 200px"></Date-picker>
     <span style="color: red" v-if="singleData.tcsj==''">提出时间必填</span>
     <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
       <tr>
         <td width="100 px">*需求单名称</td>
-        <td><Input v-model="singleData.xqmc" placeholder="Enter something..." clearable style="width: 100%"/>
+        <td><Input v-model="singleData.xqmc" :disabled="isShowView" placeholder="Enter something..." clearable style="width: 100%"/>
           <span style="color: red" v-if="singleData.xqmc==''">需求单名称必填</span>
           <span style="color: red" v-if="singleData.xqmc != undefined  && singleData.xqmc.length>100">最多100字</span>
         </td>
@@ -23,7 +23,7 @@
             <tr>
               <td width="80px"> * 姓名</td>
               <td colspan="3">
-                <Input v-model="singleData.sqrxm" placeholder="Enter something..." clearable style="width: 100%"/>
+                <Input v-model="singleData.sqrxm" :disabled="isShowView" placeholder="Enter something..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrxm==''">姓名必填</span>
                 <span style="color: red" v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>25">最多25字</span>
               </td>
@@ -31,7 +31,7 @@
             <tr>
               <td>*联系方式</td>
               <td>
-                <Input v-model="singleData.sqrlxfs" @on-change="checkNumber(singleData.sqrlxfs)"
+                <Input v-model="singleData.sqrlxfs" :disabled="isShowView" @on-change="checkNumber(singleData.sqrlxfs)"
                        placeholder="Enter something..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrlxfs==''">联系方式必填</span>
                 <span style="color: red" v-if="this.newPhone">请输入数字</span>
@@ -39,7 +39,7 @@
               </td>
               <td width="80px">邮箱</td>
               <td style="vertical-align: top;">
-                <Input v-model="singleData.sqryx" @on-change="checkEmail(singleData.sqryx)"
+                <Input v-model="singleData.sqryx" :disabled="isShowView" @on-change="checkEmail(singleData.sqryx)"
                        placeholder="Enter something..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="this.newEmail">请输入正确的邮箱格式</span>
                 <span style="color: red" v-if="singleData.sqryx != undefined  && singleData.sqryx.length>=100">最多100字</span>
@@ -51,24 +51,24 @@
       <tr>
         <td>*专业类别</td>
         <td>
-          <Cascader :data="ywy" v-model="singleData.zylbArray" trigger="hover"></Cascader>
+          <Cascader :data="ywy" :disabled="isShowView" v-model="singleData.zylbArray" trigger="hover"></Cascader>
           <span style="color: red" v-if="singleData.zylb==''">至少选择一个专业</span>
         </td>
       </tr>
       <tr>
         <td>*需求单分类</td>
         <td>
-          <Checkbox-group v-model="singleData.xqdfl">
-            <Checkbox label="政策性需求">
+          <Checkbox-group v-model="singleData.xqdfl" >
+            <Checkbox label="政策性需求" :disabled="isShowView">
               <Tooltip content="政策性需求">政策性需求</Tooltip>
             </Checkbox>
-            <Checkbox label="新业务需求">
+            <Checkbox label="新业务需求" :disabled="isShowView">
               <Tooltip content="新业务需求">新业务需求</Tooltip>
             </Checkbox>
-            <Checkbox label="新技术需求">
+            <Checkbox label="新技术需求" :disabled="isShowView">
               <Tooltip content="新技术需求">新技术需求</Tooltip>
             </Checkbox>
-            <Checkbox label="系统优化需求">
+            <Checkbox label="系统优化需求" :disabled="isShowView">
               <Tooltip content="系统优化需求">系统优化需求</Tooltip>
             </Checkbox>
           </Checkbox-group>
@@ -78,7 +78,7 @@
       <tr>
         <td>*需求单综述</td>
         <td>
-          <i-input v-model="singleData.xqzs" type="textarea" :rows="8" placeholder="请输入..."></i-input>
+          <i-input v-model="singleData.xqzs" :disabled="isShowView" type="textarea" :rows="8" placeholder="请输入..."></i-input>
           <span style="color: red" v-if="singleData.xqzs==''">需求单综述必填</span>
           <span style="color: red" v-if="singleData.xqzs != undefined  && singleData.xqzs.length>2000">最多2000字</span>
         </td>
@@ -86,14 +86,14 @@
       <tr>
         <td>*期望完成日期</td>
         <td>
-          <Date-picker v-model="singleData.qwwcsj" type="date" placeholder="选择日期" style="width: 100%"></Date-picker>
+          <Date-picker v-model="singleData.qwwcsj" :disabled="isShowView" type="date" placeholder="选择日期" style="width: 100%"></Date-picker>
           <span style="color: red" v-if="singleData.qwwcsj==''">期望完成日期必填</span>
         </td>
       </tr>
       <tr>
         <td>*部门级别</td>
         <td>
-          <!--<Radio-group v-model="disabledGroup">-->
+          <!--<Radio-group v-model="disabledGroup" >-->
           <!--<Radio label="网" disabled>网</Radio>-->
           <!--<Radio label="省" disabled>省</Radio>-->
           <!--<Radio label="地市" disabled>地市</Radio>-->
@@ -188,9 +188,9 @@
       checkFrom() {
         var s = this.singleData;
 //        console.log(s);
-//        console.log(this.singleData);
+        console.log(this.singleData);
         if (s.zylb != '' && s.xqdfl != ''  && s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm.length<25
-          &&s.sqryx.length<100 &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
+           &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
           && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false
         ) {
           return true;

@@ -155,18 +155,19 @@
       <p slot="header" style="color:#f60;text-align:center">
         <span>编辑信息化需求单</span>
       </p>
-      <edit_model ref="edit_model" v-bind:singleData="singleData"></edit_model>
+      <edit_model ref="edit_model" v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
       <!--页脚-->
       <div slot="footer">
-        <i-button type="primary" shape="circle" @click="addYwy2">添加业务域</i-button>
-        <i-button type="primary" shape="circle" @click="addYyy2">添加应用域</i-button>
-        <i-button type="success" @click="">保存</i-button>
-        <i-button type="warning" @click="okByEdit">提交</i-button>
+        <i-button type="primary" shape="circle" @click="addYwy2" v-if="!this.isShowView">添加业务域</i-button>
+        <i-button type="primary" shape="circle" @click="addYyy2" v-if="!this.isShowView">添加应用域</i-button>
+        <i-button type="success" @click="" v-if="!this.isShowView">保存</i-button>
+        <i-button type="warning" @click="okByEdit" v-if="!this.isShowView">提交</i-button>
         <i-button @click="cancelByEdit">关闭</i-button>
       </div>
     </Modal>
     <Modal
       v-model="modalView"
+      width="80%"
       title="查看信息化需求单"
       :mask-closable="false"
       cancel-text=""
@@ -174,7 +175,7 @@
       @on-ok="exitModal"
       @on-cancel="exitModal"
     >
-      <!--<edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>-->
+      <edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
     </Modal>
   </div>
 </template>
@@ -215,7 +216,7 @@
         modalView: false,
         singleData: {},
         selectValue: '',
-        isShowView: false,
+        isShowView: true,
         confirm: false,
         deleteTitle: '',
         queryParam: {
@@ -253,6 +254,12 @@
     methods: {
       //双击获取详细信息
       showDetailed() {
+        //只有审核进度为0的才能编辑
+        if (this.singleData.shjd == 0) {
+          this.isShowView=false;
+        }else{
+          this.isShowView=true;
+        }
         this.modalEdit = true;
       },
       //翻页
@@ -349,6 +356,12 @@
               this.modalView = true;
             } else {
               //编辑操作
+              //只有审核进度为0的才能编辑
+              if (this.singleData.shjd == 0) {
+                this.isShowView=false;
+              }else{
+                this.isShowView=true;
+              }
               this.modalEdit = true;
             }
           }
@@ -437,7 +450,7 @@
             console.log(this.dataByTB);
 
             //手动增加审核进度数据
-            // this.dataByTB[0].shjd = 0;
+            this.dataByTB[0].shjd = 0;
             // this.dataByTB[1].shjd = 1;
             // this.dataByTB[2].shjd = 2;
             // this.dataByTB[3].shjd = 3;
