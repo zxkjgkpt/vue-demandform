@@ -229,7 +229,9 @@
           shjd: null,
           wshr: null,
           cjrid: this.cjrid,
+          xqfl:null,
           zylbArray: [],
+          xqdfl: [],
           zylb: null,
           fjbz: null,
           cxbz: this.tableType,
@@ -457,13 +459,39 @@
             // this.dataByTB[4].shjd = 4;
 
 
-            //到时候在后台拼接
-            // this.dataByTB.forEach(function (v) {
-            //   v.zylbArray = [];
-            //   v.zylbArray[0] = '市场营销';
-            //   v.zylbArray[1] = '业扩';
-            //   v.zylb = '业扩';
-            // });
+            //赋值在前端显示专业类别
+            this.dataByTB.forEach(function (v) {
+              v.zylbArray = [];
+              v.zylbArray[0] = '市场营销';
+              if(v.zylb=="计量资产"){
+                v.zylbArray[1] = '计量资产';
+              }else if(v.zylb=="计量自动化"){
+                v.zylbArray[1] = '计量自动化';
+              }else if(v.zylb=="抄核收"){
+                v.zylbArray[1] = '抄核收';
+              }else if(v.zylb=="综合"){
+                v.zylbArray[1] = '综合';
+              }else if(v.zylb=="客服"){
+                v.zylbArray[1] = '客服';
+              }else if(v.zylb=="市场交易"){
+                v.zylbArray[1] = '市场交易';
+              }else if(v.zylb=="业扩"){
+                v.zylbArray[1] = '业扩';
+              }
+            });
+            //赋值在前端显示需求单分类
+            this.dataByTB.forEach(function (v) {
+              v.xqdfl = [];
+              if(v.xqfl=="ZCXXQ,"){
+                v.xqdfl[0] = '政策性需求';
+              }else if(v.xqfl=="XYWXQ,"){
+                v.xqdfl[0] = '新业务需求';
+              }else if(v.xqfl=="XJXXQ,"){
+                v.xqdfl[0] = '新技术需求';
+              }else if(v.xqfl=="XTYHXQ,"){
+                v.xqdfl[0] = '新技术需求';
+              }
+            });
 
           }else {
             this.dataByTB = [];
