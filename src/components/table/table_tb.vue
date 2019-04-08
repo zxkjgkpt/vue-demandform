@@ -393,6 +393,7 @@
       },
       //搜索
       handleSearch() {
+
         let thisVue = this;
         thisVue = Bus.handleSearch(thisVue);
 
@@ -412,28 +413,13 @@
       refreshData() {
         this.queryData();
       },
-      //显示加载动画
-      showLoading(thisVue) {
-        if (thisVue) {
-          thisVue.loading = true;
-        } else {
-          this.loading = true;
-        }
-      },
-      //关闭加载动画
-      closeLoading(thisVue) {
-        if (thisVue) {
-          thisVue.loading = false;
-        } else {
-          this.loading = false;
-        }
-      },
       //请求后台数据
       queryData() {
-        //显示加载动画
-        this.showLoading();
 
         let thisVue = this;
+
+        //显示加载动画
+        thisVue = Bus.showLoading(thisVue);
 
         this.$axios({
           url: 'xqd/xqdxx/findXqdxxByAndCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
@@ -474,7 +460,8 @@
           //console.info('报错的信息', err);
         }).then(function () {
           //关闭加载动画
-          thisVue.closeLoading();
+          thisVue = Bus.closeLoading(thisVue);
+          thisVue.clearSingleData();
         });
       }
     },

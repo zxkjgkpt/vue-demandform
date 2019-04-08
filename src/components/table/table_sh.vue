@@ -189,6 +189,7 @@
       },
       //搜索
       handleSearch(){
+
         let thisVue = this;
         thisVue = Bus.handleSearch(thisVue);
 

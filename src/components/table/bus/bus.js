@@ -104,32 +104,36 @@ Vue.prototype.getgdztList = function () {
       label: '新建'
     },
     {
-      value: 'Audit',
-      label: '地市级审核中'
-    },
-    {
       value: 'ProAudit',
       label: '省级审核中'
-    },
-    {
-      value: 'PowerAudit',
-      label: '网级审核中'
-    },
-    {
-      value: 'Pass',
-      label: '审核通过'
-    },
-    {
-      value: 'Modif',
-      label: '地市级审核未通过'
     },
     {
       value: 'ProModif',
       label: '省级审核未通过'
     },
     {
+      value: 'PowerAudit',
+      label: '网级审核中'
+    },
+    {
       value: 'PowerModif',
       label: '网级审核未通过'
+    },
+    {
+      value: 'Pass',
+      label: '审核通过'
+    },
+    {
+      value: 'ProCancel',
+      label: '作废申请-省级审核中'
+    },
+    {
+      value: 'PowerCancel',
+      label: '作废申请-网级审核中'
+    },
+    {
+      value: 'Cancel',
+      label: '已作废'
     }
   ];
   return gdztList;
@@ -588,4 +592,14 @@ Vue.prototype.checkRespondAndDataNotNull = function (res) {
   }else {
     return false;
   }
+};
+//显示加载动画
+Vue.prototype.showLoading = function (thisVue) {
+  thisVue.loading = true;
+  return thisVue;
+};
+//关闭加载动画
+Vue.prototype.closeLoading = function (thisVue) {
+  thisVue.loading = false;
+  return thisVue;
 };

@@ -131,8 +131,7 @@
           gdzt: null,
           shjd: null,
           wshr: null,
-          //目前还拿不到创建人ID
-          //cjrid:UserInfoS.getUserInfo().id,
+          cjrid: null,
           zylbArray: [],
           zylb: null,
           fjbz: null,
@@ -192,6 +191,7 @@
       },
       //搜索
       handleSearch() {
+
         let thisVue = this;
         thisVue = Bus.handleSearch(thisVue);
 
@@ -220,47 +220,48 @@
 
       },
       //请求后台数据
-      queryData(number) {
+      queryData() {
 
+        // let thisVue = this;
+        //
+        // //显示加载动画
+        // thisVue = Bus.showLoading(thisVue);
+        //
+        // this.$axios({
+        //   url: 'xqd/xqdxx/findXqdxxByAndCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
+        //   method: 'post',//请求的方式
+        //   headers: {
+        //     'Content-Type': 'application/json; charset=UTF-8'
+        //   },
+        //   data: JSON.stringify(this.queryParam), //请求参数
+        // }).then(res => {
+        //   if (Bus.checkRespondAndDataNotNull(res)){
+        //     this.dataByZL = res.data.data;
+        //     this.totalData = this.dataByZL[0].total;
+        //     this.pageNum = this.dataByZL[0].pageNum;
+        //     this.pageSize = this.dataByZL[0].pageSize;
+        //     console.log(this.dataByZL);
+        //
+        //   }else {
+        //     this.dataByZL = [];
+        //   }
+        //
+        // }).catch(err => {
+        //   //console.info('报错的信息', err);
+        // }).then(function () {
+        //   //关闭加载动画
+        //   thisVue = Bus.closeLoading(thisVue);
+        //   thisVue.clearSingleData();
+        // });
       }
     },
     created() {
       //请求后台获取需求单填报数据
-      console.log(this.tableType);
       console.log(this.pageNum);
       console.log(this.pageSize);
       console.log(this.queryParam);
-      //手动获取数据
-      let data = [];
-      for (let i = 0; i <= 9; i++) {
-        let a = {
-          //name: 'John Brown 填报' + Math.floor(Math.random() * 100 + 1),
-          name: i,
-          age: '',
-          address: '总览，New York No. 1 Lake Park' + Math.floor(Math.random() * 100 + 1),
-        };
-        data.push(a);
-      }
-      data[0].age = 'New';
-      data[1].age = 'ProAudit';
-      data[2].age = 'ProModif';
-      data[3].age = 'PowerAudit';
-      data[4].age = 'PowerModif';
-      data[5].age = 'Pass';
-      data[6].age = 'ProCancel';
-      data[7].age = 'PowerCancel';
-      data[8].age = 'Cancel';
-      data[9].age = 'Cancel';
-      this.dataByZL = data;
-      /*this.$axios({
-        url: '',//请求的地址
-        method: 'post',//请求的方式
-        data: this.tableType//根据表格类型请求数据
-      }).then(res => {
-        console.info('后台返回的数据', res.data);
-      }).catch(err => {
-        console.info('报错的信息', err.response.message);
-      });*/
+
+      this.queryData();
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
