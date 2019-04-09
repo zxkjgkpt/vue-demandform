@@ -17,13 +17,13 @@
           <tr>
             <td width="80px">所属业务域</td>
             <td>
-              <Input v-model="ywyList.ssywy" placeholder="Enter something..." clearable style="width: 100%"/>
+              <Input v-model="ywyList.ssywy" placeholder="请输入..." clearable style="width: 100%"/>
             </td>
           </tr>
           <tr>
             <td width="80px">所属业务分类</td>
             <td>
-              <Input v-model="ywyList.ssywfl" placeholder="Enter something..." clearable style="width: 100%"/>
+              <Input v-model="ywyList.ssywfl" placeholder="请输入..." clearable style="width: 100%"/>
             </td>
           </tr>
           <tr>
@@ -33,7 +33,7 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.ssywmc" placeholder="Enter something..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.ssywmc" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
@@ -111,7 +111,7 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.ywlcmc" placeholder="Enter something..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.ywlcmc" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
@@ -189,7 +189,7 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.lcjdmc" placeholder="Enter something..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.lcjdmc" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
@@ -279,11 +279,11 @@
         <table border="1" style="width:100%;background:#F3F3F3" cellspacing="0px">
           <tr>
             <td width="80px">应用域</td>
-            <td><Input v-model="yyyList.yyy" placeholder="Enter something..." clearable style="width: 100%"/></td>
+            <td><Input v-model="yyyList.yyy" placeholder="请输入..." clearable style="width: 100%"/></td>
           </tr>
           <tr>
             <td>应用</td>
-            <td><Input v-model="yyyList.yy" placeholder="Enter something..." clearable style="width: 100%"/></td>
+            <td><Input v-model="yyyList.yy" placeholder="请输入..." clearable style="width: 100%"/></td>
           </tr>
           <tr>
             <td>应用模块</td>
@@ -291,7 +291,7 @@
               <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
                 <tr>
                   <td width="80px">名称</td>
-                  <td><Input v-model="yyyList.yymkmc" placeholder="Enter something..." clearable style="width: 100%"/>
+                  <td><Input v-model="yyyList.yymkmc" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
@@ -309,7 +309,7 @@
               <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
                 <tr>
                   <td width="80px">名称</td>
-                  <td><Input v-model="yyyList.yygnmc" placeholder="Enter something..." clearable style="width: 100%"/>
+                  <td><Input v-model="yyyList.yygnmc" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>

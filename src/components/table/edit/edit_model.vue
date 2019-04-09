@@ -1,7 +1,7 @@
 <template>
   <div id="edit_model">
     <span style="color: red">*</span>申请单位或业务部门名称：
-    <Input v-model="singleData.sqbmmc"  :disabled="isShowView" placeholder="Enter something..." clearable style="width: 300px"/>
+    <Input v-model="singleData.sqbmmc"  :disabled="isShowView" placeholder="请输入..." clearable style="width: 300px"/>
     <span style="color: red" v-if="singleData.sqbmmc=='' ">申请单位或业务部门名称必填</span>
     <span style="color: red" v-if="singleData.sqbmmc != undefined  && singleData.sqbmmc.length>100">最多100字</span>
     <span style="color: red">*</span>提出时间：
@@ -10,7 +10,7 @@
     <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
       <tr>
         <td width="100 px">*需求单名称</td>
-        <td><Input v-model="singleData.xqmc" :disabled="isShowView" placeholder="Enter something..." clearable style="width: 100%"/>
+        <td><Input v-model="singleData.xqmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
           <span style="color: red" v-if="singleData.xqmc==''">需求单名称必填</span>
           <span style="color: red" v-if="singleData.xqmc != undefined  && singleData.xqmc.length>100">最多100字</span>
         </td>
@@ -23,7 +23,7 @@
             <tr>
               <td width="80px"> <span style="color: red">*</span>姓名</td>
               <td colspan="3">
-                <Input v-model="singleData.sqrxm" :disabled="isShowView" placeholder="Enter something..." clearable style="width: 100%"/>
+                <Input v-model="singleData.sqrxm" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrxm==''">姓名必填</span>
                 <span style="color: red" v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>25">最多25字</span>
               </td>
@@ -32,7 +32,7 @@
               <td><span style="color: red">*</span>联系方式</td>
               <td>
                 <Input v-model="singleData.sqrlxfs" :disabled="isShowView" @on-change="checkNumber(singleData.sqrlxfs)"
-                       placeholder="Enter something..." clearable style="width: 100%"/>
+                       placeholder="请输入..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrlxfs==''">联系方式必填</span>
                 <span style="color: red" v-if="this.newPhone">请输入数字</span>
                 <span style="color: red" v-if="singleData.sqrlxfs != undefined  && singleData.sqrlxfs.length>11">最多11位数字</span>
@@ -40,7 +40,7 @@
               <td width="80px">邮箱</td>
               <td style="vertical-align: top;">
                 <Input v-model="singleData.sqryx" :disabled="isShowView" @on-change="checkEmail(singleData.sqryx)"
-                       placeholder="Enter something..." clearable style="width: 100%"/>
+                       placeholder="请输入..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="this.newEmail">请输入正确的邮箱格式</span>
                 <span style="color: red" v-if="singleData.sqryx != undefined  && singleData.sqryx.length>=100">最多100字</span>
               </td>
@@ -78,7 +78,7 @@
       <tr>
         <td><span style="color: red">*</span>需求单综述</td>
         <td>
-          <i-input v-model="singleData.xqzs" :disabled="isShowView" type="textarea" :rows="8" placeholder="Enter something..."></i-input>
+          <i-input v-model="singleData.xqzs" :disabled="isShowView" type="textarea" :rows="8" placeholder="请输入..."></i-input>
           <span style="color: red" v-if="singleData.xqzs==''">需求单综述必填</span>
           <span style="color: red" v-if="singleData.xqzs != undefined  && singleData.xqzs.length>2000">最多2000字</span>
         </td>
