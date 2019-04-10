@@ -263,6 +263,7 @@
           this.isShowView=true;
         }
         this.modalEdit = true;
+        this.$refs.edit_model.changeValueBySingleData(this.singleData);
       },
       //翻页
       changePage(value) {
@@ -364,6 +365,7 @@
               }else{
                 this.isShowView=true;
               }
+              this.$refs.edit_model.changeValueBySingleData(this.singleData);
               this.modalEdit = true;
             }
           }
@@ -459,6 +461,7 @@
             // this.dataByTB[4].shjd = 4;
 
 
+
             //赋值在前端显示专业类别
             this.dataByTB.forEach(function (v) {
               v.zylbArray = [];
@@ -492,6 +495,37 @@
                 v.xqdfl[0] = '新技术需求';
               }
             });
+            // console.log(this.dataByTB[7]);
+            // this.dataByTB[7].ywyxxList.push(this.dataByTB[7].ywyxxList[0])
+
+            // this.dataByTB.forEach(function (v) {
+            //   if (v.ywyxxList.length > 0){
+            //     v.ywyxxList.forEach(function (j) {
+            //       j.ssywgfclArray={
+            //         QWSC: false, SNSC: false, DSSC: false,
+            //         DSFSC: false, QWLZ: false, SNLZ: false,
+            //         DSLZ: false, DSFLZ: false, QWJS: false,
+            //         SNJS: false, DSJS: false, DSFJS: false
+            //       }
+            //     });
+            //
+            //       var aaa=[];
+            //       aaa=v.ywyxxList[0].ssywgfcl.split(",");
+            //     for (let i = 0; i <aaa.length; i++) {
+            //       if(aaa[i]=="QWSC"){
+            //         v.ywyxxList[0].ssywgfclArray.QWSC = true;
+            //       }
+            //       if(aaa[i]=="QWLZ"){
+            //         v.ywyxxList[0].ssywgfclArray.SNSC = true;
+            //       }
+            //     }
+            //
+            //     // v.ywyxxList[0].ssywgfclArray.QWSC = true;
+            //     // v.ywyxxList[1].ssywgfclArray.QWSC = true;
+            //
+            //   }
+            // })
+
 
           }else {
             this.dataByTB = [];

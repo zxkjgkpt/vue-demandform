@@ -104,7 +104,8 @@
 
     <!--------------------------业务域------------------------------->
     <!--------------------------应用域------------------------------->
-    <ywy_yyy ref="ywy_yyy"></ywy_yyy>
+    <!--<ywy_yyy ref="ywy_yyy" v-bind:singleData="singleData"></ywy_yyy>-->
+    <ywy_yyy ref="ywy_yyy" ></ywy_yyy>
 
     <Upload action="//jsonplaceholder.typicode.com/posts/">
       <Button :disabled="isShowView" icon="ios-cloud-upload-outline">Upload files</Button>
@@ -211,6 +212,9 @@
       //关闭模态框，把数据清空
       closeModal() {
         this.$refs.ywy_yyy.clearYwyAndYyy();
+      },
+      changeValueBySingleData(singleData){
+        this.$refs.ywy_yyy.changeValueBySingleData(singleData);
       }
 
     }

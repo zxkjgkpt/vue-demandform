@@ -1,7 +1,7 @@
 <template>
   <div id="ywy_yyy">
     <!--------------------------业务域------------------------------->
-    <div v-for="(ywyList, index) in ywyList">
+    <div v-for="(ywyList, index) in ywyxxList">
       <div class="accHead">
         <div style="float:right;" @click="deleteYwy(index)"><img src="../../../assets/remove.png"/></div>
         <div @click="changeImg(index)">
@@ -86,16 +86,16 @@
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywqwzx"/>
+                          <Checkbox v-model="ywyList.ssywqwjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywsnzx"/>
+                          <Checkbox v-model="ywyList.ssywsnjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdszx"/>
+                          <Checkbox v-model="ywyList.ssywdsjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdsfzx"/>
+                          <Checkbox v-model="ywyList.ssywdsfjs"/>
                         </td>
                       </tr>
                     </table>
@@ -164,16 +164,16 @@
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcqwzx"/>
+                          <Checkbox v-model="ywyList.ywlcqwjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcsnzx"/>
+                          <Checkbox v-model="ywyList.ywlcsnjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdszx"/>
+                          <Checkbox v-model="ywyList.ywlcdsjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdsfzx"/>
+                          <Checkbox v-model="ywyList.ywlcdsfjs"/>
                         </td>
                       </tr>
                     </table>
@@ -242,16 +242,16 @@
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdqwzx"/>
+                          <Checkbox v-model="ywyList.lcjdqwjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdsnzx"/>
+                          <Checkbox v-model="ywyList.lcjdsnjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddszx"/>
+                          <Checkbox v-model="ywyList.lcjddsjs"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddsfzx"/>
+                          <Checkbox v-model="ywyList.lcjddsfjs"/>
                         </td>
                       </tr>
                     </table>
@@ -265,7 +265,7 @@
     </div>
 
     <!--------------------------应用域------------------------------->
-    <div v-for="(yyyList, index) in yyyList">
+    <div v-for="(yyyList, index) in yyyxxList">
       <div class="accHead">
         <div style="float:right;" @click="deleteYyy(index)"><img src="../../../assets/remove.png"/></div>
         <div @click="changeYyyImg(index)">
@@ -336,29 +336,40 @@
 <script>
   export default {
     name: 'ywy_yyy',
+    // props: {
+    //   singleData: {
+    //     type: Object
+    //   }
+    // },
     data() {
       return {
-        yyyList: [],
-        ywyList:[]
+        yyyxxList: [],
+        ywyxxList:[]
       }
     },
     methods: {
-      //添加业务域
-      AddYwyList() {
-        this.ywyList.push({
+      ywyObject(){
+        let object = {
           ssywy: '', ssywfl: '', ssywmc: '', ssywms: '',
           ssywqwsc: false, ssywsnsc: false, ssywdssc: false,
           ssywdsfsc: false, ssywqwlz: false, ssywsnlz: false,
-          ssywdslz: false, ssywdsflz: false, ssywqwzx: false,
-          ssywsnzx: false, ssywdszx: false, ssywdsfzx: false,
+          ssywdslz: false, ssywdsflz: false, ssywqwjs: false,
+          ssywsnjs: false, ssywdsjs: false, ssywdsfjs: false,
+
           ywlcmc: '', ywlcms: '', ywlcqwsc: false, ywlcsnsc: false,
           ywlcdssc: false, ywlcdsfsc: false, ywlcqwlz: false, ywlcsnlz: false,
-          ywlcdslz: false, ywlcdsflz: false, ywlcqwzx: false, ywlcsnzx: false,
-          ywlcdszx: false, ywlcdsfzx: false, lcjdmc: '', lcjdms: '',
+          ywlcdslz: false, ywlcdsflz: false, ywlcqwjs: false, ywlcsnjs: false,
+          ywlcdsjs: false, ywlcdsfjs: false, lcjdmc: '', lcjdms: '',
+
           lcjdqwsc: false, lcjdsnsc: false, lcjddssc: false, lcjddsfsc: false,
           lcjdqwlz: false, lcjdsnlz: false, lcjddslz: false, lcjddsflz: false,
-          lcjdqwzx: false, lcjdsnzx: false, lcjddszx: false, lcjddsfzx: false
-        });
+          lcjdqwjs: false, lcjdsnjs: false, lcjddsjs: false, lcjddsfjs: false
+        };
+        return object;
+      },
+      //添加业务域
+      AddYwyList() {
+        this.ywyxxList.push(this.ywyObject());
       },
       //删除业务域
       deleteYwy(value) {
@@ -367,12 +378,12 @@
       },
       //清空数据
       clearYwyAndYyy(){
-        this.ywyList=[];
-        this.yyyList=[];
+        this.ywyxxList=[];
+        this.yyyxxList=[];
       },
       //添加应用域
       AddYyyList() {
-        this.yyyList.push({
+        this.yyyxxList.push({
           yyy: '', yy: '', yymkmc: '', yymkms: '',
           yygnmc: '', yygdms: '', fgnxq: ''
         });
@@ -380,7 +391,7 @@
       //删除应用域
       deleteYyy(value) {
 //        console.log(value);
-        this.yyyList.splice(value, 1);
+        this.yyyxxList.splice(value, 1);
       },
       //改变业务域图片(显示和隐藏业务域)
       changeImg(value) {
@@ -411,8 +422,71 @@
           c.style.display = "block";
           ywy.style.display = "block";
         }
+      },
+      //接收父组件的sinleData值
+      changeValueBySingleData(singleData){
+        let thisVue = this;
+        if (singleData.ywyxxList.length > 0){
+          for (let i = 0; i < singleData.ywyxxList.length; i++) {
+            thisVue.AddYwyList();
+            console.log(singleData.ywyxxList[i]);
+            thisVue.ywyxxList[i].lcjdmc = singleData.ywyxxList[i].lcjdmc;
+            thisVue.ywyxxList[i].lcjdms = singleData.ywyxxList[i].lcjdms;
+            thisVue.ywyxxList[i].ssywfl = singleData.ywyxxList[i].ssywfl;
+            thisVue.ywyxxList[i].ssywfl = singleData.ywyxxList[i].ssywfl;
+            thisVue.ywyxxList[i].ssywmc = singleData.ywyxxList[i].ssywmc;
+            thisVue.ywyxxList[i].ssywms = singleData.ywyxxList[i].ssywms;
+            thisVue.ywyxxList[i].ssywy = singleData.ywyxxList[i].ssywy;
+            thisVue.ywyxxList[i].ywlcmc = singleData.ywyxxList[i].ywlcmc;
+            thisVue.ywyxxList[i].ywlcms = singleData.ywyxxList[i].ywlcms;
+            //把ssywgfcl转换成数组筛选
+            let ssywgflcArray = singleData.ywyxxList[i].ssywgfcl.split(',');
+            ssywgflcArray.forEach(function (v) {
+              v = 'ssyw' + v.toLowerCase();
+              // console.log(v.toLowerCase());
+              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                if (v == showSelectInputKey) {
+                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+                }
+              }
+            })
+            //把ywlcgfcl转换成数组筛选
+            let ywlcgfclArray = singleData.ywyxxList[i].ywlcgfcl.split(',');
+            ywlcgfclArray.forEach(function (v) {
+              v = 'ywlc' + v.toLowerCase();
+              // console.log(v.toLowerCase());
+              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                if (v == showSelectInputKey) {
+                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+                }
+              }
+            })
+            //把lcjdgfcl转换成数组筛选
+            let lcjdgfclArray = singleData.ywyxxList[i].lcjdgfcl.split(',');
+            lcjdgfclArray.forEach(function (v) {
+              v = 'lcjd' + v.toLowerCase();
+              // console.log(v.toLowerCase());
+              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                if (v == showSelectInputKey) {
+                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+                }
+              }
+            })
+
+          }
+          // singleData.ywyxxList.forEach(function (v) {
+          //   console.log(v);
+          //   thisVue.ywyxxList.push(thisVue.ywyObject());
+          //
+          // });
+          // console.log(thisVue.ywyxxList);
+        }
+
+
+        //this.ywyxxList = singleData.ywyxxList;
+        this.yyyxxList = singleData.yyyxxList;
       }
-    },
+    }
   }
 </script>
 
