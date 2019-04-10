@@ -5,7 +5,7 @@
     <span style="color: red" v-if="singleData.sqbmmc==''">申请单位或业务部门名称必填</span>
     <span style="color: red" v-if="singleData.sqbmmc.length>=100">最多100字</span>
     <span style="color: red">*</span>提出时间：
-    <Date-picker v-model="singleData.tcsj" type="date" placeholder="选择日期" style="width: 200px"></Date-picker>
+    <Date-picker v-model="singleData.tcsj"  type="date" :options="options3" placeholder="选择日期" style="width: 200px"></Date-picker>
     <span style="color: red" v-if="singleData.tcsj==''">提出时间必填</span>
     <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
       <tr>
@@ -86,7 +86,7 @@
       <tr>
         <td><span style="color: red">*</span>期望完成日期</td>
         <td>
-          <Date-picker v-model="singleData.qwwcsj" type="date" placeholder="选择日期" style="width: 100%"></Date-picker>
+          <Date-picker v-model="singleData.qwwcsj" type="date" :options="options3" placeholder="选择日期" style="width: 100%"></Date-picker>
           <span style="color: red" v-if="singleData.qwwcsj==''">期望完成日期必填</span>
         </td>
       </tr>
@@ -144,6 +144,12 @@
     components: {Ywy_yyy},
     data() {
       return {
+        //设置当前日期之前的为不可选
+        options3: {
+          disabledDate (date) {
+            return date && date.valueOf() < Date.now() - 86400000;
+          }
+        },
         disabledGroup: '网',
         newPhone: false,  //用于验证联系方式
         newEmail: false,  //用于验证邮箱
@@ -215,7 +221,11 @@
       },
       checkFrom() {
         var s = this.singleData;
-//        console.log(s);
+       // console.log(s);
+        if(s.qwwcsj<s.tcsj){
+          alert('期望完成时间不能晚于提出时间');
+          return false;
+        }
         if (s.sqbmmc != '' && s.sqbmmc.length < 100 && s.xqmc.length < 100 && s.sqrxm.length < 25 && s.sqrlxfs.length < 11 && s.sqryx.length < 100 && s.xqzs.length < 2000
           && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != '' && s.zylb.length > 0 && s.xqdfl.length > 0
           && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false) {
@@ -224,6 +234,7 @@
           alert('请输入有效数据');
           return false;
         }
+
       },
 
       showSingleData() {

@@ -374,7 +374,7 @@
       //删除业务域
       deleteYwy(value) {
 //        console.log(value);
-        this.ywyList.splice(value, 1);
+        this.ywyxxList.splice(value, 1);
       },
       //清空数据
       clearYwyAndYyy(){
