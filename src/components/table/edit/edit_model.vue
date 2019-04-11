@@ -1,11 +1,12 @@
 <template>
   <div id="edit_model">
     <span style="color: red">*</span>申请单位或业务部门名称：
-    <Input v-model="singleData.sqbmmc"  :disabled="isShowView" placeholder="请输入..." clearable style="width: 300px"/>
+    <Input v-model="singleData.sqbmmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 300px"/>
     <span style="color: red" v-if="singleData.sqbmmc=='' ">申请单位或业务部门名称必填</span>
     <span style="color: red" v-if="singleData.sqbmmc != undefined  && singleData.sqbmmc.length>100">最多100字</span>
     <span style="color: red">*</span>提出时间：
-    <Date-picker v-model="singleData.tcsj" :disabled="isShowView" type="date" :options="options3" placeholder="选择日期" style="width: 200px"></Date-picker>
+    <Date-picker v-model="singleData.tcsj" :disabled="isShowView" type="date" :options="options3" placeholder="选择日期"
+                 style="width: 200px"></Date-picker>
     <span style="color: red" v-if="singleData.tcsj==''">提出时间必填</span>
     <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
       <tr>
@@ -21,11 +22,13 @@
           <table style="border-collapse:collapse;width: 100%;border-top: none;border-bottom: none;border-left: none"
                  border="1">
             <tr>
-              <td width="80px"> <span style="color: red">*</span>姓名</td>
+              <td width="80px"><span style="color: red">*</span>姓名</td>
               <td colspan="3">
-                <Input v-model="singleData.sqrxm" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
+                <Input v-model="singleData.sqrxm" :disabled="isShowView" placeholder="请输入..." clearable
+                       style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrxm==''">姓名必填</span>
-                <span style="color: red" v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>25">最多25字</span>
+                <span style="color: red"
+                      v-if="singleData.sqrxm != undefined  && singleData.sqrxm.length>25">最多25字</span>
               </td>
             </tr>
             <tr>
@@ -35,14 +38,16 @@
                        placeholder="请输入..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="singleData.sqrlxfs==''">联系方式必填</span>
                 <span style="color: red" v-if="this.newPhone">请输入数字</span>
-                <span style="color: red" v-if="singleData.sqrlxfs != undefined  && singleData.sqrlxfs.length>11">最多11位数字</span>
+                <span style="color: red"
+                      v-if="singleData.sqrlxfs != undefined  && singleData.sqrlxfs.length>11">最多11位数字</span>
               </td>
               <td width="80px">邮箱</td>
               <td style="vertical-align: top;">
                 <Input v-model="singleData.sqryx" :disabled="isShowView" @on-change="checkEmail(singleData.sqryx)"
                        placeholder="请输入..." clearable style="width: 100%"/>
                 <span style="color: red" v-if="this.newEmail">请输入正确的邮箱格式</span>
-                <span style="color: red" v-if="singleData.sqryx != undefined  && singleData.sqryx.length>=100">最多100字</span>
+                <span style="color: red"
+                      v-if="singleData.sqryx != undefined  && singleData.sqryx.length>=100">最多100字</span>
               </td>
             </tr>
           </table>
@@ -58,7 +63,7 @@
       <tr>
         <td><span style="color: red">*</span>需求单分类</td>
         <td>
-          <Checkbox-group v-model="singleData.xqdfl" >
+          <Checkbox-group v-model="singleData.xqdfl">
             <Checkbox label="政策性需求" :disabled="isShowView">
               <Tooltip content="政策性需求">政策性需求</Tooltip>
             </Checkbox>
@@ -78,7 +83,8 @@
       <tr>
         <td><span style="color: red">*</span>需求单综述</td>
         <td>
-          <i-input v-model="singleData.xqzs" :disabled="isShowView" type="textarea" :rows="8" placeholder="请输入..."></i-input>
+          <i-input v-model="singleData.xqzs" :disabled="isShowView" type="textarea" :rows="8"
+                   placeholder="请输入..."></i-input>
           <span style="color: red" v-if="singleData.xqzs==''">需求单综述必填</span>
           <span style="color: red" v-if="singleData.xqzs != undefined  && singleData.xqzs.length>2000">最多2000字</span>
         </td>
@@ -86,7 +92,8 @@
       <tr>
         <td><span style="color: red">*</span>期望完成日期</td>
         <td>
-          <Date-picker v-model="singleData.qwwcsj" :disabled="isShowView" type="date" :options="options3" placeholder="选择日期" style="width: 100%"></Date-picker>
+          <Date-picker v-model="singleData.qwwcsj" :disabled="isShowView" type="date" :options="options3"
+                       placeholder="选择日期" style="width: 100%"></Date-picker>
           <span style="color: red" v-if="singleData.qwwcsj==''">期望完成日期必填</span>
         </td>
       </tr>
@@ -105,11 +112,52 @@
     <!--------------------------业务域------------------------------->
     <!--------------------------应用域------------------------------->
     <!--<ywy_yyy ref="ywy_yyy" v-bind:singleData="singleData"></ywy_yyy>-->
-    <ywy_yyy ref="ywy_yyy" ></ywy_yyy>
+    <ywy_yyy ref="ywy_yyy"></ywy_yyy>
+
+    <!--办理类型、人员、时间、意见-->
+    <div style="margin-top: 10px" v-if="!(singleData.gdzt=='New')">
+      <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
+        <tr align="center">
+          <td width="100 px"><b>类型</b></td>
+          <td width="100 px"><b>办理人员</b></td>
+          <td width="100 px"><b>办理时间</b></td>
+          <td><b>办理意见</b></td>
+        </tr>
+        <tr align="center">
+          <td height="30px">提交</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr align="center" v-if="singleData.gdzt=='PowerModif'">
+          <td height="30px">网级审核不通过</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr align="center" v-if="singleData.gdzt=='Pass'">
+          <td height="30px">审核通过</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
 
     <Upload action="//jsonplaceholder.typicode.com/posts/">
       <Button :disabled="isShowView" icon="ios-cloud-upload-outline">Upload files</Button>
     </Upload>
+
+    <Modal
+      v-model="iszuofei"
+      title="需求单申请作废"
+      :mask-closable="false"
+      @on-ok="okByZuofei"
+      @on-cancel="cancelByZuofei"
+    >
+      <span style="color: red">*</span>作废原因
+        <Input element-id="zuofeiReason" type="textarea" :rows="8" placeholder="请输入..." />
+    </Modal>
   </div>
 </template>
 
@@ -117,6 +165,7 @@
   // 引入公共的bus，来做为中间传达的工具
   import Bus from '../bus/bus'
   import Ywy_yyy from "./ywy_yyy";
+
   export default {
     name: 'edit_model',
     components: {Ywy_yyy},
@@ -132,10 +181,14 @@
       return {
         //设置当前日期之前的为不可选
         options3: {
-          disabledDate (date) {
+          disabledDate(date) {
             return date && date.valueOf() < Date.now() - 86400000;
           }
         },
+        //是否作废
+        iszuofei: false,
+        //作废原因
+        zuofeiReason: '',
         disabledGroup: '网',
         newPhone: false,
         newEmail: false,
@@ -176,6 +229,22 @@
       };
     },
     methods: {
+      //申请作废
+      zuofei() {
+        this.iszuofei = true;
+      },
+      //作废模态框确定
+      okByZuofei() {
+        this.$Message.success('新建成功');
+        let zuofeiReason = document.getElementById('zuofeiReason').value;
+        this.zuofeiReason = zuofeiReason;
+        this.iszuofei = false;
+      },
+      //作废模态框取消
+      cancelByZuofei() {
+        this.$Message.warning('取消');
+        this.iszuofei = false;
+      },
       //添加业务域
       AddYwyList() {
         this.$refs.ywy_yyy.AddYwyList();
@@ -190,18 +259,18 @@
       },
       //验证邮箱是否为正确格式
       checkEmail(number) {
-        this.newEmail=Bus.checkEmail(number);
+        this.newEmail = Bus.checkEmail(number);
       },
       checkFrom() {
         var s = this.singleData;
 //        console.log(s);
 //         console.log(this.singleData);
-        if(s.qwwcsj<s.tcsj){
+        if (s.qwwcsj < s.tcsj) {
           alert('期望完成时间不能晚于提出时间');
           return false;
         }
-        if (s.zylb != '' && s.xqdfl != ''  && s.sqbmmc != '' &&s.sqbmmc.length<100 && s.xqmc.length<100 &&s.sqrxm.length<25
-           &&s.xqzs.length<2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
+        if (s.zylb != '' && s.xqdfl != '' && s.sqbmmc != '' && s.sqbmmc.length < 100 && s.xqmc.length < 100 && s.sqrxm.length < 25
+          && s.xqzs.length < 2000 && s.tcsj != '' && s.xqmc != '' && s.sqrxm != '' && s.sqrlxfs != ''
           && s.xqzs != '' && s.qwwcsj != '' && this.disabledGroup != '' && this.newPhone == false && this.newEmail == false
         ) {
           return true;
@@ -223,7 +292,7 @@
       closeModal() {
         this.$refs.ywy_yyy.clearYwyAndYyy();
       },
-      changeValueBySingleData(singleData){
+      changeValueBySingleData(singleData) {
         this.$refs.ywy_yyy.changeValueBySingleData(singleData);
       }
 

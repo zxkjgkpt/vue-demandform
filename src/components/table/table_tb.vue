@@ -162,6 +162,7 @@
         <i-button type="primary" shape="circle" @click="addYyy2" v-if="!this.isShowView">添加应用域</i-button>
         <i-button type="success" @click="" v-if="!this.isShowView">保存</i-button>
         <i-button type="warning" @click="okByEdit" v-if="!this.isShowView">提交</i-button>
+        <i-button type="warning" @click="askZuofei" v-if="this.singleData.gdzt=='Pass'">申请作废</i-button>
         <i-button @click="cancelByEdit">关闭</i-button>
       </div>
     </Modal>
@@ -256,14 +257,15 @@
     methods: {
       //双击获取详细信息
       showDetailed() {
-        //只有审核进度为0的才能编辑
-        if (this.singleData.shjd == 0) {
+        //只有审核进度为新建或者状态为不通过的才能编辑
+        if (this.singleData.shjd == 0||this.singleData.gdzt=='PowerModif') {
           this.isShowView=false;
         }else{
           this.isShowView=true;
         }
         this.modalEdit = true;
         this.$refs.edit_model.changeValueBySingleData(this.singleData);
+        console.log(this.singleData);
       },
       //翻页
       changePage(value) {
@@ -277,6 +279,10 @@
         this.pageSize = value;
         //获取数据
         this.queryData();
+      },
+      //申请作废
+      askZuofei(){
+        this.$refs.edit_model.zuofei();
       },
       //新增模态框确定
       okByNew() {
@@ -359,8 +365,8 @@
               this.modalView = true;
             } else {
               //编辑操作
-              //只有审核进度为0的才能编辑
-              if (this.singleData.shjd == 0) {
+              //只有审核进度为新建或状态为不通过的才能编辑
+              if (this.singleData.shjd == 0||this.singleData.gdzt=='PowerModif') {
                 this.isShowView=false;
               }else{
                 this.isShowView=true;
