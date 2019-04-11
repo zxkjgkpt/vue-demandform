@@ -118,17 +118,17 @@
     >
       <Button icon="ios-cloud-upload-outline">添加附件</Button>
     </Upload>
-    <div class="detailedDiv">
-      <div class="xqd_UploadFile_div">
-        <img src="../../../assets/word.png" style="margin-right: 10px; float: left">
-        <span>科技研发过程指导细则V0.7.doc</span>
-        <br>
-        <span style="margin-right: 20px">402k</span>
-        <span style="color: green">上传成功</span>
-      </div>
-      <Button style="margin-top: 10px" size="small" type="primary" @click="loadFile">下载</Button>
-      <Button style="margin-top: 10px" size="small" type="primary" @click="checkFile">查看</Button>
-      <Button style="margin-top: 10px" size="small" type="primary" @click="deleteFile">删除</Button>
+    <div class="detailedDiv" v-for="xqdFile in xqdFileList">
+      <img v-if="xqdFile.fileType.toLowerCase() == 'docx' ||  xqdFile.fileType.toLowerCase() == 'doc'" src="../../../assets/word.png" style="margin-right: 10px; float: left">
+      <img v-else src="../../../assets/undifined.png" style="margin-right: 10px; float: left">
+      <span>{{xqdFile.fileName}}</span>
+      <br>
+      <span style="margin-right: 20px">{{parseInt(xqdFile.fileSize/1024)}}k</span>
+      <!--<span style="color: green">上传成功</span>-->
+
+      <Button style="float: right" size="small" type="primary" @click="checkFile">查看</Button>
+      <Button style="float: right" size="small" type="primary" @click="loadFile">下载</Button>
+      <Button style="float: right" size="small" type="primary" @click="deleteFile">删除</Button>
     </div>
   </div>
 </template>
@@ -200,6 +200,7 @@
           qwwcsj: ''
 
         },
+        xqdFileList: []
       }
     },
     methods: {
@@ -301,16 +302,12 @@
   }
 
   .detailedDiv {
+    width: 500px;
     margin-left: 20px;
+    margin-bottom: 20px;
   }
 
   .detailedDiv Button {
     margin-right: 20px;
-  }
-
-  .xqd_UploadFile_div {
-    float: left;
-    margin-right: 100px;
-    margin-top: 5px;
   }
 </style>

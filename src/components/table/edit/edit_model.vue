@@ -10,7 +10,7 @@
     <span style="color: red" v-if="singleData.tcsj==''">提出时间必填</span>
     <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
       <tr>
-        <td width="100 px">*需求单名称</td>
+        <td width="100 px"><span style="color: red">*</span>需求单名称</td>
         <td><Input v-model="singleData.xqmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
           <span style="color: red" v-if="singleData.xqmc==''">需求单名称必填</span>
           <span style="color: red" v-if="singleData.xqmc != undefined  && singleData.xqmc.length>100">最多100字</span>
@@ -144,10 +144,6 @@
       </table>
     </div>
 
-    <Upload action="//jsonplaceholder.typicode.com/posts/">
-      <Button :disabled="isShowView" icon="ios-cloud-upload-outline">Upload files</Button>
-    </Upload>
-
     <Modal
       v-model="iszuofei"
       title="需求单申请作废"
@@ -156,8 +152,35 @@
       @on-cancel="cancelByZuofei"
     >
       <span style="color: red">*</span>作废原因
-        <Input element-id="zuofeiReason" type="textarea" :rows="8" placeholder="请输入..." />
+      <Input element-id="zuofeiReason" type="textarea" :rows="8" placeholder="请输入..." />
     </Modal>
+
+    <Upload
+      class="xqd_UploadFile"
+      action="//jsonplaceholder.typicode.com/posts/"
+      :max-size="61440"
+      :on-exceeded-size="onExceededSize"
+      :on-success="onSuccessFile"
+      :on-error="onErrorFile"
+    >
+      <Button :disabled="isShowView" icon="ios-cloud-upload-outline">添加附件</Button>
+    </Upload>
+
+    <div class="detailedDiv" v-for="xqdFile in xqdFileList">
+      <img v-if="xqdFile.fileType.toLowerCase() == 'docx' ||  xqdFile.fileType.toLowerCase() == 'doc'" src="../../../assets/word.png" style="margin-right: 10px; float: left">
+      <img v-else src="../../../assets/undifined.png" style="margin-right: 10px; float: left">
+      <span>{{xqdFile.fileName}}</span>
+      <br>
+      <span style="margin-right: 20px">{{parseInt(xqdFile.fileSize/1024)}}k</span>
+      <!--<span style="color: green">上传成功</span>-->
+
+      <Button style="float: right" size="small" type="primary" @click="checkFile">查看</Button>
+      <Button style="float: right" size="small" type="primary" @click="loadFile">下载</Button>
+      <Button v-if="!isShowView" style="float: right" size="small" type="primary" @click="deleteFile">删除</Button>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -226,6 +249,7 @@
             }
           ]
         }],
+        xqdFileList: []
       };
     },
     methods: {
@@ -291,15 +315,74 @@
       //关闭模态框，把数据清空
       closeModal() {
         this.$refs.ywy_yyy.clearYwyAndYyy();
+        this.xqdFileList = [];
       },
       changeValueBySingleData(singleData) {
         this.$refs.ywy_yyy.changeValueBySingleData(singleData);
-      }
 
+        //根据是否有附件进行赋值
+        if (singleData.xqdFileList.length > 0) {
+          for (let i = 0; i < singleData.xqdFileList.length; i++) {
+            this.xqdFileList.push(singleData.xqdFileList[i])
+          }
+        }
+        console.log(this.xqdFileList);
+      },
+      //下载文件
+      loadFile() {
+        console.log('下载文件');
+      },
+      //查看文件
+      checkFile() {
+        console.log('查看文件');
+      },
+      //删除文件
+      deleteFile() {
+        console.log('删除文件');
+      },
+      //上传文件成功后返回函数
+      onSuccessFile(response, file) {
+        console.log(response);
+        console.log(file);
+      },
+      //上传文件失败后返回函数
+      onErrorFile(error, file) {
+        console.log(error);
+        console.log(file);
+        alert('上传失败');
+      },
+      //文件超过指定大小返回函数
+      onExceededSize(file) {
+        alert('《' + file.name + '》，文件太大，请选择小于60M的文件上传！');
+      }
+    },
+    mounted() {
+      let inputChange = document.getElementsByClassName('ivu-input-disabled');
+      for (let i = 0; i < inputChange.length; i++) {
+        inputChange[i].style.backgroundColor = 'white';
+        inputChange[i].style.color = 'black';
+      }
+      let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
+      for (let i = 0; i < ivuCheckboxInner.length; i++) {
+        ivuCheckboxInner[i].style.backgroundColor = 'white';
+      }
     }
   }
 </script>
 
 <style scoped>
+  .xqd_UploadFile {
+    margin-top: 10px;
+  }
+
+  .detailedDiv {
+    width: 500px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .detailedDiv Button {
+    margin-right: 20px;
+  }
 
 </style>

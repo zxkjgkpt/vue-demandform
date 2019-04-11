@@ -2,7 +2,7 @@
   <div id="table_tb">
     <div class="search_tb">
       <Poptip trigger="focus"  content="需求单号查询...">
-        <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询..." style="width: 200px"
+        <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询，多选用逗号隔开..." style="width: 200px"
                suffix="ios-search"/>
       </Poptip>
       <Poptip trigger="focus"  content="需求单名称查询...">

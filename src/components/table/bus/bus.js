@@ -1,6 +1,7 @@
 //公共bus.js，用于非父子组件进行传值
 import Vue from 'vue'
 
+
 export default new Vue()
 
 
@@ -82,11 +83,11 @@ Vue.prototype.getfjbzList = function () {
       label: '全部'
     },
     {
-      value: 'YES',
+      value: 'TRUE',
       label: '有'
     },
     {
-      value: 'NO',
+      value: 'FALSE',
       label: '无'
     }
   ];
