@@ -112,7 +112,7 @@
     <!--------------------------业务域------------------------------->
     <!--------------------------应用域------------------------------->
     <!--<ywy_yyy ref="ywy_yyy" v-bind:singleData="singleData"></ywy_yyy>-->
-    <ywy_yyy ref="ywy_yyy"></ywy_yyy>
+    <ywy_yyy ref="ywy_yyy" v-bind:isShowView="isShowView"></ywy_yyy>
 
     <!--办理类型、人员、时间、意见-->
     <div style="margin-top: 10px" v-if="!(singleData.gdzt=='New')">
@@ -357,15 +357,15 @@
       }
     },
     mounted() {
-      let inputChange = document.getElementsByClassName('ivu-input-disabled');
-      for (let i = 0; i < inputChange.length; i++) {
-        inputChange[i].style.backgroundColor = 'white';
-        inputChange[i].style.color = 'black';
-      }
-      let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
-      for (let i = 0; i < ivuCheckboxInner.length; i++) {
-        ivuCheckboxInner[i].style.backgroundColor = 'white';
-      }
+      // let inputChange = document.getElementsByClassName('ivu-input-disabled');
+      // for (let i = 0; i < inputChange.length; i++) {
+      //   inputChange[i].style.backgroundColor = 'white';
+      //   inputChange[i].style.color = 'black';
+      // }
+      // let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
+      // for (let i = 0; i < ivuCheckboxInner.length; i++) {
+      //   ivuCheckboxInner[i].style.backgroundColor = 'white';
+      // }
     }
   }
 </script>

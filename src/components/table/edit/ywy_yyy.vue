@@ -17,13 +17,13 @@
           <tr>
             <td width="80px">所属业务域</td>
             <td>
-              <Input v-model="ywyList.ssywy" placeholder="请输入..." clearable style="width: 100%"/>
+              <Input v-model="ywyList.ssywy" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
             </td>
           </tr>
           <tr>
             <td width="80px">所属业务分类</td>
             <td>
-              <Input v-model="ywyList.ssywfl" placeholder="请输入..." clearable style="width: 100%"/>
+              <Input v-model="ywyList.ssywfl" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
             </td>
           </tr>
           <tr>
@@ -33,13 +33,13 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.ssywmc" placeholder="请输入..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.ssywmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
                   <td>描述</td>
                   <td>
-                    <i-input v-model="ywyList.ssywms" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+                    <i-input v-model="ywyList.ssywms" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
                   </td>
                 </tr>
                 <tr>
@@ -56,46 +56,46 @@
                       <tr align="center">
                         <td>输出</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywqwsc"/>
+                          <Checkbox v-model="ywyList.ssywqwsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywsnsc"/>
+                          <Checkbox v-model="ywyList.ssywsnsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdssc"/>
+                          <Checkbox v-model="ywyList.ssywdssc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdsfsc"/>
+                          <Checkbox v-model="ywyList.ssywdsfsc" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>流程流转</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywqwlz"/>
+                          <Checkbox v-model="ywyList.ssywqwlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywsnlz"/>
+                          <Checkbox v-model="ywyList.ssywsnlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdslz"/>
+                          <Checkbox v-model="ywyList.ssywdslz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdsflz"/>
+                          <Checkbox v-model="ywyList.ssywdsflz" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywqwjs"/>
+                          <Checkbox v-model="ywyList.ssywqwjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywsnjs"/>
+                          <Checkbox v-model="ywyList.ssywsnjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdsjs"/>
+                          <Checkbox v-model="ywyList.ssywdsjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ssywdsfjs"/>
+                          <Checkbox v-model="ywyList.ssywdsfjs" :disabled="isShowView"/>
                         </td>
                       </tr>
                     </table>
@@ -111,13 +111,13 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.ywlcmc" placeholder="请输入..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.ywlcmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
                   <td>描述</td>
                   <td>
-                    <i-input v-model="ywyList.ywlcms" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+                    <i-input v-model="ywyList.ywlcms" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
                   </td>
                 </tr>
                 <tr>
@@ -134,46 +134,46 @@
                       <tr align="center">
                         <td>输出</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcqwsc"/>
+                          <Checkbox v-model="ywyList.ywlcqwsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcsnsc"/>
+                          <Checkbox v-model="ywyList.ywlcsnsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdssc"/>
+                          <Checkbox v-model="ywyList.ywlcdssc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdsfsc"/>
+                          <Checkbox v-model="ywyList.ywlcdsfsc" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>流程流转</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcqwlz"/>
+                          <Checkbox v-model="ywyList.ywlcqwlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcsnlz"/>
+                          <Checkbox v-model="ywyList.ywlcsnlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdslz"/>
+                          <Checkbox v-model="ywyList.ywlcdslz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdsflz"/>
+                          <Checkbox v-model="ywyList.ywlcdsflz" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcqwjs"/>
+                          <Checkbox v-model="ywyList.ywlcqwjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcsnjs"/>
+                          <Checkbox v-model="ywyList.ywlcsnjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdsjs"/>
+                          <Checkbox v-model="ywyList.ywlcdsjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.ywlcdsfjs"/>
+                          <Checkbox v-model="ywyList.ywlcdsfjs" :disabled="isShowView"/>
                         </td>
                       </tr>
                     </table>
@@ -189,13 +189,13 @@
                 <tr>
                   <td width="80px">名称</td>
                   <td colspan="3">
-                    <Input v-model="ywyList.lcjdmc" placeholder="请输入..." clearable style="width: 100%"/>
+                    <Input v-model="ywyList.lcjdmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
                   <td>描述</td>
                   <td>
-                    <i-input v-model="ywyList.lcjdms" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+                    <i-input v-model="ywyList.lcjdms" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
                   </td>
                 </tr>
                 <tr>
@@ -212,46 +212,46 @@
                       <tr align="center">
                         <td>输出</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdqwsc"/>
+                          <Checkbox v-model="ywyList.lcjdqwsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdsnsc"/>
+                          <Checkbox v-model="ywyList.lcjdsnsc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddssc"/>
+                          <Checkbox v-model="ywyList.lcjddssc" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddsfsc"/>
+                          <Checkbox v-model="ywyList.lcjddsfsc" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>流程流转</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdqwlz"/>
+                          <Checkbox v-model="ywyList.lcjdqwlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdsnlz"/>
+                          <Checkbox v-model="ywyList.lcjdsnlz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddslz"/>
+                          <Checkbox v-model="ywyList.lcjddslz" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddsflz"/>
+                          <Checkbox v-model="ywyList.lcjddsflz" :disabled="isShowView"/>
                         </td>
                       </tr>
                       <tr align="center">
                         <td>执行角色</td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdqwjs"/>
+                          <Checkbox v-model="ywyList.lcjdqwjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjdsnjs"/>
+                          <Checkbox v-model="ywyList.lcjdsnjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddsjs"/>
+                          <Checkbox v-model="ywyList.lcjddsjs" :disabled="isShowView"/>
                         </td>
                         <td style="text-align:center;">
-                          <Checkbox v-model="ywyList.lcjddsfjs"/>
+                          <Checkbox v-model="ywyList.lcjddsfjs" :disabled="isShowView"/>
                         </td>
                       </tr>
                     </table>
@@ -279,11 +279,11 @@
         <table border="1" style="width:100%;background:#F3F3F3" cellspacing="0px">
           <tr>
             <td width="80px">应用域</td>
-            <td><Input v-model="yyyList.yyy" placeholder="请输入..." clearable style="width: 100%"/></td>
+            <td><Input v-model="yyyList.yyy" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/></td>
           </tr>
           <tr>
             <td>应用</td>
-            <td><Input v-model="yyyList.yy" placeholder="请输入..." clearable style="width: 100%"/></td>
+            <td><Input v-model="yyyList.yy" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/></td>
           </tr>
           <tr>
             <td>应用模块</td>
@@ -291,13 +291,13 @@
               <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
                 <tr>
                   <td width="80px">名称</td>
-                  <td><Input v-model="yyyList.yymkmc" placeholder="请输入..." clearable style="width: 100%"/>
+                  <td><Input v-model="yyyList.yymkmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
                   <td>描述</td>
                   <td>
-                    <i-input v-model="yyyList.yymkms" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+                    <i-input v-model="yyyList.yymkms" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
                   </td>
                 </tr>
               </table>
@@ -309,13 +309,13 @@
               <table style="width:100%;border-style:hidden;" border="1" cellspacing="0px">
                 <tr>
                   <td width="80px">名称</td>
-                  <td><Input v-model="yyyList.yygnmc" placeholder="请输入..." clearable style="width: 100%"/>
+                  <td><Input v-model="yyyList.yygnmc" :disabled="isShowView" placeholder="请输入..." clearable style="width: 100%"/>
                   </td>
                 </tr>
                 <tr>
                   <td>描述</td>
                   <td>
-                    <i-input v-model="yyyList.yygdms" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+                    <i-input v-model="yyyList.yygdms" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
                   </td>
                 </tr>
               </table>
@@ -324,7 +324,7 @@
           <tr>
             <td>非功能需求</td>
             <td>
-              <i-input v-model="yyyList.fgnxq" type="textarea" :rows="3" placeholder="请输入..."></i-input>
+              <i-input v-model="yyyList.fgnxq" :disabled="isShowView" type="textarea" :rows="3" placeholder="请输入..."></i-input>
             </td>
           </tr>
         </table>
@@ -336,11 +336,11 @@
 <script>
   export default {
     name: 'ywy_yyy',
-    // props: {
-    //   singleData: {
-    //     type: Object
-    //   }
-    // },
+    props: {
+      isShowView: {
+        type: Boolean
+      }
+    },
     data() {
       return {
         yyyxxList: [],
@@ -486,6 +486,18 @@
         //this.ywyxxList = singleData.ywyxxList;
         this.yyyxxList = singleData.yyyxxList;
       }
+    },
+    mounted() {
+      // let inputChange = document.getElementsByClassName('ivu-input-disabled');
+      // console.log(inputChange);
+      // for (let i = 0; i < inputChange.length; i++) {
+      //   inputChange[i].style.backgroundColor = 'white';
+      //   inputChange[i].style.color = 'black';
+      // }
+      // let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
+      // for (let i = 0; i < ivuCheckboxInner.length; i++) {
+      //   ivuCheckboxInner[i].style.backgroundColor = 'white';
+      // }
     }
   }
 </script>

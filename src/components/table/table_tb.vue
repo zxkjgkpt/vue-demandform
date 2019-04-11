@@ -460,7 +460,7 @@
             console.log(this.dataByTB);
 
             //手动增加审核进度数据
-            this.dataByTB[0].shjd = 0;
+            // this.dataByTB[0].shjd = 0;
             // this.dataByTB[1].shjd = 1;
             // this.dataByTB[2].shjd = 2;
             // this.dataByTB[3].shjd = 3;
@@ -569,6 +569,16 @@
       Bus.$on('shjdValueByTB', (data) => {
         console.log(data);
       })
+
+      let inputChange = document.getElementsByClassName('ivu-input-disabled');
+      for (let i = 0; i < inputChange.length; i++) {
+        inputChange[i].style.backgroundColor = 'white';
+        inputChange[i].style.color = 'black';
+      }
+      let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
+      for (let i = 0; i < ivuCheckboxInner.length; i++) {
+        ivuCheckboxInner[i].style.backgroundColor = 'white';
+      }
 
     }
   }
