@@ -38,9 +38,9 @@
         myChart = Bus.createEcharts('shjd',myChart,'审核进度统计数量',[6, 2, 60, 10, 90,168]);
         myChart.on('dblclick',function (params) {
           if (params.name != '总数'){
-            let shjdValueByZL = Bus.transformByshjd(params.name);
+            let shjdValueByTB = Bus.transformByshjd(params.name);
             //公共bus.js，用于非父子组件进行传值
-            Bus.$emit('shjdValueByTB', shjdValueByZL);
+            Bus.$emit('shjdValueByTB', shjdValueByTB);
           }
         })
       }
@@ -50,7 +50,7 @@
 
 <style scoped>
   #shjdBytb{
-    width: 50%;
-    float: right;
+    width: 100%;
+    /*float: right;*/
   }
 </style>

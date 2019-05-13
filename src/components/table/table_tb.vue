@@ -1,15 +1,15 @@
 <template>
   <div id="table_tb">
     <div class="search_tb">
-      <Poptip trigger="focus"  content="需求单号查询...">
-        <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询，多选用逗号隔开..." style="width: 200px"
+      <Poptip trigger="focus" content="需求单号查询，多选用逗号隔开...">
+        <Input clearable size="small" v-model="queryParam.xqdh" placeholder="需求单号查询..." style="width: 200px"
                suffix="ios-search"/>
       </Poptip>
-      <Poptip trigger="focus"  content="需求单名称查询...">
+      <Poptip trigger="focus" content="需求单名称查询...">
         <Input clearable size="small" v-model="queryParam.xqmc" placeholder="需求单名称查询..." style="width: 200px"
                suffix="ios-search"/>
       </Poptip>
-      <Poptip trigger="focus"  content="申请单位查询...">
+      <Poptip trigger="focus" content="申请单位查询...">
         <Input clearable size="small" v-model="queryParam.sqbmmc" placeholder="申请单位查询..." style="width: 200px"
                suffix="ios-search"/>
       </Poptip>
@@ -17,11 +17,11 @@
       <DatePicker size="small" v-model="queryParam.date" format="yyyy/MM/dd" type="daterange" placement="bottom-end"
                   placeholder="开始时间——结束时间" style="width: 200px"></DatePicker>
 
-      <Poptip trigger="click"  content="需求单综述查询...">
+      <Poptip trigger="click" content="需求单综述查询...">
         <Input v-if="showSelectInput.xqzs" clearable size="small" v-model="queryParam.xqzs" placeholder="需求单综述查询..."
                style="width: 200px" suffix="ios-search"/>
       </Poptip>
-      <Poptip trigger="click"  content="申请人查询...">
+      <Poptip trigger="click" content="申请人查询...">
         <Input v-if="showSelectInput.sqrxm" clearable size="small" v-model="queryParam.sqrxm" placeholder="申请人查询..."
                style="width: 200px" suffix="ios-search"/>
       </Poptip>
@@ -37,7 +37,7 @@
               placeholder="审核进度选择...">
         <Option v-for="shjd in shjdList" :value="shjd.value" :key="shjd.value">{{ shjd.label }}</Option>
       </Select>
-      <Poptip trigger="click"  content="审核人查询...">
+      <Poptip trigger="click" content="审核人查询...">
         <Input v-if="showSelectInput.wshr" clearable size="small" v-model="queryParam.wshr" placeholder="审核人查询..."
                style="width: 200px" suffix="ios-search"/>
       </Poptip>
@@ -72,10 +72,10 @@
         <Icon type="md-create" style="padding-bottom: 2px"/>
         编辑
       </Button>
-      <Button size="small" type="primary" @click="showNewOrEditOrView('view')">
-        <Icon type="ios-chatboxes-outline"/>
-        查看
-      </Button>
+      <!--<Button size="small" type="primary" @click="showNewOrEditOrView('view')">-->
+        <!--<Icon type="ios-chatboxes-outline"/>-->
+        <!--查看-->
+      <!--</Button>-->
 
       <!--两个删除不能少-->
       <Poptip v-if="confirm"
@@ -136,13 +136,13 @@
       <p slot="header" style="color:#f60;text-align:center">
         <span>新增信息化需求单</span>
       </p>
-      <add_model ref="add_model"></add_model>
+      <add_model ref="add_model" v-bind:cjrid="queryParam.cjrid" v-bind:queryData="queryData"></add_model>
       <!--页脚-->
       <div slot="footer">
         <i-button type="primary" shape="circle" @click="addYwy">添加业务域</i-button>
         <i-button type="primary" shape="circle" @click="addYyy">添加应用域</i-button>
-        <i-button type="success" @click="">保存</i-button>
-        <i-button type="warning" @click="okByNew">提交</i-button>
+        <i-button type="success" @click="okByNew('save')">保存</i-button>
+        <i-button type="warning" @click="okByNew('submit')">提交</i-button>
         <i-button @click="cancelByNew">关闭</i-button>
       </div>
     </Modal>
@@ -150,40 +150,41 @@
       v-model="modalEdit" width="80%"
       :mask-closable="false"
       @on-cancel="cancelByEdit"
-      >
+    >
       <!--页头-->
       <p slot="header" style="color:#f60;text-align:center">
         <span>编辑信息化需求单</span>
       </p>
-      <edit_model ref="edit_model" v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
+      <edit_model ref="edit_model" v-bind:singleData="singleData" v-bind:isShowView="isShowView" v-bind:queryData="queryData" v-bind:flowLogList="flowLogList"></edit_model>
       <!--页脚-->
       <div slot="footer">
         <i-button type="primary" shape="circle" @click="addYwy2" v-if="!this.isShowView">添加业务域</i-button>
         <i-button type="primary" shape="circle" @click="addYyy2" v-if="!this.isShowView">添加应用域</i-button>
-        <i-button type="success" @click="" v-if="!this.isShowView">保存</i-button>
-        <i-button type="warning" @click="okByEdit" v-if="!this.isShowView">提交</i-button>
-        <i-button type="warning" @click="askZuofei" v-if="this.singleData.gdzt=='Pass'">申请作废</i-button>
+        <i-button type="success" @click="okByEdit('save')" v-if="!this.isShowView">保存</i-button>
+        <i-button type="warning" @click="okByEdit('submit')" v-if="!this.isShowView">提交</i-button>
+        <i-button type="warning" @click="askZuofei" v-if="this.singleData.gdzt=='省级审批'||this.singleData.gdzt=='网级审批（联合信息部会签）'">申请作废</i-button>
         <i-button @click="cancelByEdit">关闭</i-button>
       </div>
     </Modal>
-    <Modal
-      v-model="modalView"
-      width="80%"
-      title="查看信息化需求单"
-      :mask-closable="false"
-      cancel-text=""
-      ok-text="关闭"
-      @on-ok="exitModal"
-      @on-cancel="exitModal"
-    >
-      <edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>
-    </Modal>
+    <!--<Modal-->
+      <!--v-model="modalView"-->
+      <!--width="80%"-->
+      <!--title="查看信息化需求单"-->
+      <!--:mask-closable="false"-->
+      <!--cancel-text=""-->
+      <!--ok-text="关闭"-->
+      <!--@on-ok="exitModal"-->
+      <!--@on-cancel="exitModal"-->
+    <!--&gt;-->
+      <!--<edit_model v-bind:singleData="singleData" v-bind:isShowView="isShowView"></edit_model>-->
+    <!--</Modal>-->
   </div>
 </template>
 
 <script>
   import Edit_model from "./edit/edit_model";
   import Add_model from "./edit/add_model";
+
 
   // 引入公共的bus，来做为中间传达的工具
   import Bus from './bus/bus'
@@ -195,7 +196,7 @@
       tableType: {
         type: String,
       },
-      cjrid:{
+      cjrid: {
         type: String
       }
     },
@@ -216,6 +217,7 @@
         modalEdit: false,
         modalView: false,
         singleData: {},
+        flowLogList:[],
         selectValue: '',
         isShowView: true,
         confirm: false,
@@ -230,17 +232,17 @@
           shjd: null,
           wshr: null,
           cjrid: this.cjrid,
-          xqfl:null,
+          xqfl: null,
           zylbArray: [],
           xqdfl: [],
           zylb: null,
           fjbz: null,
-          cxbz: this.tableType,
+          xqdType: this.tableType,
           date: null,
           startTime: null,
           endTime: null,
-          orders:{
-            "CJSJ":"DESC"
+          orders: {
+            "CJSJ": "DESC"
           }
         },
         showSelectInput: {
@@ -258,14 +260,18 @@
       //双击获取详细信息
       showDetailed() {
         //只有审核进度为新建或者状态为不通过的才能编辑
-        if (this.singleData.shjd == 0||this.singleData.gdzt=='PowerModif') {
-          this.isShowView=false;
-        }else{
-          this.isShowView=true;
+        if (this.singleData.shjd == 0 || this.singleData.gdzt == 'New') {
+          this.isShowView = false;
+        } else {
+          this.isShowView = true;
         }
         this.modalEdit = true;
         this.$refs.edit_model.changeValueBySingleData(this.singleData);
-        console.log(this.singleData);
+        //根据单号查询流程记录
+        let thisVue=this;
+        Bus.selectFlowlog(thisVue);
+        // console.log(this.flowLogList);
+        // console.log(this.singleData);
       },
       //翻页
       changePage(value) {
@@ -281,19 +287,33 @@
         this.queryData();
       },
       //申请作废
-      askZuofei(){
+      askZuofei() {
         this.$refs.edit_model.zuofei();
+        this.modalEdit=false;
       },
       //新增模态框确定
-      okByNew() {
-
+      okByNew(type) {
         let check = this.$refs.add_model.checkFrom();
-        if (check) {
-          this.$refs.add_model.showSingleData();
-          this.$Message.success('新建成功');
-          this.clearSingleData();
-          this.modalNew = false;
+        if(type=='save') {
+          if (check) {
+            this.$refs.add_model.showSingleData('save');
+            this.$Message.success('新建成功');
+            this.clearSingleData();
+            //关闭模态框
+            this.modalNew = false;
+          }
         }
+        if(type=='submit') {
+          if (check) {
+            this.$refs.add_model.showSingleData('submit');
+            this.$Message.success('新建成功');
+            this.clearSingleData();
+            //关闭模态框
+            this.modalNew = false;
+          }
+        }
+          // this.queryData();
+        // this.queryData();
         //this.$Message.error('新建失败');
       },
       //新增模态框取消
@@ -320,15 +340,28 @@
         this.$refs.edit_model.AddYyyList();
       },
       //编辑模态框确定
-      okByEdit() {
-        var check = this.$refs.edit_model.checkFrom();
-        if(check){
-          this.$refs.edit_model.showSingleData()
-          this.$Message.success('编辑成功');
-          this.$refs.edit_model.deleteSingleData();
-          //this.$Message.error('编辑失败');;
-          this.clearSingleData();
-          this.modalEdit = false;
+      okByEdit(type) {
+        if(type=='save') {
+          let check = this.$refs.edit_model.checkFrom();
+          if (check) {
+            this.$refs.edit_model.showSingleData('save')
+            this.$Message.success('编辑成功');
+            this.$refs.edit_model.deleteSingleData();
+            //this.$Message.error('编辑失败');;
+            this.clearSingleData();
+            this.modalEdit = false;
+          }
+        }
+        if(type=='submit') {
+          let check = this.$refs.edit_model.checkFrom();
+          if (check) {
+            this.$refs.edit_model.showSingleData('submit')
+            this.$Message.success('编辑成功');
+            this.$refs.edit_model.deleteSingleData();
+            //this.$Message.error('编辑失败');;
+            this.clearSingleData();
+            this.modalEdit = false;
+          }
         }
 
       },
@@ -366,10 +399,10 @@
             } else {
               //编辑操作
               //只有审核进度为新建或状态为不通过的才能编辑
-              if (this.singleData.shjd == 0||this.singleData.gdzt=='PowerModif') {
-                this.isShowView=false;
-              }else{
-                this.isShowView=true;
+              if (this.singleData.shjd == 0 || this.singleData.gdzt == 'PowerModif') {
+                this.isShowView = false;
+              } else {
+                this.isShowView = true;
               }
               this.$refs.edit_model.changeValueBySingleData(this.singleData);
               this.modalEdit = true;
@@ -388,10 +421,39 @@
       },
       //执行删除
       okByDelete() {
-        console.log(this.singleData);
-        this.$Message.success('删除成功');
-        //this.$Message.error('删除失败');
-        this.clearSingleData()
+        let thisVue = this;
+        console.log(thisVue.singleData);
+        let params = {
+          xqdh : thisVue.singleData.xqdh
+        };
+        this.$axios({
+          url: 'xqd/xqdxx/delete',
+          method: 'post',//请求的方式
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          // data: JSON.stringify(thisVue.singleData), //请求参数
+          data: JSON.stringify(params)
+        }).then(res => {
+          console.log(res);
+          if (Bus.checkRespondAndDataNotNull(res)) {
+
+            thisVue.$Message.success('删除成功');
+
+            thisVue.queryData();
+
+            //公共bus.js，用于非父子组件进行传值
+            Bus.$emit('queryZttjByTB', true);
+
+          } else {
+            thisVue.$Message.error('删除失败')
+          }
+        }).catch(err => {
+          //console.info('报错的信息', err);
+        }).then(function () {
+          thisVue.clearSingleData();
+        });
+
       },
       //取消删除
       cancelByDelete() {
@@ -426,7 +488,9 @@
       },
       //导出
       exportData() {
-        console.log('导出功能');
+        console.log(this.queryParam);
+        let thisVue = this;
+        Bus.exportExcel(thisVue, '需求单填报');
       },
       //获取下拉框选中的值
       getItemValue(val) {
@@ -445,95 +509,72 @@
         thisVue = Bus.showLoading(thisVue);
 
         this.$axios({
-          url: 'xqd/xqdxx/findXqdxxByAndCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
+          url: 'xqd/xqdxx/findListByAndCondition/' + this.pageNum + '/' + this.pageSize,//请求的地址
           method: 'post',//请求的方式
           headers: {
             'Content-Type': 'application/json; charset=UTF-8'
           },
           data: JSON.stringify(this.queryParam), //请求参数
         }).then(res => {
-          if (Bus.checkRespondAndDataNotNull(res)){
+          // console.log(this.queryParam);
+          if (Bus.checkRespondAndDataNotNull(res)) {
             this.dataByTB = res.data.data;
             this.totalData = this.dataByTB[0].total;
             this.pageNum = this.dataByTB[0].pageNum;
             this.pageSize = this.dataByTB[0].pageSize;
-            console.log(this.dataByTB);
+            // console.log(this.dataByTB);
 
             //手动增加审核进度数据
-            // this.dataByTB[0].shjd = 0;
-            // this.dataByTB[1].shjd = 1;
+            this.dataByTB[0].shjd = 1;
+             this.dataByTB[1].shjd = 0;
             // this.dataByTB[2].shjd = 2;
             // this.dataByTB[3].shjd = 3;
             // this.dataByTB[4].shjd = 4;
-
 
 
             //赋值在前端显示专业类别
             this.dataByTB.forEach(function (v) {
               v.zylbArray = [];
               v.zylbArray[0] = '市场营销';
-              if(v.zylb=="计量资产"){
-                v.zylbArray[1] = '计量资产';
-              }else if(v.zylb=="计量自动化"){
-                v.zylbArray[1] = '计量自动化';
-              }else if(v.zylb=="抄核收"){
-                v.zylbArray[1] = '抄核收';
-              }else if(v.zylb=="综合"){
-                v.zylbArray[1] = '综合';
-              }else if(v.zylb=="客服"){
-                v.zylbArray[1] = '客服';
-              }else if(v.zylb=="市场交易"){
-                v.zylbArray[1] = '市场交易';
-              }else if(v.zylb=="业扩"){
-                v.zylbArray[1] = '业扩';
-              }
+              v.zylbArray[1] = v.zylb;
+
+              // if (v.zylb == "计量资产") {
+              //   v.zylbArray[1] = '计量资产';
+              // } else if (v.zylb == "计量自动化") {
+              //   v.zylbArray[1] = '计量自动化';
+              // } else if (v.zylb == "抄核收") {
+              //   v.zylbArray[1] = '抄核收';
+              // } else if (v.zylb == "综合") {
+              //   v.zylbArray[1] = '综合';
+              // } else if (v.zylb == "客服") {
+              //   v.zylbArray[1] = '客服';
+              // } else if (v.zylb == "市场交易") {
+              //   v.zylbArray[1] = '市场交易';
+              // } else if (v.zylb == "业扩") {
+              //   v.zylbArray[1] = '业扩';
+              // }
+
             });
             //赋值在前端显示需求单分类
             this.dataByTB.forEach(function (v) {
               v.xqdfl = [];
-              if(v.xqfl=="ZCXXQ,"){
-                v.xqdfl[0] = '政策性需求';
-              }else if(v.xqfl=="XYWXQ,"){
-                v.xqdfl[0] = '新业务需求';
-              }else if(v.xqfl=="XJXXQ,"){
-                v.xqdfl[0] = '新技术需求';
-              }else if(v.xqfl=="XTYHXQ,"){
-                v.xqdfl[0] = '新技术需求';
+              v.xqdfl= v.xqfl.split(",");
+              let xqdflArray =[];
+              for (let i = 0; i < v.xqdfl.length-1; i++) {
+                if(v.xqdfl[i]=="ZCXXQ"){
+                  v.xqdfl[i]="ZCXXQ,";
+                }else if(v.xqdfl[i]=="XYWXQ"){
+                  v.xqdfl[i]="XYWXQ,";
+                }else if(v.xqdfl[i]=="XJXXQ"){
+                  v.xqdfl[i]="XJXXQ,";
+                }else if(v.xqdfl[i]=="XTYHXQ"){
+                  v.xqdfl[i]="XTYHXQ,";
+                }
+                xqdflArray.push(v.xqdfl[i]);
               }
+              v.xqdfl = xqdflArray;
             });
-            // console.log(this.dataByTB[7]);
-            // this.dataByTB[7].ywyxxList.push(this.dataByTB[7].ywyxxList[0])
-
-            // this.dataByTB.forEach(function (v) {
-            //   if (v.ywyxxList.length > 0){
-            //     v.ywyxxList.forEach(function (j) {
-            //       j.ssywgfclArray={
-            //         QWSC: false, SNSC: false, DSSC: false,
-            //         DSFSC: false, QWLZ: false, SNLZ: false,
-            //         DSLZ: false, DSFLZ: false, QWJS: false,
-            //         SNJS: false, DSJS: false, DSFJS: false
-            //       }
-            //     });
-            //
-            //       var aaa=[];
-            //       aaa=v.ywyxxList[0].ssywgfcl.split(",");
-            //     for (let i = 0; i <aaa.length; i++) {
-            //       if(aaa[i]=="QWSC"){
-            //         v.ywyxxList[0].ssywgfclArray.QWSC = true;
-            //       }
-            //       if(aaa[i]=="QWLZ"){
-            //         v.ywyxxList[0].ssywgfclArray.SNSC = true;
-            //       }
-            //     }
-            //
-            //     // v.ywyxxList[0].ssywgfclArray.QWSC = true;
-            //     // v.ywyxxList[1].ssywgfclArray.QWSC = true;
-            //
-            //   }
-            // })
-
-
-          }else {
+          } else {
             this.dataByTB = [];
           }
 
@@ -548,15 +589,17 @@
     },
     created() {
       //请求后台获取需求单填报数据
-      console.log(this.pageNum);
-      console.log(this.pageSize);
-      console.log(this.queryParam);
+      // console.log(this.pageNum);
+      // console.log(this.pageSize);
+      // console.log(this.queryParam);
 
       this.queryData();
     },
     //用于双击柱状图，根据参数查询需求填报数据
     mounted: function () {
       let thisVue = this;
+      //解决事件多次绑定问题：在每次调用方法前先解绑事件( bus.$off )，然后在重新绑定( bus.$on )
+      Bus.$off('zttjValueByTB');
       // 用$on事件来接收参数
       Bus.$on('zttjValueByTB', (data) => {
         console.log(data);
@@ -566,20 +609,11 @@
         thisVue.queryData();
       });
 
+
+      Bus.$off('shjdValueByTB');
       Bus.$on('shjdValueByTB', (data) => {
-        console.log(data);
-      })
-
-      let inputChange = document.getElementsByClassName('ivu-input-disabled');
-      for (let i = 0; i < inputChange.length; i++) {
-        inputChange[i].style.backgroundColor = 'white';
-        inputChange[i].style.color = 'black';
-      }
-      let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
-      for (let i = 0; i < ivuCheckboxInner.length; i++) {
-        ivuCheckboxInner[i].style.backgroundColor = 'white';
-      }
-
+        // console.log(data);
+      });
     }
   }
 </script>

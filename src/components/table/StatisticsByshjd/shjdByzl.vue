@@ -49,7 +49,6 @@
 
 <style scoped>
   #shjdByzl {
-    width: 50%;
-    float: right;
+    width: 100%;
   }
 </style>

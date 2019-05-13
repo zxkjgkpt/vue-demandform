@@ -64,16 +64,16 @@
         <td><span style="color: red">*</span>需求单分类</td>
         <td>
           <Checkbox-group v-model="singleData.xqdfl">
-            <Checkbox label="政策性需求" :disabled="isShowView">
+            <Checkbox label="ZCXXQ," :disabled="isShowView">
               <Tooltip content="政策性需求">政策性需求</Tooltip>
             </Checkbox>
-            <Checkbox label="新业务需求" :disabled="isShowView">
+            <Checkbox label="XYWXQ," :disabled="isShowView">
               <Tooltip content="新业务需求">新业务需求</Tooltip>
             </Checkbox>
-            <Checkbox label="新技术需求" :disabled="isShowView">
+            <Checkbox label="XJXXQ," :disabled="isShowView">
               <Tooltip content="新技术需求">新技术需求</Tooltip>
             </Checkbox>
-            <Checkbox label="系统优化需求" :disabled="isShowView">
+            <Checkbox label="XTYHXQ," :disabled="isShowView">
               <Tooltip content="系统优化需求">系统优化需求</Tooltip>
             </Checkbox>
           </Checkbox-group>
@@ -100,11 +100,11 @@
       <tr>
         <td><span style="color: red">*</span>部门级别</td>
         <td>
-          <!--<Radio-group v-model="disabledGroup" >-->
-          <!--<Radio label="网" disabled>网</Radio>-->
-          <!--<Radio label="省" disabled>省</Radio>-->
-          <!--<Radio label="地市" disabled>地市</Radio>-->
-          <!--</Radio-group>-->
+          <Radio-group v-model="disabledGroup" >
+          <Radio label="网" disabled>网</Radio>
+          <Radio label="省" disabled>省</Radio>
+          <Radio label="地市" disabled>地市</Radio>
+          </Radio-group>
         </td>
       </tr>
     </table>
@@ -118,28 +118,30 @@
     <div style="margin-top: 10px" v-if="!(singleData.gdzt=='New')">
       <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%">
         <tr align="center">
-          <td width="100 px"><b>类型</b></td>
+          <td width="150 px"><b>类型</b></td>
           <td width="100 px"><b>办理人员</b></td>
           <td width="100 px"><b>办理时间</b></td>
           <td><b>办理意见</b></td>
         </tr>
+        <tr align="center" v-for="item in flowLogList">
+          <td height="30px">{{ item.gdzt }}</td>
+          <td>{{ item.clrmc }}</td>
+          <td>{{ item.jssj }}</td>
+          <td v-if="item.rzjl!=null">{{item.rzjl}}</td>
+          <td v-else-if="item.zfyy!=null">{{item.zfyy}}</td>
+          <td v-else></td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div style="margin-top: 10px" >
+      <table border="1" cellspacing="0px" style="border-collapse:collapse;width: 100%" v-if="xqtype=='sh'">
         <tr align="center">
-          <td height="30px">提交</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr align="center" v-if="singleData.gdzt=='PowerModif'">
-          <td height="30px">网级审核不通过</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr align="center" v-if="singleData.gdzt=='Pass'">
-          <td height="30px">审核通过</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td width="100 px">网级审核意见</td>
+          <td><i-input v-model="wshyj" type="textarea" :rows="4"
+                                 placeholder="请输入..."></i-input>
+          </td>
         </tr>
       </table>
     </div>
@@ -152,33 +154,70 @@
       @on-cancel="cancelByZuofei"
     >
       <span style="color: red">*</span>作废原因
-      <Input element-id="zuofeiReason" type="textarea" :rows="8" placeholder="请输入..." />
+      <Input v-model="zfyy" type="textarea" :rows="8" placeholder="请输入..." />
     </Modal>
+
 
     <Upload
       class="xqd_UploadFile"
-      action="//jsonplaceholder.typicode.com/posts/"
+      action="xqd/xqdFile/xqdFileUpload"
       :max-size="61440"
       :on-exceeded-size="onExceededSize"
       :on-success="onSuccessFile"
       :on-error="onErrorFile"
+      :before-upload="beforeUpload"
+      :data='xqdFileBlocks'
+      ref="uploadFile"
     >
       <Button :disabled="isShowView" icon="ios-cloud-upload-outline">添加附件</Button>
     </Upload>
 
-    <div class="detailedDiv" v-for="xqdFile in xqdFileList">
+    <div class="detailedDiv" v-for="(xqdFile,index) in xqdFileList">
       <img v-if="xqdFile.fileType.toLowerCase() == 'docx' ||  xqdFile.fileType.toLowerCase() == 'doc'" src="../../../assets/word.png" style="margin-right: 10px; float: left">
       <img v-else src="../../../assets/undifined.png" style="margin-right: 10px; float: left">
       <span>{{xqdFile.fileName}}</span>
       <br>
       <span style="margin-right: 20px">{{parseInt(xqdFile.fileSize/1024)}}k</span>
-      <!--<span style="color: green">上传成功</span>-->
+      <span v-if="isFileSuccess" style="color: green">上传成功</span>
 
-      <Button style="float: right" size="small" type="primary" @click="checkFile">查看</Button>
-      <Button style="float: right" size="small" type="primary" @click="loadFile">下载</Button>
-      <Button v-if="!isShowView" style="float: right" size="small" type="primary" @click="deleteFile">删除</Button>
+      <Button style="float: right" size="small" type="primary" @click="checkFile(xqdFile)">查看</Button>
+      <Button style="float: right" size="small" type="primary" @click="loadFile(xqdFile)">下载</Button>
+      <Button v-if="!isShowView" style="float: right" size="small" type="primary" @click="deleteFile(xqdFile,index)">删除</Button>
     </div>
 
+    <div id="apkfpg" align="right" style="display: none">
+      <Radio-group v-model="kfpgKG">
+        <Radio label="是否需要确认需求或补充材料">是否需要确认需求或补充材料</Radio>
+
+        <Radio label="是否能实现">是否能实现</Radio>
+
+      </Radio-group>
+      <div id="sfqrKG" align="right" v-if="this.kfpgKG=='是否需要确认需求或补充材料'">
+        是否需要确认需求或补充材料
+        <i-switch @on-change="changeBySfqr" >
+          <span slot="open">是</span>
+          <span slot="close">否</span>
+        </i-switch><br>
+      </div>
+
+      <div id="sfsxKG" align="right" v-if="this.kfpgKG=='是否能实现'">
+        是否实现
+        <i-switch @on-change="changeBySfsx" >
+          <span slot="open">是</span>
+          <span slot="close">否</span>
+        </i-switch><br>
+      </div>
+    </div>
+
+
+
+    <div id="sftg" align="right" style="display: none">
+      <label>是否通过</label>
+      <i-switch @on-change="changeBySftg" >
+        <span slot="open">是</span>
+        <span slot="close">否</span>
+      </i-switch>
+    </div>
 
 
   </div>
@@ -198,7 +237,17 @@
       },
       isShowView: {
         type: Boolean
-      }
+      },
+      queryData: {
+        type: Function,
+        default: null
+      },
+      xqtype: {
+        type: String
+      },
+      flowLogList: {
+        type: Array
+      },
     },
     data() {
       return {
@@ -211,7 +260,18 @@
         //是否作废
         iszuofei: false,
         //作废原因
-        zuofeiReason: '',
+        zfyy: '',
+        //网审核意见
+        wshyj:'',
+        //是否已确认
+        confirm:false,
+        //是否确认的开关
+        sfqr:false,
+        //是否实现的开关
+        sfsx:false,
+        //是否通过的开关
+        sftg:false,
+        kfpgKG:'是否需要确认需求或补充材料',
         disabledGroup: '网',
         newPhone: false,
         newEmail: false,
@@ -220,49 +280,187 @@
           label: '市场营销',
           children: [
             {
-              value: '计量资产',
-              label: '计量资产'
+              value: '抄表核算和账单',
+              label: '抄表核算和账单'
             },
             {
-              value: '计量自动化',
-              label: '计量自动化'
+              value: '收款',
+              label: '收款'
             },
             {
-              value: '抄核收',
-              label: '抄核收'
+              value: '管理线损',
+              label: '管理线损'
             },
             {
-              value: '综合',
-              label: '综合'
+              value: '用电检查',
+              label: '用电检查'
             },
             {
-              value: '客服',
-              label: '客服'
+              value: '服务渠道管理',
+              label: '服务渠道管理'
             },
             {
-              value: '市场交易',
-              label: '市场交易'
+              value: '客户关系管理',
+              label: '客户关系管理'
             },
             {
-              value: '业扩',
-              label: '业扩'
+              value: '客户停电管理',
+              label: '客户停电管理'
+            },
+            {
+              value: '资产管理',
+              label: '资产管理'
+            },
+            {
+              value: '运行管理',
+              label: '运行管理'
+            },
+            {
+              value: '实验室管理',
+              label: '实验室管理'
+            },
+            {
+              value: '需求侧管理',
+              label: '需求侧管理'
+            },
+            {
+              value: '市场化交易',
+              label: '市场化交易'
+            },
+            {
+              value: '营销稽查',
+              label: '营销稽查'
+            },
+            {
+              value: '系统支撑',
+              label: '系统支撑'
+            },
+            {
+              value: '班组标准化',
+              label: '班组标准化'
+            },
+            {
+              value: '外部集成',
+              label: '外部集成'
+            },
+            {
+              value: '移动营销',
+              label: '移动营销'
+            },
+            {
+              value: '电动汽车',
+              label: '电动汽车'
+            },
+            {
+              value: '网厅',
+              label: '网厅'
+            },
+            {
+              value: '客服大集中',
+              label: '客服大集中'
+            },
+            {
+              value: '其他',
+              label: '其他'
             }
           ]
         }],
-        xqdFileList: []
+        xqdFileList: [],
+        isFileSuccess:false,
+        //上传时传给后台的参数
+        xqdFileBlocks: {
+          fileMd5: ''
+        },
       };
     },
     methods: {
+      //显示安排开发评估确认div
+      openApkfpg(){
+        document.getElementById("apkfpg").style.display = "block";
+        this.confirmed();
+      },
+      closeApkfpg(){
+        document.getElementById("apkfpg").style.display = "none";
+        this.noConfirm();
+      },
+      //显示是否通过div
+      openSftg(){
+        document.getElementById("sftg").style.display = "block";
+        this.confirmed();
+      },
+      closeSftg(){
+        document.getElementById("sftg").style.display = "none";
+        this.noConfirm();
+      },
+      //表示已经确认
+      confirmed(){
+        this.confirm=true;
+      },
+      //表示未确认
+      noConfirm(){
+        this.confirm=false;
+      },
+      //确认标识
+      confirmSign(){
+        return this.confirm;
+      },
+      //是否确认的开关
+      changeBySfqr(status){
+        this.sfqr = status;
+
+      },
+      //是否实现的开关
+      changeBySfsx(status){
+        this.sfsx=status;
+
+      },
+      //是否通过的开关
+      changeBySftg(status){
+        this.sftg=status;
+      },
+
       //申请作废
       zuofei() {
         this.iszuofei = true;
       },
       //作废模态框确定
       okByZuofei() {
-        this.$Message.success('新建成功');
-        let zuofeiReason = document.getElementById('zuofeiReason').value;
-        this.zuofeiReason = zuofeiReason;
-        this.iszuofei = false;
+
+        let thisVue = this;
+        this.singleData.zfyy=thisVue.zfyy;
+        this.singleData.gateway="cancelXqd";
+        this.singleData.zzid="1";
+        this.$axios({
+          url: 'xqd/xqdxx/auditXqd',
+          method: 'post',//请求的方式
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          // data: JSON.stringify(thisVue.singleData), //请求参数
+          data: JSON.stringify(thisVue.singleData)
+        }).then(res => {
+          console.log(res);
+          if (Bus.checkRespondAndDataNotNull(res)) {
+
+            thisVue.$Message.success('作废成功');
+
+            thisVue.queryData();
+
+            //公共bus.js，用于非父子组件进行传值
+            Bus.$emit('queryZttjByTB', true);
+
+          } else {
+            thisVue.$Message.error('作废失败')
+          }
+        }).catch(err => {
+          //console.info('报错的信息', err);
+        }).then(function () {
+          thisVue.iszuofei = false;
+        });
+        // this.$Message.success('新建成功');
+        // let zuofeiReason = document.getElementById('zuofeiReason').value;
+        // this.zuofeiReason = zuofeiReason;
+        // this.iszuofei = false;
       },
       //作废模态框取消
       cancelByZuofei() {
@@ -303,10 +501,202 @@
           return false;
         }
       },
-      showSingleData() {
+      //个位数前面补0的方法
+      p(s) {
+        return s < 10 ? '0' + s : s;
+      },
+      //格式化时间(年月日)
+      formatDate(oDate) {
+        let year = new Date(oDate).getFullYear();   //获取系统的年；
+        let month = this.p(new Date(oDate).getMonth() + 1);   //获取系统月份，由于月份是从0开始计算，所以要加1
+        let day = this.p(new Date(oDate).getDate()); // 获取系统日，
+        return year + "年" + month + "月" + day + "日";
+      },
+      showSingleData(type) {
+        // debugger;
         //父组件点击ok调用方法
-        console.log(this.singleData);
+        let thisVue = this;
+        //给后台专业类别传值
+
+          this.singleData.zylb = this.singleData.zylbArray[1];
+          //给后台需求分类传值
+          this.singleData.xqfl = '';
+          for (let i = 0; i < this.singleData.xqdfl.length; i++) {
+            this.singleData.xqfl = this.singleData.xqfl + this.singleData.xqdfl[i];
+          }
+          this.singleData.qwwcsj = this.formatDate(this.singleData.qwwcsj);
+          this.singleData.tcsj = this.formatDate(this.singleData.tcsj);
+          //给后台传业务域
+          this.singleData.ywyxxList = [];
+          let ywyList = this.$refs.ywy_yyy.getYwyAndYyy();
+          if (ywyList.length > 0) {
+            for (let i = 0; i < ywyList.length; i++) {
+              for (let showSelectInputKey in ywyList[i]) {
+                if (ywyList[i][showSelectInputKey] == true) {
+                  if (showSelectInputKey.slice(0, 4) == 'ssyw' && showSelectInputKey.length > 6) {
+                    ywyList[i].ssywgfcl += showSelectInputKey.slice(4).toLocaleUpperCase() + ",";
+                  }
+                  if (showSelectInputKey.slice(0, 4) == 'ywlc' && showSelectInputKey.length > 6) {
+                    ywyList[i].ywlcgfcl += showSelectInputKey.slice(4).toLocaleUpperCase() + ",";
+                  }
+                  if (showSelectInputKey.slice(0, 4) == 'lcjd' && showSelectInputKey.length > 6) {
+                    ywyList[i].lcjdgfcl += showSelectInputKey.slice(4).toLocaleUpperCase() + ",";
+                  }
+                }
+              }
+              this.singleData.ywyxxList[i] = ywyList[i];
+            }
+          }
+          //传应用域
+          this.singleData.yyyxxList = [];
+          let yyyList = this.$refs.ywy_yyy.getYyy();
+          for (let i = 0; i < yyyList.length; i++) {
+            this.singleData.yyyxxList[i] = yyyList[i];
+          }
+          //传文件
+          this.singleData.xqdFileList=thisVue.xqdFileList;
+          // console.log(this.singleData.xqdFileList);
+        //传网审核意见
+        this.singleData.wshyj=thisVue.wshyj;
+        //默认点击的是提交
+        this.singleData.gateway = 'audit';
+
+        if (type == 'pass') {
+          this.singleData.sftg = 0;
+          if (this.singleData.gdzt.indexOf("审批")>=0){
+            this.singleData.gateway = 'audit';
+          } else {
+            this.singleData.gateway = 'isDemand';
+          }
+        }
+
+        // debugger;
+        //如果点击通过则给后台传是否通过的值、是否补充原材料
+        //如果点击是否确认的是
+        if (type == 'pass' && this.singleData.gdzt == '开发评估') {
+          if (this.kfpgKG == '是否需要确认需求或补充材料') {
+            this.singleData.gateway = "isSupplement";
+            if (this.sfqr == true) {
+              this.singleData.sftg = 0;
+            } else {
+              this.singleData.sftg = 1;
+            }
+          } else {
+            this.singleData.gateway = "isRealize";
+            //如果点击是否实现的是
+            if (this.sfsx == true) {
+              this.singleData.sftg = 0;
+            } else {
+              this.singleData.sftg = 1;
+            }
+          }
+        }
+        // debugger;
+
+        if (type =='onPass'){
+          if(this.singleData.gdzt.indexOf("作废")>=0){
+            this.singleData.sftg = 1;
+          }else{
+            this.singleData.sftg = 0;
+          }
+          // this.singleData.sftg = 1;
+          //如果点击的是是否通过的是
+          if(this.sftg==true){
+            this.singleData.supplement = true;
+
+          }
+          //如果点击的是是否通过的否
+          if(this.sftg==false){
+            this.singleData.supplement = false;
+          }
+        }
+
+        // console.log(this.singleData);
         //执行后台更新逻辑
+        if(type=='save') {
+          this.$axios({
+            url: 'xqd/xqdxx/updateSelective',
+            method: 'post',//请求的方式
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            data: JSON.stringify(thisVue.singleData), //请求参数
+          }).then(res => {
+            if (Bus.checkRespondAndDataNotNull(res)) {
+              thisVue.queryData();
+              //公共bus.js，用于非父子组件进行传值
+              Bus.$emit('queryZttjByTB', true);
+
+            } else {
+              thisVue.$Message.error('修改失败')
+            }
+          }).catch(err => {
+            //console.info('报错的信息', err);
+          }).then(function () {
+            // thisVue.queryData();
+            // //公共bus.js，用于非父子组件进行传值
+            // Bus.$emit('queryZttjByTB', true);
+            // console.log(thisVue.singleData);
+            // thisVue.closeModal();
+          });
+        }
+        if(type=='submit') {
+          this.$axios({
+            url: 'xqd/xqdxx/submitXqd',
+            method: 'post',//请求的方式
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            data: JSON.stringify(thisVue.singleData), //请求参数
+          }).then(res => {
+            if (Bus.checkRespondAndDataNotNull(res)) {
+              thisVue.queryData();
+              //公共bus.js，用于非父子组件进行传值
+              Bus.$emit('queryZttjByTB', true);
+
+            } else {
+              thisVue.$Message.error('修改失败')
+            }
+          }).catch(err => {
+            //console.info('报错的信息', err);
+          }).then(function () {
+            // thisVue.queryData();
+            // //公共bus.js，用于非父子组件进行传值
+            // Bus.$emit('queryZttjByTB', true);
+            // console.log(thisVue.singleData);
+            // thisVue.closeModal();
+          });
+        }
+
+        //点击通过请求审核接口
+        if(type=='pass'||type=='onPass') {
+          this.$axios({
+            url: 'xqd/xqdxx/auditXqd',
+            method: 'post',//请求的方式
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            data: JSON.stringify(thisVue.singleData), //请求参数
+          }).then(res => {
+            if (Bus.checkRespondAndDataNotNull(res)) {
+              // debugger;
+              thisVue.queryData();
+              //公共bus.js，用于非父子组件进行传值
+              Bus.$emit('queryZttjByTB', true);
+
+            } else {
+              thisVue.$Message.error('审核失败')
+            }
+          }).catch(err => {
+            //console.info('报错的信息', err);
+          }).then(function () {
+            // thisVue.queryData();
+            // //公共bus.js，用于非父子组件进行传值
+            // Bus.$emit('queryZttjByTB', true);
+            // console.log(thisVue.singleData);
+            // thisVue.closeModal();
+          });
+        }
       },
       deleteSingleData() {
         //父组件点击cancel调用方法
@@ -326,46 +716,77 @@
             this.xqdFileList.push(singleData.xqdFileList[i])
           }
         }
-        console.log(this.xqdFileList);
       },
       //下载文件
-      loadFile() {
-        console.log('下载文件');
+      loadFile(value) {
+        // console.log('下载文件');
+        window.location.href = 'xqd/xqdFile/xqdFileDownload/'+value.fileMd5 + '/'+ value.fileName
       },
       //查看文件
       checkFile() {
         console.log('查看文件');
       },
       //删除文件
-      deleteFile() {
-        console.log('删除文件');
+      deleteFile(value,index) {
+        this.$axios({
+          url: 'xqd/xqdFile/xqdFileDelete/'+value.fileMd5,
+          method: 'post',//请求的方式
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          data: JSON.stringify(this.queryParam), //请求参数
+        }).then(res => {
+          if (Bus.checkRespondAndDataNotNull(res)) {
+            this.xqdFileList.splice(index, 1);
+            this.singleData.xqdFileList.splice(index, 1);
+          }else {
+            alert('文件删除失败，请重试！');
+          }
+        }).catch(err => {
+          //console.info('报错的信息', err);
+        }).then(function () {
+          //总是执行的
+        });
+      },
+      //上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传
+      beforeUpload(file) {
+        let timestamp = new Date().getTime();
+        this.xqdFileBlocks.fileMd5 = this.$md5(file.name + timestamp);
       },
       //上传文件成功后返回函数
-      onSuccessFile(response, file) {
+      onSuccessFile(response, file){
         console.log(response);
         console.log(file);
+        let fileType = file.name.split('.')[file.name.split('.').length - 1];
+        //展示在界面上
+        this.xqdFileList.push({
+          fileType: fileType,
+          fileName: file.name,
+          fileSize: file.size,
+          fileMd5: this.xqdFileBlocks.fileMd5,
+          isFileSuccess: true
+        });
+        //清空已上传的文件列表
+        this.$refs.uploadFile.clearFiles();
+
+        //增加新增文件操作
+        this.singleData.xqdFileList.push({
+          fileMd5: this.xqdFileBlocks.fileMd5
+        })
       },
       //上传文件失败后返回函数
-      onErrorFile(error, file) {
+      onErrorFile(error, file, fileList){
         console.log(error);
         console.log(file);
-        alert('上传失败');
+        console.log(fileList);
+        //主要拿fileList的值
+
+        alert('《'+fileList.name + '》上传失败，网络请求超时或服务器崩溃，请重试！');
       },
       //文件超过指定大小返回函数
       onExceededSize(file) {
         alert('《' + file.name + '》，文件太大，请选择小于60M的文件上传！');
       }
-    },
-    mounted() {
-      // let inputChange = document.getElementsByClassName('ivu-input-disabled');
-      // for (let i = 0; i < inputChange.length; i++) {
-      //   inputChange[i].style.backgroundColor = 'white';
-      //   inputChange[i].style.color = 'black';
-      // }
-      // let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
-      // for (let i = 0; i < ivuCheckboxInner.length; i++) {
-      //   ivuCheckboxInner[i].style.backgroundColor = 'white';
-      // }
     }
   }
 </script>

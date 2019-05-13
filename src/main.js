@@ -7,6 +7,9 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css' // 使用 CSS
 import axios from 'axios'//使用axios做请求
 
+import md5 from 'js-md5';
+Vue.prototype.$md5 = md5;
+
 Vue.use(iView)
 
 Vue.config.productionTip = false

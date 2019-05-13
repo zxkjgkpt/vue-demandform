@@ -334,6 +334,10 @@
 </template>
 
 <script>
+
+  // 引入公共的bus，来做为中间传达的工具
+  import Bus from '../bus/bus'
+
   export default {
     name: 'ywy_yyy',
     props: {
@@ -363,12 +367,14 @@
 
           lcjdqwsc: false, lcjdsnsc: false, lcjddssc: false, lcjddsfsc: false,
           lcjdqwlz: false, lcjdsnlz: false, lcjddslz: false, lcjddsflz: false,
-          lcjdqwjs: false, lcjdsnjs: false, lcjddsjs: false, lcjddsfjs: false
+          lcjdqwjs: false, lcjdsnjs: false, lcjddsjs: false, lcjddsfjs: false,
+
+          lcjdgfcl:'',ssywgfcl:'',ywlcgfcl:'',xqdh:'',ywybs:''
         };
         return object;
       },
       //添加业务域
-      AddYwyList() {
+        AddYwyList() {
         this.ywyxxList.push(this.ywyObject());
       },
       //删除业务域
@@ -407,6 +413,9 @@
           c.style.display = "block";
           ywy.style.display = "block";
         }
+
+        Bus.updateInputDemo();
+
       },
       //改变应用域图片(显示和隐藏业务域)
       changeYyyImg(value) {
@@ -422,14 +431,26 @@
           c.style.display = "block";
           ywy.style.display = "block";
         }
+
+        Bus.updateInputDemo();
+
+      },
+      //获取业务域值的方法（在父组件里调用）
+      getYwyAndYyy(){
+        return this.ywyxxList;
+      },
+      //获取应用域值的方法（在父组件里调用）
+      getYyy(){
+        return this.yyyxxList;
       },
       //接收父组件的sinleData值
       changeValueBySingleData(singleData){
+        // console.log(singleData);
         let thisVue = this;
         if (singleData.ywyxxList.length > 0){
           for (let i = 0; i < singleData.ywyxxList.length; i++) {
             thisVue.AddYwyList();
-            console.log(singleData.ywyxxList[i]);
+            // console.log(singleData.ywyxxList[i]);
             thisVue.ywyxxList[i].lcjdmc = singleData.ywyxxList[i].lcjdmc;
             thisVue.ywyxxList[i].lcjdms = singleData.ywyxxList[i].lcjdms;
             thisVue.ywyxxList[i].ssywfl = singleData.ywyxxList[i].ssywfl;
@@ -440,38 +461,44 @@
             thisVue.ywyxxList[i].ywlcmc = singleData.ywyxxList[i].ywlcmc;
             thisVue.ywyxxList[i].ywlcms = singleData.ywyxxList[i].ywlcms;
             //把ssywgfcl转换成数组筛选
-            let ssywgflcArray = singleData.ywyxxList[i].ssywgfcl.split(',');
-            ssywgflcArray.forEach(function (v) {
-              v = 'ssyw' + v.toLowerCase();
-              // console.log(v.toLowerCase());
-              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
-                if (v == showSelectInputKey) {
-                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+            if(singleData.ywyxxList[i].ssywgfcl!=null) {
+              let ssywgflcArray = singleData.ywyxxList[i].ssywgfcl.split(',');
+              ssywgflcArray.forEach(function (v) {
+                v = 'ssyw' + v.toLowerCase();
+                // console.log(v.toLowerCase());
+                for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                  if (v == showSelectInputKey) {
+                    thisVue.ywyxxList[i][showSelectInputKey] = true;
+                  }
                 }
-              }
-            })
+              })
+            }
             //把ywlcgfcl转换成数组筛选
-            let ywlcgfclArray = singleData.ywyxxList[i].ywlcgfcl.split(',');
-            ywlcgfclArray.forEach(function (v) {
-              v = 'ywlc' + v.toLowerCase();
-              // console.log(v.toLowerCase());
-              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
-                if (v == showSelectInputKey) {
-                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+            if(singleData.ywyxxList[i].ywlcgfcl!=null) {
+              let ywlcgfclArray = singleData.ywyxxList[i].ywlcgfcl.split(',');
+              ywlcgfclArray.forEach(function (v) {
+                v = 'ywlc' + v.toLowerCase();
+                // console.log(v.toLowerCase());
+                for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                  if (v == showSelectInputKey) {
+                    thisVue.ywyxxList[i][showSelectInputKey] = true;
+                  }
                 }
-              }
-            })
+              })
+            }
             //把lcjdgfcl转换成数组筛选
-            let lcjdgfclArray = singleData.ywyxxList[i].lcjdgfcl.split(',');
-            lcjdgfclArray.forEach(function (v) {
-              v = 'lcjd' + v.toLowerCase();
-              // console.log(v.toLowerCase());
-              for (let showSelectInputKey in thisVue.ywyxxList[i]) {
-                if (v == showSelectInputKey) {
-                  thisVue.ywyxxList[i][showSelectInputKey] = true;
+            if(singleData.ywyxxList[i].lcjdgfcl!=null) {
+              let lcjdgfclArray = singleData.ywyxxList[i].lcjdgfcl.split(',');
+              lcjdgfclArray.forEach(function (v) {
+                v = 'lcjd' + v.toLowerCase();
+                // console.log(v.toLowerCase());
+                for (let showSelectInputKey in thisVue.ywyxxList[i]) {
+                  if (v == showSelectInputKey) {
+                    thisVue.ywyxxList[i][showSelectInputKey] = true;
+                  }
                 }
-              }
-            })
+              })
+            }
 
           }
           // singleData.ywyxxList.forEach(function (v) {
@@ -484,20 +511,19 @@
 
 
         //this.ywyxxList = singleData.ywyxxList;
-        this.yyyxxList = singleData.yyyxxList;
+        for (let i = 0; i < singleData.yyyxxList.length; i++) {
+          thisVue.AddYyyList();
+          thisVue.yyyxxList[i].yyy = singleData.yyyxxList[i].yyy;
+          thisVue.yyyxxList[i].yy = singleData.yyyxxList[i].yy;
+          thisVue.yyyxxList[i].yymkmc = singleData.yyyxxList[i].yymkmc;
+          thisVue.yyyxxList[i].yymkms = singleData.yyyxxList[i].yymkms;
+          thisVue.yyyxxList[i].yygnmc = singleData.yyyxxList[i].yygnmc;
+          thisVue.yyyxxList[i].yygdms = singleData.yyyxxList[i].yygdms;
+          thisVue.yyyxxList[i].fgnxq = singleData.yyyxxList[i].fgnxq;
+        }
+        // console.log(this.yyyxxList);
+
       }
-    },
-    mounted() {
-      // let inputChange = document.getElementsByClassName('ivu-input-disabled');
-      // console.log(inputChange);
-      // for (let i = 0; i < inputChange.length; i++) {
-      //   inputChange[i].style.backgroundColor = 'white';
-      //   inputChange[i].style.color = 'black';
-      // }
-      // let ivuCheckboxInner = document.getElementsByClassName('ivu-checkbox-inner');
-      // for (let i = 0; i < ivuCheckboxInner.length; i++) {
-      //   ivuCheckboxInner[i].style.backgroundColor = 'white';
-      // }
     }
   }
 </script>

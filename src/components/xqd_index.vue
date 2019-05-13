@@ -23,18 +23,18 @@
       <Content :style="{margin: '70px 20px 0', background: '#fff', minHeight: '50%'}">
         <!--把tableType传给table模块，获取相应的需求单填报或总览或审核数据-->
         <Table_tb v-if="tableType == 'xqtb'" v-bind:tableType="tableType" v-bind:cjrid="cjrid"></Table_tb>
-        <Table_zl v-if="tableType == 'xqzl'" v-bind:tableType="tableType"></Table_zl>
-        <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType"></table_sh>
+        <Table_zl v-if="tableType == 'xqzl'" v-bind:tableType="tableType" v-bind:cjrid="cjrid"></Table_zl>
+        <table_sh v-if="tableType == 'xqsh'" v-bind:tableType="tableType" v-bind:cjrid="cjrid"></table_sh>
       </Content>
       <Footer class="layout-footer-center" style="padding: 10px 20px;">
         <zttj-bytb v-if="tableType == 'xqtb'" v-bind:cjrid="cjrid"></zttj-bytb>
         <shjd-bytb v-if="tableType == 'xqtb'" v-bind:cjrid="cjrid"></shjd-bytb>
 
-        <zttj-byzl v-if="tableType == 'xqzl'"></zttj-byzl>
-        <shjd-byzl v-if="tableType == 'xqzl'"></shjd-byzl>
+        <zttj-byzl v-if="tableType == 'xqzl'" v-bind:cjrid="cjrid"></zttj-byzl>
+        <shjd-byzl v-if="tableType == 'xqzl'" v-bind:cjrid="cjrid"></shjd-byzl>
 
-        <zttj-bysh v-if="tableType == 'xqsh'"></zttj-bysh>
-        <shjd-bysh v-if="tableType == 'xqsh'"></shjd-bysh>
+        <zttj-bysh v-if="tableType == 'xqsh'" v-bind:cjrid="cjrid"></zttj-bysh>
+        <shjd-bysh v-if="tableType == 'xqsh'" v-bind:cjrid="cjrid"></shjd-bysh>
 
       </Footer>
     </Layout>
@@ -52,6 +52,8 @@
   import ZttjBysh from "./table/StatisticsByzttj/zttjBysh";
   import ShjdBysh from "./table/StatisticsByshjd/shjdBysh";
 
+  // 引入公共的bus，来做为中间传达的工具
+  import Bus from './table/bus/bus'
 
   export default {
     name: 'xqd_index',
@@ -76,6 +78,9 @@
           this.tableType = 'xqsh';
         }
       }
+    },
+    mounted() {
+      Bus.updateInputDemo();
     }
   }
 </script>

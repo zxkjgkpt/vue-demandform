@@ -37,9 +37,9 @@
         myChart.on('dblclick', function (params) {
 
           if (params.name != '总数') {
-            let shjdValueByZL = Bus.transformByshjd(params.name);
+            let shjdValueBySH = Bus.transformByshjd(params.name);
             //公共bus.js，用于非父子组件进行传值
-            Bus.$emit('shjdValueBySH', shjdValueByZL);
+            Bus.$emit('shjdValueBySH', shjdValueBySH);
           }
         })
       }
@@ -49,7 +49,6 @@
 
 <style scoped>
   #shjdBysh {
-    width: 50%;
-    float: right;
+    width: 100%;
   }
 </style>
